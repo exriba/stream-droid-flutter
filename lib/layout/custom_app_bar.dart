@@ -59,8 +59,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _AppBarButton {
-  const _AppBarButton({required this.icon, required this.action});
-
   final IconData icon;
   final Future<void> Function() action;
+
+  const _AppBarButton({required this.icon, required this.action});
 }

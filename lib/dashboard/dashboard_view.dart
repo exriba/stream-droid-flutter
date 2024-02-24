@@ -14,17 +14,3 @@ class DashboardView extends StatelessWidget {
     ));
   }
 }
-
-
-            // Navigator.push(
-            //   context,
-            //   PageRouteBuilder(
-            //     pageBuilder: (BuildContext context,
-            //         Animation<double> animation1,
-            //         Animation<double> animation2) {
-            //       return const DashboardView();
-            //     },
-            //     transitionDuration: Duration.zero,
-            //     reverseTransitionDuration: Duration.zero,
-            //   ),
-            // )

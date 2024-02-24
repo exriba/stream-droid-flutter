@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stream_droid_app/layout/custom_app_bar.dart';
 
 final class BaseView extends StatelessWidget {
-  const BaseView({super.key, required this.child});
   final Widget child;
+
+  const BaseView({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

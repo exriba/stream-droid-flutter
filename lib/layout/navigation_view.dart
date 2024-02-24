@@ -13,15 +13,15 @@ final class NavigationView extends StatefulWidget {
 }
 
 class _NavigationItem {
+  final String text;
+  final IconData icon;
+  final Future<void> Function() action;
+
   const _NavigationItem({
     required this.icon,
     required this.text,
     required this.action,
   });
-
-  final String text;
-  final IconData icon;
-  final Future<void> Function() action;
 }
 
 class _NavigationView extends State<NavigationView> {
