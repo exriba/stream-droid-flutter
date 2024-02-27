@@ -1,1 +1,0 @@
-enum ThemeMode { dark, light }

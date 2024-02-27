@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:stream_droid_app/layout/base_view.dart';
+import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 
 final class LoginView extends StatelessWidget {
@@ -10,7 +10,7 @@ final class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserContext>(builder: (context, userContext, child) {
-      return BaseView(
+      return AppView(
         child: Container(
           color: const Color.fromRGBO(33, 33, 33, 1),
           alignment: Alignment.center,

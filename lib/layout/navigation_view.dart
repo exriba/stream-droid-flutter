@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/context/user_context.dart';
-import 'package:stream_droid_app/layout/base_view.dart';
+import 'package:stream_droid_app/layout/app_view.dart';
 
 final class NavigationView extends StatefulWidget {
-  const NavigationView({super.key, required this.child});
-  final Widget child;
+  const NavigationView({super.key, this.child});
+  final Widget? child;
 
   @override
   State<StatefulWidget> createState() => _NavigationView();
@@ -54,7 +54,7 @@ class _NavigationView extends State<NavigationView> {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserContext>(builder: (context, userContext, child) {
-      return BaseView(
+      return AppView(
         child: Row(
           children: [
             Column(
@@ -70,10 +70,7 @@ class _NavigationView extends State<NavigationView> {
                         .map(
                           (item) => NavigationRailDestination(
                             padding: const EdgeInsets.only(top: 30),
-                            icon: Icon(
-                              item.icon,
-                              color: const Color.fromRGBO(33, 33, 33, 1),
-                            ),
+                            icon: Icon(item.icon),
                             label: Text(item.text,
                                 style: GoogleFonts.lato(
                                   textStyle: const TextStyle(
@@ -95,26 +92,27 @@ class _NavigationView extends State<NavigationView> {
                   child: SizedBox(
                     height: 32,
                     width: 56,
-                    child: Material(
-                      color: Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(16)),
-                      child: IconButton(
-                        padding: const EdgeInsets.all(0.0),
-                        hoverColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.grey,
-                        icon: const Icon(Icons.logout),
-                        color: const Color.fromRGBO(33, 33, 33, 1),
-                        onPressed: () async {
-                          await userContext.onLogout();
-                        },
+                    child: InkWell(
+                      hoverColor: Colors.transparent,
+                      customBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      child: const Icon(Icons.logout),
+                      onTap: () async => await userContext.onLogout(),
                     ),
                   ),
                 ),
               ],
             ),
-            Expanded(flex: 1, child: widget.child),
+            Expanded(
+              flex: 1,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(33, 33, 33, 1),
+                ),
+                child: widget.child,
+              ),
+            ),
           ],
         ),
       );

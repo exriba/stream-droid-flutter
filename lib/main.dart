@@ -4,8 +4,8 @@ import 'package:window_manager/window_manager.dart';
 
 const windowOptions = WindowOptions(
     center: true,
-    size: Size(500, 500),
-    minimumSize: Size(500, 500),
+    size: Size(600, 600),
+    minimumSize: Size(600, 600),
     titleBarStyle: TitleBarStyle.hidden);
 
 void main() async {
