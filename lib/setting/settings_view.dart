@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/layout/base_view.dart';
+import 'package:stream_droid_app/layout/navigation_view.dart';
 
 class SettingsView extends StatelessWidget with BaseView {
   const SettingsView({super.key});
@@ -9,7 +10,9 @@ class SettingsView extends StatelessWidget with BaseView {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container();
+    return NavigationView(
+      baseView: this,
+      child: Container(),
+    );
   }
 }
