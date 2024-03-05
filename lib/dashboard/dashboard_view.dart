@@ -5,13 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/model/reward.dart';
+import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/utils/hex_color.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends StatelessWidget with BaseView {
   const DashboardView({super.key});
 
   Future<List<Reward>> fetchRewards() async {
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 3));
     final data = await rootBundle.loadString("assets/mock-rewards.json");
     final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
     return parsed.isEmpty
@@ -20,11 +21,15 @@ class DashboardView extends StatelessWidget {
   }
 
   @override
+  String get name => "Dashboard";
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Reward>>(
       future: fetchRewards(),
       builder: (context, AsyncSnapshot<List<Reward>> snapshot) {
         return NavigationView(
+          baseView: this,
           child: Column(
             children: [
               Expanded(
@@ -37,6 +42,7 @@ class DashboardView extends StatelessWidget {
                         crossAxisCount: responsiveValue(context,
                             xs: 1, sm: 2, md: 3, lg: 4, xl: 5),
                         childAspectRatio: 1.4,
+                        // TO-DO: Convert to custom widget. Add zoom animation.
                         children: snapshot.data!
                             .map(
                               (reward) => Material(
@@ -45,6 +51,7 @@ class DashboardView extends StatelessWidget {
                                   customBorder: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
+                                  mouseCursor: SystemMouseCursors.click,
                                   child: Card(
                                     elevation: 5,
                                     color: HexColor.fromHex(
