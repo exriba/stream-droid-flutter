@@ -7,6 +7,7 @@ import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/model/reward.dart';
 import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/utils/hex_color.dart';
+import 'package:stream_droid_app/utils/view_destination.dart';
 
 class DashboardView extends StatelessWidget with BaseView {
   const DashboardView({super.key});
@@ -19,6 +20,9 @@ class DashboardView extends StatelessWidget with BaseView {
         ? <Reward>[]
         : parsed.map<Reward>((json) => Reward.fromJson(json)).toList();
   }
+
+  @override
+  ViewDestination get view => ViewDestination.dashboard;
 
   @override
   String get name => "Dashboard";

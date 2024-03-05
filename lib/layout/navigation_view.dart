@@ -1,58 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_droid_app/auth/login_view.dart';
 import 'package:stream_droid_app/context/user_context.dart';
+import 'package:stream_droid_app/dashboard/dashboard_view.dart';
 import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/layout/base_view.dart';
+import 'package:stream_droid_app/media/media_view.dart';
+import 'package:stream_droid_app/setting/settings_view.dart';
+import 'package:stream_droid_app/statistic/statistics_view.dart';
+import 'package:stream_droid_app/utils/view_destination.dart';
+import 'package:window_manager/window_manager.dart';
 
 class _NavigationItem {
-  final String text;
   final IconData icon;
-  final Future<void> Function() action;
+  final Widget destination;
 
   const _NavigationItem({
     required this.icon,
-    required this.text,
-    required this.action,
+    required this.destination,
   });
 }
 
-final class NavigationView extends StatefulWidget {
+const List<_NavigationItem> _navigationItems = [
+  _NavigationItem(
+    icon: Icons.dashboard,
+    destination: DashboardView(),
+  ),
+  _NavigationItem(
+    icon: Icons.show_chart,
+    destination: StatisticsView(),
+  ),
+  _NavigationItem(
+    icon: Icons.play_circle_fill,
+    destination: MediaView(),
+  ),
+  _NavigationItem(
+    icon: Icons.settings,
+    destination: SettingsView(),
+  ),
+];
+
+final class NavigationView extends StatelessWidget {
   const NavigationView(
       {super.key, required this.baseView, required this.child});
   final BaseView baseView;
   final Widget child;
 
-  @override
-  State<StatefulWidget> createState() => _NavigationView();
-}
+  Future<void> onLogout(BuildContext context, UserContext userContext) async {
+    await windowManager.setOpacity(0);
+    userContext.onLogout();
 
-class _NavigationView extends State<NavigationView> {
-  var selectedIndex = 0;
+    if (!context.mounted) return;
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        settings: RouteSettings(
+          name: ViewDestination.login.name,
+        ),
+        pageBuilder: (context, animation1, animation2) {
+          return const LoginView();
+        },
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ),
+    );
 
-  // ignore: library_private_types_in_public_api
-  final List<_NavigationItem> navigationItems = [
-    _NavigationItem(
-      icon: Icons.dashboard,
-      text: 'Dashboard',
-      action: () async {},
-    ),
-    _NavigationItem(
-      icon: Icons.show_chart,
-      text: 'Statistics',
-      action: () async {},
-    ),
-    _NavigationItem(
-      icon: Icons.play_circle_fill,
-      text: 'Media',
-      action: () async {},
-    ),
-    _NavigationItem(
-      icon: Icons.settings,
-      text: 'Settings',
-      action: () async {},
-    ),
-  ];
+    const windowSize = Size(500, 500);
+    await windowManager.setSize(windowSize);
+    await windowManager.center();
+    await windowManager.setOpacity(1);
+  }
+
+  void navigateToView(BuildContext context, int value) {
+    final item = _navigationItems[value];
+    final destination = ViewDestination.values[value].name;
+    final currentRouteName = ModalRoute.of(context)?.settings.name;
+    if (currentRouteName == null && value != ViewDestination.dashboard.index ||
+        currentRouteName != destination) {
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          settings: RouteSettings(
+            name: destination,
+          ),
+          pageBuilder: (context, animation1, animation2) {
+            return item.destination;
+          },
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +107,15 @@ class _NavigationView extends State<NavigationView> {
                   flex: 9,
                   child: NavigationRail(
                     extended: false,
-                    selectedIndex: selectedIndex,
+                    selectedIndex: baseView.view.index,
                     indicatorColor: Colors.grey,
                     backgroundColor: Colors.transparent,
-                    destinations: navigationItems
+                    destinations: _navigationItems
                         .map(
                           (item) => NavigationRailDestination(
                             padding: const EdgeInsets.only(top: 30),
                             icon: Icon(item.icon),
-                            label: Text(item.text,
+                            label: Text(baseView.name,
                                 style: GoogleFonts.lato(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -86,9 +126,9 @@ class _NavigationView extends State<NavigationView> {
                           ),
                         )
                         .toList(),
-                    onDestinationSelected: (value) => setState(() {
-                      selectedIndex = value;
-                    }),
+                    onDestinationSelected: (value) {
+                      navigateToView(context, value);
+                    },
                   ),
                 ),
                 Flexible(
@@ -102,7 +142,9 @@ class _NavigationView extends State<NavigationView> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Icon(Icons.logout),
-                      onTap: () async => await userContext.onLogout(),
+                      onTap: () async {
+                        await onLogout(context, userContext);
+                      },
                     ),
                   ),
                 ),
@@ -133,7 +175,7 @@ class _NavigationView extends State<NavigationView> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child: Text(widget.baseView.name,
+                          child: Text(baseView.name,
                               style: GoogleFonts.lato(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -146,7 +188,7 @@ class _NavigationView extends State<NavigationView> {
                     ),
                     Flexible(
                       flex: 1,
-                      child: widget.child,
+                      child: this.child,
                     ),
                   ],
                 ),
