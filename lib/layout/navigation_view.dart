@@ -10,7 +10,6 @@ import 'package:stream_droid_app/media/media_view.dart';
 import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
-import 'package:window_manager/window_manager.dart';
 
 class _NavigationItem {
   final IconData icon;
@@ -47,31 +46,6 @@ final class NavigationView extends StatelessWidget {
   final BaseView baseView;
   final Widget child;
 
-  Future<void> onLogout(BuildContext context, UserContext userContext) async {
-    await windowManager.setOpacity(0);
-    userContext.onLogout();
-
-    if (!context.mounted) return;
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        settings: RouteSettings(
-          name: ViewDestination.login.name,
-        ),
-        pageBuilder: (context, animation1, animation2) {
-          return const LoginView();
-        },
-        transitionDuration: Duration.zero,
-        reverseTransitionDuration: Duration.zero,
-      ),
-    );
-
-    const windowSize = Size(500, 500);
-    await windowManager.setSize(windowSize);
-    await windowManager.center();
-    await windowManager.setOpacity(1);
-  }
-
   void navigateToView(BuildContext context, int value) {
     final item = _navigationItems[value];
     final destination = ViewDestination.values[value].name;
@@ -97,7 +71,6 @@ final class NavigationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserContext>(builder: (context, userContext, child) {
-      print(context.widget.toStringShort());
       return AppView(
         child: Row(
           children: [
@@ -143,7 +116,7 @@ final class NavigationView extends StatelessWidget {
                       ),
                       child: const Icon(Icons.logout),
                       onTap: () async {
-                        await onLogout(context, userContext);
+                        await userContext.onLogout(context);
                       },
                     ),
                   ),

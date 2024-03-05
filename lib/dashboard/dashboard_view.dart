@@ -13,7 +13,7 @@ class DashboardView extends StatelessWidget with BaseView {
   const DashboardView({super.key});
 
   Future<List<Reward>> fetchRewards() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     final data = await rootBundle.loadString("assets/mock-rewards.json");
     final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
     return parsed.isEmpty
