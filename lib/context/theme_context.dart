@@ -33,7 +33,7 @@ class ThemeContext {
         bodyLarge: GoogleFonts.getFont(
           'Lato',
           fontSize: 24,
-          color: const Color.fromRGBO(225, 225, 225, 1),
+          color: const Color.fromRGBO(33, 33, 33, 1),
           fontWeight: FontWeight.bold,
           letterSpacing: 1,
         ),
