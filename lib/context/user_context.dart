@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
 class UserContext extends ChangeNotifier {
-  var authenticated = false;
+  bool authenticated = false;
+  double defaultMediaAssetVolume = 50.0;
+
+  void updateDefaultMediaAssetVolume(double value) {
+    defaultMediaAssetVolume = value;
+    notifyListeners();
+  }
 
   Future<void> onLogin() async {
     await windowManager.setOpacity(0);

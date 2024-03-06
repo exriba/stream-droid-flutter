@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
+import 'package:stream_droid_app/setting/default_media_asset_volume.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
 
 class SettingsView extends StatelessWidget with BaseView {
@@ -14,7 +15,7 @@ class SettingsView extends StatelessWidget with BaseView {
     return NavigationView(
       baseView: this,
       child: Container(
-        height: 64,
+        height: 88,
         margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,15 +31,9 @@ class SettingsView extends StatelessWidget with BaseView {
               indent: 10,
               endIndent: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Default asset volume',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ),
+            const Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: DefaultMediaAssetVolume(),
             ),
           ],
         ),
