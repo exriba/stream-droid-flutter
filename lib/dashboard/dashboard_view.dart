@@ -65,14 +65,12 @@ class DashboardView extends StatelessWidget with BaseView {
                                         ListTile(
                                           leading:
                                               Image.network(reward.imageUrl),
-                                          title: Text(reward.title,
-                                              style: GoogleFonts.lato(
-                                                textStyle: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                    color: Colors.white,
-                                                    letterSpacing: 1),
-                                              )),
+                                          title: Text(
+                                            reward.title,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
                                         ),
                                         Expanded(
                                           flex: 1,
@@ -85,15 +83,12 @@ class DashboardView extends StatelessWidget with BaseView {
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                             ),
-                                            child: Text(reward.prompt,
-                                                style: GoogleFonts.lato(
-                                                  textStyle: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 12,
-                                                      color: Colors.white,
-                                                      letterSpacing: 1),
-                                                )),
+                                            child: Text(
+                                              reward.prompt,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            ),
                                           ),
                                         ),
                                       ],

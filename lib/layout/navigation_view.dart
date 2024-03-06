@@ -88,14 +88,7 @@ final class NavigationView extends StatelessWidget {
                           (item) => NavigationRailDestination(
                             padding: const EdgeInsets.only(top: 30),
                             icon: Icon(item.icon),
-                            label: Text(baseView.view.name,
-                                style: GoogleFonts.lato(
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: Color.fromRGBO(33, 33, 33, 1),
-                                      letterSpacing: 1),
-                                )),
+                            label: Container(),
                           ),
                         )
                         .toList(),
@@ -149,14 +142,9 @@ final class NavigationView extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: Text(
-                              baseView.view.name.withCapitalizedFirstLetter(),
-                              style: GoogleFonts.lato(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24,
-                                    color: Color.fromRGBO(33, 33, 33, 1),
-                                    letterSpacing: 1),
-                              )),
+                            baseView.view.name.withCapitalizedFirstLetter(),
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                         ),
                       ),
                     ),

@@ -12,8 +12,8 @@ final class LoginView extends StatelessWidget {
     return Consumer<UserContext>(builder: (context, userContext, child) {
       return AppView(
         child: Container(
-          color: const Color.fromRGBO(33, 33, 33, 1),
           alignment: Alignment.center,
+          color: const Color.fromRGBO(33, 33, 33, 1),
           child: SizedBox(
             height: 50,
             width: 150,
@@ -31,10 +31,9 @@ final class LoginView extends StatelessWidget {
                 colorFilter:
                     const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
-              label: const Text(
+              label: Text(
                 'Login',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               onPressed: () async {
                 await userContext.onLogin();
