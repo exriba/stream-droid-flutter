@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
