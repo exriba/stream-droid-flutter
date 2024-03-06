@@ -25,9 +25,6 @@ class DashboardView extends StatelessWidget with BaseView {
   ViewDestination get view => ViewDestination.dashboard;
 
   @override
-  String get name => "Dashboard";
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Reward>>(
       future: fetchRewards(),

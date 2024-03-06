@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/auth/login_view.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/dashboard/dashboard_view.dart';
 import 'package:stream_droid_app/layout/app_view.dart';
@@ -9,6 +8,7 @@ import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/media/media_view.dart';
 import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
+import 'package:stream_droid_app/utils/string_util.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
 
 class _NavigationItem {
@@ -88,7 +88,7 @@ final class NavigationView extends StatelessWidget {
                           (item) => NavigationRailDestination(
                             padding: const EdgeInsets.only(top: 30),
                             icon: Icon(item.icon),
-                            label: Text(baseView.name,
+                            label: Text(baseView.view.name,
                                 style: GoogleFonts.lato(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -148,7 +148,8 @@ final class NavigationView extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child: Text(baseView.name,
+                          child: Text(
+                              baseView.view.name.withCapitalizedFirstLetter(),
                               style: GoogleFonts.lato(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.bold,

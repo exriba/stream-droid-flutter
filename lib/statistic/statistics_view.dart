@@ -10,9 +10,6 @@ class StatisticsView extends StatelessWidget with BaseView {
   ViewDestination get view => ViewDestination.statistics;
 
   @override
-  String get name => "Statistics";
-
-  @override
   Widget build(BuildContext context) {
     return NavigationView(
       baseView: this,

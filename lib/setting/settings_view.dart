@@ -10,9 +10,6 @@ class SettingsView extends StatelessWidget with BaseView {
   ViewDestination get view => ViewDestination.settings;
 
   @override
-  String get name => "Settings";
-
-  @override
   Widget build(BuildContext context) {
     return NavigationView(
       baseView: this,

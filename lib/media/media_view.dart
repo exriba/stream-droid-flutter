@@ -10,9 +10,6 @@ class MediaView extends StatelessWidget with BaseView {
   ViewDestination get view => ViewDestination.media;
 
   @override
-  String get name => "Media";
-
-  @override
   Widget build(BuildContext context) {
     return NavigationView(
       baseView: this,
