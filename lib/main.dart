@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:stream_droid_app/app.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -10,6 +11,8 @@ const windowOptions = WindowOptions(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MediaKit.ensureInitialized();
+
   await windowManager.ensureInitialized();
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();

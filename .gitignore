@@ -45,3 +45,5 @@ app.*.map.json
 # test/mock data
 mock-*.json
 mock-*.txt
+*.mp3
+*.mp4

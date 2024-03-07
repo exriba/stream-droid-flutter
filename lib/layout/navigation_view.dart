@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/dashboard/dashboard_view.dart';
@@ -20,20 +21,20 @@ class _NavigationItem {
   });
 }
 
-const List<_NavigationItem> _navigationItems = [
-  _NavigationItem(
+List<_NavigationItem> _navigationItems = [
+  const _NavigationItem(
     icon: Icons.dashboard,
     destination: DashboardView(),
   ),
-  _NavigationItem(
+  const _NavigationItem(
     icon: Icons.show_chart,
     destination: StatisticsView(),
   ),
   _NavigationItem(
     icon: Icons.play_circle_fill,
-    destination: MediaView(),
+    destination: MediaView(key: UniqueKey()),
   ),
-  _NavigationItem(
+  const _NavigationItem(
     icon: Icons.settings,
     destination: SettingsView(),
   ),
