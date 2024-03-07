@@ -39,6 +39,7 @@ dependencies:
   window_manager: ^0.3.8
   responsive_grid: ^2.4.4
   cupertino_icons: ^1.0.6
+  fl_chart: ^0.66.2
   media_kit: ^1.1.10
   media_kit_video: ^1.2.4 
   media_kit_libs_video: ^1.0.4

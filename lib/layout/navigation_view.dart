@@ -52,7 +52,7 @@ final class NavigationView extends StatelessWidget {
     final currentRouteName = ModalRoute.of(context)?.settings.name;
     if (currentRouteName == null && value != ViewDestination.dashboard.index ||
         currentRouteName != destination) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         PageRouteBuilder(
           settings: RouteSettings(
@@ -88,7 +88,7 @@ final class NavigationView extends StatelessWidget {
                           (item) => NavigationRailDestination(
                             padding: const EdgeInsets.only(top: 30),
                             icon: Icon(item.icon),
-                            label: Container(),
+                            label: const SizedBox.shrink(),
                           ),
                         )
                         .toList(),
@@ -118,43 +118,45 @@ final class NavigationView extends StatelessWidget {
             ),
             Expanded(
               flex: 1,
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(33, 33, 33, 1),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // TO-DO: Convert to custom widget. Add Text animation
-                    Flexible(
-                      flex: 0,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        margin: const EdgeInsets.only(top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[700],
-                          borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
+              child: LayoutBuilder(builder: (context, constraints) {
+                return Container(
+                  height: constraints.maxHeight,
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(33, 33, 33, 1),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // TO-DO: Convert to custom widget. Add Text animation
+                      Flexible(
+                        flex: 0,
+                        child: Container(
+                          width: constraints.maxWidth / 2,
+                          margin: const EdgeInsets.only(top: 10, bottom: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[700],
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Text(
-                            baseView.view.name.withCapitalizedFirstLetter(),
-                            style: Theme.of(context).textTheme.bodyLarge,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              baseView.view.name.withCapitalizedFirstLetter(),
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: this.child,
-                    ),
-                  ],
-                ),
-              ),
+                      Flexible(
+                        flex: 1,
+                        child: this.child,
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ),
           ],
         ),

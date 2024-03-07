@@ -16,52 +16,59 @@ class MediaView extends StatefulWidget with BaseView {
 }
 
 class _MediaView extends State<MediaView> {
-  late VideoController? videoController;
+  Player? videoPlayer;
+  Player? audioPlayer;
+  VideoController? videoController;
 
   @override
   void initState() {
     super.initState();
     playVideo();
+    playAudio();
   }
 
   @override
   void dispose() {
+    audioPlayer?.dispose();
+    videoPlayer?.dispose();
     super.dispose();
   }
 
   Future<void> playAudio() async {
-    final player = Player();
-    player.stream.completed.listen((completed) async {
+    audioPlayer = Player();
+    audioPlayer!.stream.completed.listen((completed) async {
       if (completed) {
-        await player.dispose();
+        await audioPlayer!.dispose();
+        audioPlayer = null;
       }
     });
 
     try {
       final playable = Media('asset:///assets/file.mp3');
-      await player.open(playable);
+      await audioPlayer!.open(playable);
     } catch (e) {
-      await player.dispose();
+      await audioPlayer!.dispose();
     }
   }
 
   Future<void> playVideo() async {
-    final player = Player();
-    player.stream.completed.listen((completed) async {
+    videoPlayer = Player();
+    videoPlayer!.stream.completed.listen((completed) async {
       if (completed) {
-        await player.dispose();
+        await videoPlayer!.dispose();
+        videoPlayer = null;
       }
     });
 
     setState(() {
-      videoController = VideoController(player);
+      videoController = VideoController(videoPlayer!);
     });
 
     try {
       final playable = Media('asset:///assets/file.mp4');
-      await player.open(playable);
+      await videoPlayer!.open(playable);
     } catch (e) {
-      await player.dispose();
+      await videoPlayer!.dispose();
     }
   }
 

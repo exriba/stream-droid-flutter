@@ -14,30 +14,32 @@ class SettingsView extends StatelessWidget with BaseView {
   Widget build(BuildContext context) {
     return NavigationView(
       baseView: this,
-      child: Container(
-        height: 88,
-        margin: const EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Text(
-                'Media',
-                style: Theme.of(context).textTheme.bodyMedium,
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Container(
+          height: constraints.maxHeight / 5,
+          margin: const EdgeInsets.only(top: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  'Media',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
-            ),
-            const Divider(
-              indent: 10,
-              endIndent: 10,
-            ),
-            const Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: DefaultMediaAssetVolume(),
-            ),
-          ],
-        ),
-      ),
+              const Divider(
+                indent: 10,
+                endIndent: 10,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: DefaultMediaAssetVolume(),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
