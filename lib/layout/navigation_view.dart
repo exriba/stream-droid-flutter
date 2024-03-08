@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/dashboard/dashboard_view.dart';
@@ -21,30 +20,30 @@ class _NavigationItem {
   });
 }
 
-List<_NavigationItem> _navigationItems = [
-  const _NavigationItem(
-    icon: Icons.dashboard,
-    destination: DashboardView(),
-  ),
-  const _NavigationItem(
-    icon: Icons.show_chart,
-    destination: StatisticsView(),
-  ),
-  _NavigationItem(
-    icon: Icons.play_circle_fill,
-    destination: MediaView(key: UniqueKey()),
-  ),
-  const _NavigationItem(
-    icon: Icons.settings,
-    destination: SettingsView(),
-  ),
-];
-
 final class NavigationView extends StatelessWidget {
   const NavigationView(
       {super.key, required this.baseView, required this.child});
   final BaseView baseView;
   final Widget child;
+
+  static final List<_NavigationItem> _navigationItems = [
+    const _NavigationItem(
+      icon: Icons.dashboard,
+      destination: DashboardView(),
+    ),
+    const _NavigationItem(
+      icon: Icons.show_chart,
+      destination: StatisticsView(),
+    ),
+    _NavigationItem(
+      icon: Icons.play_circle_fill,
+      destination: MediaView(key: UniqueKey()),
+    ),
+    const _NavigationItem(
+      icon: Icons.settings,
+      destination: SettingsView(),
+    ),
+  ];
 
   void navigateToView(BuildContext context, int value) {
     final item = _navigationItems[value];

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({super.key});
+  const CustomAppBar({super.key});
 
-  // ignore: library_private_types_in_public_api
-  final List<_AppBarButton> appBarButtons = [
+  static final List<_AppBarButton> _appBarButtons = [
     _AppBarButton(
       icon: Icons.horizontal_rule,
       action: () async => await windowManager.minimize(),
@@ -37,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
-              children: appBarButtons
+              children: _appBarButtons
                   .map((btn) => InkWell(
                       hoverColor: Colors.grey,
                       child: Padding(
