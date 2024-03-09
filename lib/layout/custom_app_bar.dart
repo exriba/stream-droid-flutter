@@ -27,6 +27,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       child: Row(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Image.asset(
+              "assets/icons/app-icon.png",
+              height: 24,
+              width: 24,
+            ),
+          ),
           Expanded(
             flex: 1,
             child: DragToMoveArea(

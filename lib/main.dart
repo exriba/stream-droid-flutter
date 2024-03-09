@@ -15,6 +15,7 @@ void main() async {
 
   await windowManager.ensureInitialized();
   windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setTitle("Stream Droid");
     await windowManager.show();
   });
 
