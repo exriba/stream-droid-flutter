@@ -9,13 +9,13 @@ final class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
   Future<void> handleLogin(UserContext userContext) async {
-    await windowManager.setOpacity(0);
+    await windowManager.hide();
     userContext.onLogin();
 
     const windowSize = Size(1280, 720);
     await windowManager.setSize(windowSize);
     await windowManager.center();
-    await windowManager.setOpacity(1);
+    await windowManager.show();
   }
 
   @override

@@ -47,13 +47,13 @@ final class NavigationView extends StatelessWidget {
     ),
   ];
 
-  void navigateToView(BuildContext context, int value) {
+  Future<void> navigateToView(BuildContext context, int value) async {
     final item = _navigationItems[value];
     final destination = ViewDestination.values[value].name;
     final currentRouteName = ModalRoute.of(context)?.settings.name;
     if (currentRouteName == null && value != ViewDestination.dashboard.index ||
         currentRouteName != destination) {
-      Navigator.pushReplacement(
+      await Navigator.pushReplacement(
         context,
         PageRouteBuilder(
           settings: RouteSettings(
@@ -71,25 +71,22 @@ final class NavigationView extends StatelessWidget {
 
   Future<void> handleLogout(
       BuildContext context, UserContext userContext) async {
-    await windowManager.setOpacity(0);
     userContext.onLogout();
 
-    if (!context.mounted) return;
-    Navigator.pushReplacement(
+    await Navigator.pushReplacement(
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation1, animation2) {
+          const windowSize = Size(500, 500);
+          final resizeWindow = windowManager.setSize(windowSize);
+          final centerWindow = windowManager.center();
+          Future.wait([resizeWindow, centerWindow]);
           return const HomeView();
         },
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       ),
     );
-
-    const windowSize = Size(500, 500);
-    await windowManager.setSize(windowSize);
-    await windowManager.center();
-    await windowManager.setOpacity(1);
   }
 
   @override
@@ -116,8 +113,8 @@ final class NavigationView extends StatelessWidget {
                           ),
                         )
                         .toList(),
-                    onDestinationSelected: (value) {
-                      navigateToView(context, value);
+                    onDestinationSelected: (value) async {
+                      await navigateToView(context, value);
                     },
                   ),
                 ),
