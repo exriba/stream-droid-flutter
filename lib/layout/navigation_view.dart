@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/dashboard/dashboard_view.dart';
+import 'package:stream_droid_app/home/home_view.dart';
 import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/media/media_view.dart';
@@ -9,6 +10,7 @@ import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
 import 'package:stream_droid_app/utils/string_util.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
+import 'package:window_manager/window_manager.dart';
 
 class _NavigationItem {
   final IconData icon;
@@ -67,6 +69,29 @@ final class NavigationView extends StatelessWidget {
     }
   }
 
+  Future<void> handleLogout(
+      BuildContext context, UserContext userContext) async {
+    await windowManager.setOpacity(0);
+    userContext.onLogout();
+
+    if (!context.mounted) return;
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) {
+          return const HomeView();
+        },
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ),
+    );
+
+    const windowSize = Size(500, 500);
+    await windowManager.setSize(windowSize);
+    await windowManager.center();
+    await windowManager.setOpacity(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserContext>(builder: (context, userContext, child) {
@@ -108,7 +133,7 @@ final class NavigationView extends StatelessWidget {
                       ),
                       child: const Icon(Icons.logout),
                       onTap: () async {
-                        await userContext.onLogout(context);
+                        await handleLogout(context, userContext);
                       },
                     ),
                   ),

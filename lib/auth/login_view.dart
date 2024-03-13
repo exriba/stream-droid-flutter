@@ -3,9 +3,20 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/context/user_context.dart';
+import 'package:window_manager/window_manager.dart';
 
 final class LoginView extends StatelessWidget {
   const LoginView({super.key});
+
+  Future<void> handleLogin(UserContext userContext) async {
+    await windowManager.setOpacity(0);
+    userContext.onLogin();
+
+    const windowSize = Size(1280, 720);
+    await windowManager.setSize(windowSize);
+    await windowManager.center();
+    await windowManager.setOpacity(1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +55,7 @@ final class LoginView extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   onPressed: () async {
-                    await userContext.onLogin();
+                    await handleLogin(userContext);
                   },
                 ),
               ),
