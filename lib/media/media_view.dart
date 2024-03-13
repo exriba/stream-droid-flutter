@@ -76,15 +76,12 @@ class _MediaView extends State<MediaView> {
   Widget build(BuildContext context) {
     return NavigationView(
       baseView: widget,
-      child: Align(
-        alignment: Alignment.center,
-        child: videoController != null
-            ? Video(
-                controller: videoController!,
-                controls: NoVideoControls,
-              )
-            : const SizedBox.shrink(),
-      ),
+      child: videoController != null
+          ? Video(
+              controller: videoController!,
+              controls: NoVideoControls,
+            )
+          : const SizedBox.shrink(),
     );
   }
 }
