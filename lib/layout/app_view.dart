@@ -10,7 +10,7 @@ final class AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[700],
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: Container(
         margin: const EdgeInsets.only(left: 2, right: 2, bottom: 2),
         child: child,
