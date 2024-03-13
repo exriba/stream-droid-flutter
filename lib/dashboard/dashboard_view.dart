@@ -53,6 +53,7 @@ class DashboardView extends StatelessWidget with BaseView {
                                   ),
                                   mouseCursor: SystemMouseCursors.click,
                                   child: Card(
+                                    key: Key(reward.id),
                                     elevation: 5,
                                     color: HexColor.fromHex(
                                         reward.backgroundColor),
