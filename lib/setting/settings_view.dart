@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
-import 'package:stream_droid_app/setting/default_media_asset_volume.dart';
+import 'package:stream_droid_app/setting/volume_setting.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
 
 class SettingsView extends StatelessWidget with BaseView {
@@ -32,9 +32,14 @@ class SettingsView extends StatelessWidget with BaseView {
                 indent: 10,
                 endIndent: 10,
               ),
-              const Padding(
-                padding: EdgeInsets.only(right: 20),
-                child: DefaultMediaAssetVolume(),
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: VolumeSetting(
+                  text: Text(
+                    'Default asset volume',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
               ),
             ],
           ),

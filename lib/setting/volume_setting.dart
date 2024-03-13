@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 
-class DefaultMediaAssetVolume extends StatelessWidget {
-  const DefaultMediaAssetVolume({super.key});
+class VolumeSetting extends StatelessWidget {
+  const VolumeSetting({super.key, this.text});
+
+  final Text? text;
 
   @override
   Widget build(BuildContext context) {
@@ -11,10 +13,7 @@ class DefaultMediaAssetVolume extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text(
-            'Default asset volume',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          text ?? const SizedBox.shrink(),
           Slider(
             max: 100,
             divisions: 10,
