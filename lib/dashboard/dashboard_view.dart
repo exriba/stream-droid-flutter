@@ -11,9 +11,10 @@ import 'package:stream_droid_app/utils/view_destination.dart';
 class DashboardView extends StatelessWidget with BaseView {
   const DashboardView({super.key});
 
-  Future<List<Reward>> fetchRewards() async {
+  Future<List<Reward>> fetchChannelRedeems() async {
     await Future.delayed(const Duration(seconds: 1));
-    final data = await rootBundle.loadString("assets/mock-rewards.json");
+    final data =
+        await rootBundle.loadString("assets/mock-channel-redeems.json");
     final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
     return parsed.isEmpty
         ? <Reward>[]
@@ -26,7 +27,7 @@ class DashboardView extends StatelessWidget with BaseView {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Reward>>(
-      future: fetchRewards(),
+      future: fetchChannelRedeems(),
       builder: (context, AsyncSnapshot<List<Reward>> snapshot) {
         return NavigationView(
           baseView: this,
