@@ -4,7 +4,6 @@ import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/dashboard/dashboard_view.dart';
 import 'package:stream_droid_app/home/home_view.dart';
 import 'package:stream_droid_app/layout/app_view.dart';
-import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/media/media_view.dart';
 import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
@@ -12,55 +11,35 @@ import 'package:stream_droid_app/utils/string_util.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
 import 'package:window_manager/window_manager.dart';
 
-class _NavigationItem {
-  final IconData icon;
-  final Widget destination;
-
-  const _NavigationItem({
-    required this.icon,
-    required this.destination,
-  });
-}
-
 final class NavigationView extends StatelessWidget {
-  const NavigationView(
-      {super.key, required this.baseView, required this.child});
-  final BaseView baseView;
+  const NavigationView({super.key, this.viewDestination, required this.child});
+  final ViewDestination? viewDestination;
   final Widget child;
 
-  static final List<_NavigationItem> _navigationItems = [
-    const _NavigationItem(
-      icon: Icons.dashboard,
-      destination: DashboardView(),
-    ),
-    const _NavigationItem(
-      icon: Icons.show_chart,
-      destination: StatisticsView(),
-    ),
-    _NavigationItem(
-      icon: Icons.play_circle_fill,
-      destination: MediaView(key: UniqueKey()),
-    ),
-    const _NavigationItem(
-      icon: Icons.settings,
-      destination: SettingsView(),
-    ),
+  static final List<IconData> _navigationIcons = [
+    Icons.dashboard,
+    Icons.show_chart,
+    Icons.play_circle_fill,
+    Icons.settings,
   ];
 
   Future<void> navigateToView(BuildContext context, int value) async {
-    final item = _navigationItems[value];
-    final destination = ViewDestination.values[value].name;
-    final currentRouteName = ModalRoute.of(context)?.settings.name;
-    if (currentRouteName == null && value != ViewDestination.dashboard.index ||
-        currentRouteName != destination) {
+    final destination = ViewDestination.values[value];
+    if (value != viewDestination!.index) {
       await Navigator.pushReplacement(
         context,
         PageRouteBuilder(
           settings: RouteSettings(
-            name: destination,
+            name: destination.name,
           ),
           pageBuilder: (context, animation1, animation2) {
-            return item.destination;
+            return switch (destination) {
+              ViewDestination.dashboard => const DashboardView(),
+              ViewDestination.statistics => const StatisticsView(),
+              ViewDestination.media => MediaView(key: UniqueKey()),
+              ViewDestination.settings => const SettingsView(),
+              _ => throw UnimplementedError(),
+            };
           },
           transitionDuration: Duration.zero,
           reverseTransitionDuration: Duration.zero,
@@ -101,14 +80,14 @@ final class NavigationView extends StatelessWidget {
                   flex: 9,
                   child: NavigationRail(
                     extended: false,
-                    selectedIndex: baseView.view.index,
+                    selectedIndex: viewDestination?.index,
                     indicatorColor: Colors.grey,
                     backgroundColor: Colors.transparent,
-                    destinations: _navigationItems
+                    destinations: _navigationIcons
                         .map(
                           (item) => NavigationRailDestination(
                             padding: const EdgeInsets.only(top: 30),
-                            icon: Icon(item.icon),
+                            icon: Icon(item),
                             label: const SizedBox.shrink(),
                           ),
                         )
@@ -149,27 +128,32 @@ final class NavigationView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // TO-DO: Convert to custom widget. Add Text animation
-                      Flexible(
-                        flex: 0,
-                        child: Container(
-                          width: constraints.maxWidth / 2,
-                          margin: const EdgeInsets.only(top: 10, bottom: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[700],
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
+                      viewDestination == null
+                          ? const SizedBox.shrink()
+                          : Flexible(
+                              flex: 0,
+                              child: Container(
+                                width: constraints.maxWidth / 2,
+                                margin:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[700],
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    viewDestination!.name
+                                        .withCapitalizedFirstLetter(),
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              baseView.view.name.withCapitalizedFirstLetter(),
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ),
-                      ),
                       Flexible(
                         flex: 1,
                         child: this.child,

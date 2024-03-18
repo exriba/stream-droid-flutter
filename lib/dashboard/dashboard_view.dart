@@ -4,11 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/model/reward.dart';
-import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/utils/hex_color.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
 
-class DashboardView extends StatelessWidget with BaseView {
+class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
   Future<List<Reward>> fetchChannelRedeems() async {
@@ -22,15 +21,12 @@ class DashboardView extends StatelessWidget with BaseView {
   }
 
   @override
-  ViewDestination get view => ViewDestination.dashboard;
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Reward>>(
       future: fetchChannelRedeems(),
       builder: (context, AsyncSnapshot<List<Reward>> snapshot) {
         return NavigationView(
-          baseView: this,
+          viewDestination: ViewDestination.dashboard,
           child: Column(
             children: [
               Expanded(

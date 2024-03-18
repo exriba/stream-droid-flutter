@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:stream_droid_app/layout/base_view.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/setting/volume_setting.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
 
-class SettingsView extends StatelessWidget with BaseView {
+class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
-
-  @override
-  ViewDestination get view => ViewDestination.settings;
 
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      baseView: this,
+      viewDestination: ViewDestination.settings,
       child: LayoutBuilder(builder: (context, constraints) {
         return Container(
           height: constraints.maxHeight / 5,
