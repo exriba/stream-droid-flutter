@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
-import 'package:stream_droid_app/model/reward.dart';
+import 'package:stream_droid_app/model/redeem.dart';
 import 'package:stream_droid_app/redeem/redeem_view.dart';
 import 'package:stream_droid_app/utils/hex_color.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
@@ -11,21 +11,21 @@ import 'package:stream_droid_app/utils/view_destination.dart';
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
-  Future<List<Reward>> fetchChannelRedeems() async {
+  Future<List<Redeem>> fetchChannelRedeems() async {
     await Future.delayed(const Duration(milliseconds: 500));
     final data =
         await rootBundle.loadString("assets/mock-channel-redeems.json");
     final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
     return parsed.isEmpty
-        ? <Reward>[]
-        : parsed.map<Reward>((json) => Reward.fromJson(json)).toList();
+        ? <Redeem>[]
+        : parsed.map<Redeem>((json) => Redeem.fromJson(json)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Reward>>(
+    return FutureBuilder<List<Redeem>>(
       future: fetchChannelRedeems(),
-      builder: (context, AsyncSnapshot<List<Reward>> snapshot) {
+      builder: (context, AsyncSnapshot<List<Redeem>> snapshot) {
         return NavigationView(
           viewDestination: ViewDestination.dashboard,
           child: Column(
