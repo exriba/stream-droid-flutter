@@ -25,7 +25,7 @@ final class NavigationView extends StatelessWidget {
 
   Future<void> navigateToView(BuildContext context, int value) async {
     final destination = ViewDestination.values[value];
-    if (value != viewDestination!.index) {
+    if (viewDestination == null || value != viewDestination!.index) {
       await Navigator.pushReplacement(
         context,
         PageRouteBuilder(
