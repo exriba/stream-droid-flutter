@@ -56,9 +56,8 @@ final class NavigationView extends StatelessWidget {
       PageRouteBuilder(
         pageBuilder: (context, animation1, animation2) {
           const windowSize = Size(500, 500);
-          final resizeWindow = windowManager.setSize(windowSize);
-          final centerWindow = windowManager.center();
-          Future.wait([resizeWindow, centerWindow]);
+          windowManager.setSize(windowSize);
+          windowManager.center();
           return const HomeView();
         },
         transitionDuration: Duration.zero,
