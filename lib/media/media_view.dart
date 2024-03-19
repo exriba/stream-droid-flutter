@@ -23,13 +23,6 @@ class _MediaView extends State<MediaView> {
     playAudio();
   }
 
-  @override
-  void dispose() {
-    audioPlayer?.dispose();
-    videoPlayer?.dispose();
-    super.dispose();
-  }
-
   Future<void> playAudio() async {
     audioPlayer = Player();
     audioPlayer!.stream.completed.listen((completed) async {
@@ -79,5 +72,12 @@ class _MediaView extends State<MediaView> {
             )
           : const SizedBox.shrink(),
     );
+  }
+
+  @override
+  void dispose() {
+    audioPlayer?.dispose();
+    videoPlayer?.dispose();
+    super.dispose();
   }
 }
