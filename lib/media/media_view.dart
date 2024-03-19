@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
-import 'package:stream_droid_app/utils/view_destination.dart';
 
 class MediaView extends StatefulWidget {
   const MediaView({super.key});

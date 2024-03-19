@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/setting/volume_setting.dart';
-import 'package:stream_droid_app/utils/view_destination.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});

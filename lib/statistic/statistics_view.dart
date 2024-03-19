@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
-import 'package:stream_droid_app/utils/view_destination.dart';
 
 class StatisticsView extends StatelessWidget {
   const StatisticsView({super.key});

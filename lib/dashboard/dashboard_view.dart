@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:responsive_grid/responsive_grid.dart';
+import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
-import 'package:stream_droid_app/model/redeem.dart';
 import 'package:stream_droid_app/redeem/redeem_view.dart';
-import 'package:stream_droid_app/utils/hex_color.dart';
-import 'package:stream_droid_app/utils/view_destination.dart';
+import 'package:stream_droid_app/common/hex_color.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -75,7 +74,7 @@ class DashboardView extends StatelessWidget {
                                         PageRouteBuilder(
                                           pageBuilder: (context, animation1,
                                               animation2) {
-                                            return const RedeemView();
+                                            return RedeemView(redeem: redeem);
                                           },
                                           transitionDuration: Duration.zero,
                                           reverseTransitionDuration:

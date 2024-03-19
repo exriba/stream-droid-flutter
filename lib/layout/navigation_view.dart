@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/dashboard/dashboard_view.dart';
 import 'package:stream_droid_app/home/home_view.dart';
@@ -7,7 +8,6 @@ import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/media/media_view.dart';
 import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
-import 'package:stream_droid_app/utils/view_destination.dart';
 import 'package:window_manager/window_manager.dart';
 
 final class NavigationView extends StatelessWidget {
