@@ -146,8 +146,7 @@ final class NavigationView extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    viewDestination!.name
-                                        .withCapitalizedFirstLetter(),
+                                    viewDestination!.label,
                                     style:
                                         Theme.of(context).textTheme.bodyLarge,
                                   ),
