@@ -7,7 +7,6 @@ import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/media/media_view.dart';
 import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
-import 'package:stream_droid_app/utils/string_util.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
 import 'package:window_manager/window_manager.dart';
 
