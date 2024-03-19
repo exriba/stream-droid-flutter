@@ -1,6 +1,6 @@
 import 'package:stream_droid_app/model/speech.dart';
 
-class Reward {
+class Redeem {
   final String id;
   final String title;
   final String prompt;
@@ -9,7 +9,7 @@ class Reward {
   final String streamerId;
   final Speech? speech;
 
-  Reward(
+  Redeem(
       {required this.id,
       required this.title,
       required this.prompt,
@@ -18,7 +18,7 @@ class Reward {
       required this.streamerId,
       required this.speech});
 
-  factory Reward.fromJson(Map<String, dynamic> json) => Reward(
+  factory Redeem.fromJson(Map<String, dynamic> json) => Redeem(
         id: json['id'],
         title: json['title'],
         prompt: json['prompt'],
