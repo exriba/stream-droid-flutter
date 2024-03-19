@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/model/reward.dart';
+import 'package:stream_droid_app/redeem/redeem_view.dart';
 import 'package:stream_droid_app/utils/hex_color.dart';
 import 'package:stream_droid_app/utils/view_destination.dart';
 
@@ -11,7 +12,7 @@ class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
   Future<List<Reward>> fetchChannelRedeems() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 500));
     final data =
         await rootBundle.loadString("assets/mock-channel-redeems.json");
     final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
@@ -42,56 +43,45 @@ class DashboardView extends StatelessWidget {
                         // TO-DO: Convert to custom widget. Add zoom animation.
                         children: snapshot.data!
                             .map(
-                              (reward) => Material(
+                              (redeem) => Material(
                                 color: Colors.transparent,
                                 child: InkWell(
+                                  mouseCursor: SystemMouseCursors.click,
                                   customBorder: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  mouseCursor: SystemMouseCursors.click,
                                   child: Card(
-                                    key: Key(reward.id),
+                                    key: Key(redeem.id),
                                     elevation: 5,
                                     color: HexColor.fromHex(
-                                        reward.backgroundColor),
+                                        redeem.backgroundColor),
                                     child: Column(
-                                      mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        ListTile(
-                                          leading:
-                                              Image.network(reward.imageUrl),
-                                          title: Text(
-                                            reward.title,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            alignment: Alignment.topLeft,
-                                            margin: const EdgeInsets.all(8),
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Text(
-                                              reward.prompt,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall,
-                                            ),
-                                          ),
+                                        Image.network(redeem.imageUrl),
+                                        Text(
+                                          redeem.title,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  onTap: () {},
+                                  onTap: () async {
+                                    await Navigator.pushReplacement(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (context, animation1,
+                                              animation2) {
+                                            return const RedeemView();
+                                          },
+                                          transitionDuration: Duration.zero,
+                                          reverseTransitionDuration:
+                                              Duration.zero,
+                                        ));
+                                  },
                                 ),
                               ),
                             )
