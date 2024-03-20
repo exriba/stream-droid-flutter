@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stream_droid_app/common/types.dart';
+import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/setting/volume_setting.dart';
 
@@ -30,12 +32,19 @@ class SettingsView extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 20),
-                child: VolumeSetting(
-                  text: Text(
-                    'Default asset volume',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ),
+                child: Consumer<UserContext>(
+                    builder: (context, userContext, child) {
+                  return VolumeSetting(
+                    text: Text(
+                      'Default asset volume',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    volume: userContext.defaultMediaAssetVolume,
+                    handleVolumeChange: (value) {
+                      userContext.updateDefaultMediaAssetVolume(value);
+                    },
+                  );
+                }),
               ),
             ],
           ),
