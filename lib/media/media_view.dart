@@ -27,8 +27,7 @@ class _MediaView extends State<MediaView> {
     audioPlayer = Player();
     audioPlayer!.stream.completed.listen((completed) async {
       if (completed) {
-        await audioPlayer!.dispose();
-        audioPlayer = null;
+        await releaseAudioPlayer();
       }
     });
 
@@ -36,7 +35,7 @@ class _MediaView extends State<MediaView> {
       final playable = Media('asset:///assets/file.mp3');
       await audioPlayer!.open(playable);
     } catch (e) {
-      await audioPlayer!.dispose();
+      await releaseAudioPlayer();
     }
   }
 
@@ -44,8 +43,7 @@ class _MediaView extends State<MediaView> {
     videoPlayer = Player();
     videoPlayer!.stream.completed.listen((completed) async {
       if (completed) {
-        await videoPlayer!.dispose();
-        videoPlayer = null;
+        await releaseVideoPlayer();
       }
     });
 
@@ -57,7 +55,7 @@ class _MediaView extends State<MediaView> {
       final playable = Media('asset:///assets/file.mp4');
       await videoPlayer!.open(playable);
     } catch (e) {
-      await videoPlayer!.dispose();
+      await releaseVideoPlayer();
     }
   }
 
@@ -76,8 +74,23 @@ class _MediaView extends State<MediaView> {
 
   @override
   void dispose() {
-    audioPlayer?.dispose();
-    videoPlayer?.dispose();
     super.dispose();
+    releaseAudioPlayer();
+    releaseVideoPlayer();
+  }
+
+  Future<void> releaseAudioPlayer() async {
+    if (audioPlayer != null) {
+      await audioPlayer!.dispose();
+    }
+    audioPlayer = null;
+  }
+
+  Future<void> releaseVideoPlayer() async {
+    videoController = null;
+    if (videoPlayer != null) {
+      await videoPlayer!.dispose();
+    }
+    videoPlayer = null;
   }
 }
