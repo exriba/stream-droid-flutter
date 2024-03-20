@@ -31,7 +31,7 @@ class DashboardView extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: snapshot.hasData
+                child: snapshot.connectionState == ConnectionState.done
                     ? GridView.count(
                         mainAxisSpacing: 5,
                         crossAxisSpacing: 5,
