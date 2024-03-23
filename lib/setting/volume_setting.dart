@@ -5,15 +5,23 @@ class VolumeSetting extends StatelessWidget {
       {super.key,
       this.text,
       this.volume = 0,
+      this.alignment = MainAxisAlignment.end,
       required this.handleVolumeChange});
   final Text? text;
   final double volume;
+  final MainAxisAlignment alignment;
   final void Function(double value) handleVolumeChange;
 
   @override
   Widget build(BuildContext context) {
+    final iconData = volume == 0
+        ? Icons.volume_mute_rounded
+        : volume < 50
+            ? Icons.volume_down_rounded
+            : Icons.volume_up_rounded;
+
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: alignment,
       children: [
         text ?? const SizedBox.shrink(),
         Slider(
@@ -26,9 +34,9 @@ class VolumeSetting extends StatelessWidget {
             handleVolumeChange(value);
           },
         ),
-        const Icon(
-          Icons.volume_up,
-          color: Color.fromRGBO(225, 225, 225, 1),
+        Icon(
+          iconData,
+          color: const Color.fromRGBO(225, 225, 225, 1),
         ),
       ],
     );
