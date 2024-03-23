@@ -47,14 +47,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               children: _appBarButtons
                   .map((btn) => InkWell(
                       hoverColor: Colors.grey,
+                      onTap: btn.action,
                       child: Padding(
                         padding: const EdgeInsets.all(8),
                         child: Icon(
                           btn.icon,
                           size: 20,
                         ),
-                      ),
-                      onTap: () async => await btn.action()))
+                      )))
                   .toList()),
         ],
       ),

@@ -30,9 +30,7 @@ class VolumeSetting extends StatelessWidget {
           value: volume,
           label: volume.round().toString(),
           activeColor: Colors.grey,
-          onChanged: (double value) {
-            handleVolumeChange(value);
-          },
+          onChanged: (double value) => handleVolumeChange(value),
         ),
         Icon(
           iconData,
