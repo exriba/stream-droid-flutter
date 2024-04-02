@@ -13,7 +13,7 @@ class RedeemAssetList extends StatefulWidget {
 }
 
 class _RedeemAssetList extends State<RedeemAssetList> {
-  late List<Asset> assets = [Asset(id: '1', fileName: 'file.mp4')];
+  List<Asset> assets = [Asset(id: '1', fileName: 'file.mp4')];
 
   @override
   void initState() {
