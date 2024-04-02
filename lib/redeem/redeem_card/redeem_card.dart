@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:stream_droid_app/common/types.dart';
 
 class RedeemCard extends StatefulWidget {
@@ -11,12 +10,9 @@ class RedeemCard extends StatefulWidget {
 }
 
 class _RedeemCard extends State<RedeemCard> {
-  late FlutterTts flutterTts;
-
   @override
   void initState() {
     super.initState();
-    flutterTts = FlutterTts();
   }
 
   void toggleTextToSpeech(bool value) {
@@ -112,6 +108,5 @@ class _RedeemCard extends State<RedeemCard> {
   @override
   void dispose() {
     super.dispose();
-    flutterTts.stop();
   }
 }
