@@ -1,0 +1,13 @@
+{
+    "version": "0.0.1",
+    "configurations": [  
+        {
+            "name": "stream_droid_app dev",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
+        },
+    ]
+}
