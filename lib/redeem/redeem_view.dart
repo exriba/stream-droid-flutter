@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stream_droid_app/common/types.dart';
+import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/redeem/redeem_asset/redeem_asset_list.dart';
 import 'package:stream_droid_app/redeem/redeem_card/redeem_card.dart';
 
 class RedeemView extends StatelessWidget {
   const RedeemView({super.key, required this.redeem});
-  final Redeem redeem;
-
   final actionButtonColor = const Color.fromRGBO(33, 33, 33, 1);
+  final Redeem redeem;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +34,13 @@ class RedeemView extends StatelessWidget {
             ),
             Expanded(
               flex: 5,
-              child: RedeemAssetList(
-                redeemId: redeem.id,
-              ),
+              child:
+                  Consumer<UserContext>(builder: (context, userContext, child) {
+                return RedeemAssetList(
+                  userContext: userContext,
+                  redeemId: redeem.id,
+                );
+              }),
             ),
           ],
         ),
