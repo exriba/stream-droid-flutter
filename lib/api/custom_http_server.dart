@@ -40,13 +40,6 @@ class CustomHttpServer implements ICustomHttpServer {
           request.response.headers.set('Content-Type', 'image/x-icon');
           request.response.headers.set('Content-Length', rawImage.length);
           request.response.add(rawImage);
-        case '/app-icon.png':
-          final image = File("assets/images/app-icon.png");
-          final rawImage = await image.readAsBytes();
-          request.response.statusCode = HttpStatus.ok;
-          request.response.headers.set('Content-Type', 'image/png');
-          request.response.headers.set('Content-Length', rawImage.length);
-          request.response.add(rawImage);
         case '/manifest.json':
           final content =
               await rootBundle.loadString('assets/html/manifest.json');
