@@ -13,7 +13,7 @@ Future<void> main() async {
 
   final authenticated = await userContext.isAuthenticated();
   const maximumSize = Size(1280, 720);
-  const minimumSize = Size(600, 600);
+  const minimumSize = Size(900, 600);
   final windowOptions = WindowOptions(
       center: true,
       size: authenticated ? maximumSize : minimumSize,

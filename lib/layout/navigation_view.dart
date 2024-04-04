@@ -53,7 +53,7 @@ final class NavigationView extends StatelessWidget {
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) {
-            const windowSize = Size(600, 600);
+            const windowSize = Size(900, 600);
             windowManager.setSize(windowSize);
             windowManager.center();
             return const HomeView();
