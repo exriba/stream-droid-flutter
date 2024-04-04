@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/common/types.dart';
+import 'package:stream_droid_app/api/custom_http_client.dart';
 import 'package:stream_droid_app/setting/volume_setting.dart';
+import 'package:stream_droid_app/util/dependency_manager.dart';
 
-class RedeemAssetListItem extends StatefulWidget {
+class RedeemAssetListItem extends StatelessWidget {
   const RedeemAssetListItem(
-      {super.key, required this.asset, required this.handleRemove});
+      {super.key,
+      required this.redeemId,
+      required this.asset,
+      required this.handleRemove});
   final Asset asset;
-  final void Function() handleRemove;
+  final String redeemId;
+  final void Function(String fileName) handleRemove;
 
-  @override
-  State<StatefulWidget> createState() => _RedeemAssetListItem();
-}
-
-class _RedeemAssetListItem extends State<RedeemAssetListItem> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void updateVolume(double value) {
-    setState(() {
-      widget.asset.volume = value.toInt();
-    });
+  Future<void> _updateAssetVolume(double volume) async {
+    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    final map = {asset.fileName: volume.toInt()};
+    await httpClient.put(
+        urlFragment: UrlFragment.rewardAssets, id: redeemId, object: map);
   }
 
   @override
@@ -40,38 +37,35 @@ class _RedeemAssetListItem extends State<RedeemAssetListItem> {
         children: [
           Container(
             margin: const EdgeInsets.only(right: 10),
-            child: const Icon(
-              Icons.play_arrow_rounded,
+            child: Icon(
+              asset.extension == MediaExtension.mp3
+                  ? Icons.music_note_rounded
+                  : Icons.play_arrow_rounded,
               color: Colors.white,
             ),
           ),
           Expanded(
             child: Text(
-              widget.asset.fileName,
+              asset.name,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           VolumeSetting(
-            volume: widget.asset.volume.toDouble(),
-            handleVolumeChange: (value) {
-              updateVolume(value);
-            },
+            volume: asset.volume.toDouble(),
+            handleVolumeChange: _updateAssetVolume,
           ),
           Container(
             margin: const EdgeInsets.only(left: 10),
             child: IconButton(
-              color: Colors.white,
+              color: Colors.red,
               icon: const Icon(Icons.delete),
-              onPressed: widget.handleRemove,
+              onPressed: () {
+                handleRemove(asset.fileName);
+              },
             ),
           ),
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
