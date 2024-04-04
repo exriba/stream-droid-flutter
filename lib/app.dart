@@ -5,13 +5,13 @@ import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/home/home_view.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({super.key, required this.userContext});
+  final UserContext userContext;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => UserContext(),
+      create: (context) => userContext,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeContext.from(context),

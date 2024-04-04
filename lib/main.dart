@@ -2,16 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:stream_droid_app/app.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:stream_droid_app/context/user_context.dart';
+import 'package:stream_droid_app/util/dependency_manager.dart';
 
-const windowOptions = WindowOptions(
-    center: true,
-    size: Size(600, 600),
-    minimumSize: Size(600, 600),
-    titleBarStyle: TitleBarStyle.hidden);
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
+  DependencyManager.configure();
+  final userContext = UserContext();
+
+  final authenticated = await userContext.isAuthenticated();
+  const maximumSize = Size(1280, 720);
+  const minimumSize = Size(600, 600);
+  final windowOptions = WindowOptions(
+      center: true,
+      size: authenticated ? maximumSize : minimumSize,
+      minimumSize: minimumSize,
+      titleBarStyle: TitleBarStyle.hidden);
 
   await windowManager.ensureInitialized();
   windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -19,5 +26,7 @@ void main() async {
     await windowManager.show();
   });
 
-  runApp(const App());
+  runApp(App(
+    userContext: userContext,
+  ));
 }
