@@ -8,7 +8,6 @@ import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/media/media_view.dart';
 import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
-import 'package:window_manager/window_manager.dart';
 
 final class NavigationView extends StatelessWidget {
   const NavigationView({super.key, this.viewDestination, required this.child});
@@ -53,9 +52,6 @@ final class NavigationView extends StatelessWidget {
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) {
-            const windowSize = Size(900, 600);
-            windowManager.setSize(windowSize);
-            windowManager.center();
             return const HomeView();
           },
           transitionDuration: Duration.zero,

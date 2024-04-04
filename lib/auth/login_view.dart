@@ -7,7 +7,6 @@ import 'package:stream_droid_app/util/dependency_manager.dart';
 import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:window_manager/window_manager.dart';
 
 final class LoginView extends StatefulWidget {
   const LoginView({super.key, required this.userContext});
@@ -27,13 +26,7 @@ final class _LoginView extends State<LoginView> {
     httpServer = DependencyManager.getIt.get<ICustomHttpServer>();
     httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
     httpServer.initializeHttpServer(onData: ({required String value}) async {
-      await windowManager.hide();
       await widget.userContext.onLogin(value);
-
-      const windowSize = Size(1280, 720);
-      await windowManager.setSize(windowSize);
-      await windowManager.center();
-      await windowManager.show();
     });
   }
 
