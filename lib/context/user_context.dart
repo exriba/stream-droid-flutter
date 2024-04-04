@@ -1,21 +1,61 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:stream_droid_app/api/custom_http_client.dart';
+import 'package:stream_droid_app/common/types.dart';
+import 'package:stream_droid_app/util/dependency_manager.dart';
+import 'package:stream_droid_app/util/secure_storage.dart';
+import 'package:stream_droid_app/common/constants.dart' as constants;
 
 class UserContext extends ChangeNotifier {
-  bool authenticated = false;
-  double defaultMediaAssetVolume = 50.0;
+  UserContext() {
+    _secureStorage = DependencyManager.getIt.get<ISecureStorage>();
+    _httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+  }
+  User _user = User(
+    id: '',
+    name: '',
+    preferences: Preferences(),
+  );
+  late ISecureStorage _secureStorage;
+  late ICustomHttpClient _httpClient;
 
-  void updateDefaultMediaAssetVolume(double value) {
-    defaultMediaAssetVolume = value;
+  double get defaultMediaAssetVolume {
+    return _user.preferences.defaultVolume.toDouble();
+  }
+
+  void _setUser({String? id, String? name, Preferences? preferences}) {
+    _user = User(
+      id: id ?? _user.id,
+      name: name ?? _user.name,
+      preferences: preferences ?? _user.preferences,
+    );
+  }
+
+  Future<bool> isAuthenticated() async {
+    final data = await _httpClient.get(urlFragment: UrlFragment.me);
+    if (data.isEmpty) {
+      return false;
+    }
+    _user = User.fromJson(jsonDecode(data));
+    return true;
+  }
+
+  Future<void> updateDefaultMediaAssetVolume(double value) async {
+    final preferences = Preferences(defaultVolume: value.toInt());
+    await _httpClient.post(
+        urlFragment: UrlFragment.mePreferences, object: preferences);
+    _setUser(preferences: preferences);
     notifyListeners();
   }
 
-  void onLogin() {
-    authenticated = true;
+  Future<void> onLogin(String value) async {
+    await _secureStorage.write(key: constants.appName, value: value);
     notifyListeners();
   }
 
-  void onLogout() {
-    authenticated = false;
+  Future<void> onLogout() async {
+    await _secureStorage.delete(key: constants.appName);
+    _httpClient.dispose();
     notifyListeners();
   }
 }
