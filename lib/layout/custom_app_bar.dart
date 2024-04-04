@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
+class _AppBarButton {
+  const _AppBarButton({required this.icon, required this.action});
+  final IconData icon;
+  final Future<void> Function() action;
+}
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
@@ -63,11 +69,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(36.0);
-}
-
-class _AppBarButton {
-  final IconData icon;
-  final Future<void> Function() action;
-
-  const _AppBarButton({required this.icon, required this.action});
 }
