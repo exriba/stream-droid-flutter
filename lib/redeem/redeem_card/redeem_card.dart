@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stream_droid_app/api/custom_http_client.dart';
 import 'package:stream_droid_app/common/types.dart';
+import 'package:stream_droid_app/util/dependency_manager.dart';
 
 class RedeemCard extends StatefulWidget {
   const RedeemCard({super.key, required this.redeem});
@@ -10,15 +12,22 @@ class RedeemCard extends StatefulWidget {
 }
 
 class _RedeemCard extends State<RedeemCard> {
+  Speech speech = Speech(enabled: false);
+
   @override
   void initState() {
     super.initState();
+    speech = widget.redeem.speech ?? speech;
   }
 
-  void toggleTextToSpeech(bool value) {
-    setState(() {
-      widget.redeem.speech = Speech(enabled: value, voiceIndex: 0);
-    });
+  Future<void> toggleTextToSpeech(bool value) async {
+    final redeemSpeech = Speech(enabled: value);
+    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    await httpClient.put(
+        urlFragment: UrlFragment.rewardSpeech,
+        id: widget.redeem.id,
+        object: redeemSpeech);
+    setState(() => speech = redeemSpeech);
   }
 
   @override
@@ -88,11 +97,9 @@ class _RedeemCard extends State<RedeemCard> {
                     Expanded(
                       flex: 1,
                       child: Switch(
-                        value: widget.redeem.speech?.enabled ?? false,
+                        value: speech.enabled,
                         activeColor: Colors.black,
-                        onChanged: (value) {
-                          toggleTextToSpeech(value);
-                        },
+                        onChanged: toggleTextToSpeech,
                       ),
                     ),
                   ],
