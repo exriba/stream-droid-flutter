@@ -32,7 +32,7 @@ class _MediaView extends State<MediaView> {
     });
 
     try {
-      final playable = Media('asset:///assets/file.mp3');
+      final playable = Media('assets/media/file.mp3');
       await audioPlayer!.open(playable);
     } catch (e) {
       await releaseAudioPlayer();
@@ -52,7 +52,7 @@ class _MediaView extends State<MediaView> {
     });
 
     try {
-      final playable = Media('asset:///assets/file.mp4');
+      final playable = Media('assets/media/file.mp4');
       await videoPlayer!.open(playable);
     } catch (e) {
       await releaseVideoPlayer();

@@ -55,7 +55,7 @@ final class _LoginView extends State<LoginView> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset(
-              "assets/icons/app-icon.png",
+              "assets/images/app-icon.png",
               height: 128,
               width: 128,
             ),
@@ -70,7 +70,7 @@ final class _LoginView extends State<LoginView> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
                 icon: SvgPicture.asset(
-                  'assets/twitch.svg',
+                  'assets/images/twitch.svg',
                   height: 30,
                   width: 30,
                   colorFilter:
