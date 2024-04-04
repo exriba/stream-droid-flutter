@@ -39,11 +39,16 @@ dependencies:
   window_manager: ^0.3.8
   responsive_grid: ^2.4.4
   cupertino_icons: ^1.0.6
-  fl_chart: ^0.66.2
   media_kit: ^1.1.10
   media_kit_video: ^1.2.4 
   media_kit_libs_video: ^1.0.4
+  fl_chart: ^0.66.2
   flutter_tts: ^4.0.1
+  flutter_secure_storage: ^9.0.0
+  http: ^1.2.1
+  get_it: ^7.6.7
+  url_launcher: ^6.2.5
+  file_picker: ^8.0.0+1
 
 dev_dependencies:
   flutter_test:
