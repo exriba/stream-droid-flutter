@@ -25,13 +25,13 @@ class HomeView extends StatelessWidget {
       return FutureBuilder<bool>(
           future: _verifyUserAuthentication(userContext),
           builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const LoadingView();
+            if (snapshot.hasData) {
+              return snapshot.data == true
+                  ? const DashboardView()
+                  : LoginView(userContext: userContext);
             }
 
-            return snapshot.data == true
-                ? const DashboardView()
-                : LoginView(userContext: userContext);
+            return const LoadingView();
           });
     });
   }

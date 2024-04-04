@@ -43,7 +43,7 @@ class DashboardView extends StatelessWidget {
             child: FutureBuilder<List<Redeem>>(
                 future: _fetchChannelRedeems(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
                     return GridView.count(
                       mainAxisSpacing: 5,
                       crossAxisSpacing: 5,

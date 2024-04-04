@@ -89,8 +89,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
         body: FutureBuilder<List<Asset>>(
             future: fetchRedeemAssets(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  !loading) {
+              if (snapshot.hasData && !loading) {
                 return ListView.builder(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
