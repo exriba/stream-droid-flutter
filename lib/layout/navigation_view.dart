@@ -22,7 +22,7 @@ final class NavigationView extends StatelessWidget {
     Icons.settings,
   ];
 
-  Future<void> navigateToView(BuildContext context, int value) async {
+  Future<void> _navigateToView(BuildContext context, int value) async {
     final destination = ViewDestination.values[value];
     if (viewDestination == null || value != viewDestination!.index) {
       await Navigator.pushReplacement(
@@ -47,23 +47,22 @@ final class NavigationView extends StatelessWidget {
     }
   }
 
-  Future<void> handleLogout(
-      BuildContext context, UserContext userContext) async {
-    userContext.onLogout();
-
-    await Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) {
-          const windowSize = Size(600, 600);
-          windowManager.setSize(windowSize);
-          windowManager.center();
-          return const HomeView();
-        },
-        transitionDuration: Duration.zero,
-        reverseTransitionDuration: Duration.zero,
-      ),
-    );
+  void _handleLogout(BuildContext context, UserContext userContext) {
+    userContext.onLogout().whenComplete(() async {
+      await Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation1, animation2) {
+            const windowSize = Size(600, 600);
+            windowManager.setSize(windowSize);
+            windowManager.center();
+            return const HomeView();
+          },
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
+    });
   }
 
   @override
@@ -90,8 +89,8 @@ final class NavigationView extends StatelessWidget {
                           ),
                         )
                         .toList(),
-                    onDestinationSelected: (value) async {
-                      await navigateToView(context, value);
+                    onDestinationSelected: (value) {
+                      _navigateToView(context, value);
                     },
                   ),
                 ),
@@ -106,8 +105,8 @@ final class NavigationView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Icon(Icons.logout),
-                      onTap: () async {
-                        await handleLogout(context, userContext);
+                      onTap: () {
+                        _handleLogout(context, userContext);
                       },
                     ),
                   ),
@@ -125,7 +124,7 @@ final class NavigationView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // TO-DO: Convert to custom widget. Add Text animation
+                      // TODO: Convert to custom widget. Add Text animation
                       viewDestination == null
                           ? const SizedBox.shrink()
                           : Flexible(
