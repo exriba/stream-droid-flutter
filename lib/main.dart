@@ -14,6 +14,7 @@ Future<void> main() async {
   final authenticated = await userContext.isAuthenticated();
   const maximumSize = Size(1280, 720);
   const minimumSize = Size(900, 600);
+  // TODO: Review app views and implement responsive design where necessary.
   final windowOptions = WindowOptions(
       center: true,
       size: authenticated ? maximumSize : minimumSize,
