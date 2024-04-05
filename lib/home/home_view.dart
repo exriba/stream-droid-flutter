@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:stream_droid_app/auth/login_view.dart';
 import 'package:stream_droid_app/context/user_context.dart';
-import 'package:stream_droid_app/dashboard/dashboard_view.dart';
+import 'package:stream_droid_app/layout/loading_view.dart';
+import 'package:stream_droid_app/layout/navigation_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -25,13 +25,17 @@ class HomeView extends StatelessWidget {
       return FutureBuilder<bool>(
           future: _verifyUserAuthentication(userContext),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return snapshot.data == true
-                  ? const DashboardView()
-                  : LoginView(userContext: userContext);
+            if (snapshot.hasError) {
+              Error.throwWithStackTrace(snapshot.error!, snapshot.stackTrace!);
             }
 
-            return const LoadingView();
+            if (!snapshot.hasData) {
+              return const LoadingView();
+            }
+
+            return snapshot.data == true
+                ? const NavigationView()
+                : LoginView(userContext: userContext);
           });
     });
   }
