@@ -39,9 +39,7 @@ final class _LoginView extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      color: const Color.fromRGBO(33, 33, 33, 1),
+    return Align(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
