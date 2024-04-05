@@ -36,6 +36,7 @@ class App extends StatelessWidget {
           appBar: const CustomAppBar(),
           body: Container(
             margin: const EdgeInsets.only(left: 2, right: 2, bottom: 2),
+            color: const Color.fromRGBO(33, 33, 33, 1),
             child: const HomeView(),
           ),
         ),
