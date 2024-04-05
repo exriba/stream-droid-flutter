@@ -3,60 +3,46 @@ import 'package:provider/provider.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/dashboard/dashboard_view.dart';
-import 'package:stream_droid_app/home/home_view.dart';
+import 'package:stream_droid_app/layout/logout_button.dart';
 import 'package:stream_droid_app/media/media_view.dart';
 import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
 
-final class NavigationView extends StatelessWidget {
-  const NavigationView({super.key, this.viewDestination, required this.child});
-  final ViewDestination? viewDestination;
-  final Widget child;
+final class NavigationView extends StatefulWidget {
+  const NavigationView({super.key});
 
-  static final List<IconData> _navigationIcons = [
-    Icons.dashboard,
-    Icons.show_chart,
-    Icons.play_circle_fill,
-    Icons.settings,
-  ];
+  @override
+  State<StatefulWidget> createState() => _NavigationView();
+}
 
-  Future<void> _navigateToView(BuildContext context, int value) async {
-    final destination = ViewDestination.values[value];
-    if (viewDestination == null || value != viewDestination!.index) {
-      await Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          settings: RouteSettings(
-            name: destination.name,
-          ),
-          pageBuilder: (context, animation1, animation2) {
-            return switch (destination) {
-              ViewDestination.dashboard => const DashboardView(),
-              ViewDestination.statistics => const StatisticsView(),
-              ViewDestination.media => MediaView(key: UniqueKey()),
-              ViewDestination.settings => const SettingsView(),
-              _ => throw UnimplementedError(),
-            };
-          },
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    }
+const List<IconData> _navigationIcons = [
+  Icons.dashboard,
+  Icons.show_chart,
+  Icons.play_circle_fill,
+  Icons.settings,
+];
+
+class _NavigationView extends State<NavigationView> {
+  Widget view = const SizedBox.shrink();
+  ViewDestination viewDestination = ViewDestination.dashboard;
+
+  @override
+  void initState() {
+    super.initState();
+    view = const DashboardView();
   }
 
-  void _handleLogout(BuildContext context, UserContext userContext) {
-    userContext.onLogout().whenComplete(() async {
-      await Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) {
-            return const HomeView();
-          },
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
+  void _navigateToView(int value) {
+    final destination = ViewDestination.values[value];
+    setState(() {
+      viewDestination = destination;
+      view = switch (destination) {
+        ViewDestination.dashboard => const DashboardView(),
+        ViewDestination.statistics => const StatisticsView(),
+        ViewDestination.media => MediaView(key: UniqueKey()),
+        ViewDestination.settings => const SettingsView(),
+        _ => throw UnimplementedError(),
+      };
     });
   }
 
@@ -65,47 +51,35 @@ final class NavigationView extends StatelessWidget {
     return Consumer<UserContext>(builder: (context, userContext, child) {
       return Row(
         children: [
-          Column(
-            children: [
-              Flexible(
-                flex: 9,
-                child: NavigationRail(
-                  extended: false,
-                  selectedIndex: viewDestination?.index,
-                  indicatorColor: Colors.grey,
-                  backgroundColor: Colors.transparent,
-                  destinations: _navigationIcons
-                      .map(
-                        (item) => NavigationRailDestination(
-                          padding: const EdgeInsets.only(top: 30),
-                          icon: Icon(item),
-                          label: const SizedBox.shrink(),
-                        ),
-                      )
-                      .toList(),
-                  onDestinationSelected: (value) {
-                    _navigateToView(context, value);
-                  },
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: SizedBox(
-                  height: 32,
-                  width: 56,
-                  child: InkWell(
-                    hoverColor: Colors.transparent,
-                    customBorder: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Icon(Icons.logout),
-                    onTap: () {
-                      _handleLogout(context, userContext);
-                    },
+          Container(
+            color: Colors.grey[700],
+            child: Column(
+              children: [
+                Flexible(
+                  flex: 9,
+                  child: NavigationRail(
+                    extended: false,
+                    selectedIndex: viewDestination.index,
+                    indicatorColor: Colors.grey,
+                    backgroundColor: Colors.transparent,
+                    destinations: _navigationIcons
+                        .map(
+                          (item) => NavigationRailDestination(
+                            padding: const EdgeInsets.only(top: 30),
+                            icon: Icon(item),
+                            label: const SizedBox.shrink(),
+                          ),
+                        )
+                        .toList(),
+                    onDestinationSelected: _navigateToView,
                   ),
                 ),
-              ),
-            ],
+                const Flexible(
+                  flex: 1,
+                  child: LogoutButton(),
+                ),
+              ],
+            ),
           ),
           Expanded(
             flex: 1,
@@ -119,33 +93,30 @@ final class NavigationView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // TODO: Convert to custom widget. Add Text animation
-                    viewDestination == null
-                        ? const SizedBox.shrink()
-                        : Flexible(
-                            flex: 0,
-                            child: Container(
-                              width: constraints.maxWidth / 2,
-                              margin:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[700],
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  viewDestination!.label,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                              ),
-                            ),
+                    Flexible(
+                      flex: 0,
+                      child: Container(
+                        width: constraints.maxWidth / 2,
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[700],
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
                           ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            viewDestination.label,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                      ),
+                    ),
                     Flexible(
                       flex: 1,
-                      child: this.child,
+                      child: view,
                     ),
                   ],
                 ),
@@ -155,5 +126,11 @@ final class NavigationView extends StatelessWidget {
         ],
       );
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    view = const SizedBox.shrink();
   }
 }

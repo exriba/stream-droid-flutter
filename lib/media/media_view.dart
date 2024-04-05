@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:stream_droid_app/common/types.dart';
-import 'package:stream_droid_app/layout/navigation_view.dart';
 
 class MediaView extends StatefulWidget {
   const MediaView({super.key});
@@ -61,15 +59,12 @@ class _MediaView extends State<MediaView> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationView(
-      viewDestination: ViewDestination.media,
-      child: videoController != null
-          ? Video(
-              controller: videoController!,
-              controls: NoVideoControls,
-            )
-          : const SizedBox.shrink(),
-    );
+    return videoController != null
+        ? Video(
+            controller: videoController!,
+            controls: NoVideoControls,
+          )
+        : const SizedBox.shrink();
   }
 
   @override

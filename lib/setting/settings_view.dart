@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/context/user_context.dart';
-import 'package:stream_droid_app/layout/navigation_view.dart';
 import 'package:stream_droid_app/setting/volume_setting.dart';
 
 class SettingsView extends StatelessWidget {
@@ -10,46 +8,43 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationView(
-      viewDestination: ViewDestination.settings,
-      child: LayoutBuilder(builder: (context, constraints) {
-        return Container(
-          height: constraints.maxHeight / 5,
-          margin: const EdgeInsets.only(top: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  'Media',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+    return LayoutBuilder(builder: (context, constraints) {
+      return Container(
+        height: constraints.maxHeight / 5,
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text(
+                'Media',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const Divider(
-                indent: 10,
-                endIndent: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Consumer<UserContext>(
-                    builder: (context, userContext, child) {
-                  return VolumeSetting(
-                    text: Text(
-                      'Default asset volume',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    volume: userContext.defaultMediaAssetVolume,
-                    handleVolumeChange: (value) {
-                      userContext.updateDefaultMediaAssetVolume(value);
-                    },
-                  );
-                }),
-              ),
-            ],
-          ),
-        );
-      }),
-    );
+            ),
+            const Divider(
+              indent: 10,
+              endIndent: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child:
+                  Consumer<UserContext>(builder: (context, userContext, child) {
+                return VolumeSetting(
+                  text: Text(
+                    'Default asset volume',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  volume: userContext.defaultMediaAssetVolume,
+                  handleVolumeChange: (value) {
+                    userContext.updateDefaultMediaAssetVolume(value);
+                  },
+                );
+              }),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
