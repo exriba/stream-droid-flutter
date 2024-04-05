@@ -29,13 +29,13 @@ class HomeView extends StatelessWidget {
               Error.throwWithStackTrace(snapshot.error!, snapshot.stackTrace!);
             }
 
-            if (!snapshot.hasData) {
-              return const LoadingView();
+            if (snapshot.hasData) {
+              return snapshot.data == true
+                  ? const NavigationView()
+                  : LoginView(userContext: userContext);
             }
 
-            return snapshot.data == true
-                ? const NavigationView()
-                : LoginView(userContext: userContext);
+            return const LoadingView();
           });
     });
   }

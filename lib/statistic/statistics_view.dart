@@ -27,6 +27,10 @@ class StatisticsView extends StatelessWidget {
       child: FutureBuilder<List<RedeemRedemption>>(
           future: _fetchChannelRedeemRedemptions(),
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              Error.throwWithStackTrace(snapshot.error!, snapshot.stackTrace!);
+            }
+
             if (snapshot.hasData) {
               return LayoutBuilder(builder: (context, constraints) {
                 final shortestSide = constraints.biggest.shortestSide;

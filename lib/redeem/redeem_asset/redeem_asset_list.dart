@@ -89,6 +89,11 @@ class _RedeemAssetList extends State<RedeemAssetList> {
         body: FutureBuilder<List<Asset>>(
             future: fetchRedeemAssets(),
             builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                Error.throwWithStackTrace(
+                    snapshot.error!, snapshot.stackTrace!);
+              }
+
               if (snapshot.hasData && !loading) {
                 return ListView.builder(
                   padding:
