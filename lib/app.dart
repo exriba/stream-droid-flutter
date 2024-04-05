@@ -13,6 +13,22 @@ class App extends StatelessWidget {
       create: (context) => UserContext(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        builder: (context, widget) {
+          ErrorWidget.builder = (details) {
+            return Align(
+              child: Text(
+                'Something went wrong.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            );
+          };
+
+          if (widget != null) {
+            return widget;
+          }
+
+          throw StateError('widget is null');
+        },
         theme: ThemeContext.from(context),
         home: const HomeView(),
       ),
