@@ -41,9 +41,13 @@ class _RedeemCard extends State<RedeemCard> {
             children: [
               Flexible(
                 flex: 1,
-                child: Text(
-                  widget.redeem.title,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                child: SizedBox(
+                  width: 100,
+                  child: Text(
+                    widget.redeem.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ),
               ),
               Flexible(
