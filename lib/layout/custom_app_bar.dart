@@ -23,39 +23,48 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 5),
-          child: Image.asset(
-            "assets/images/app-icon.png",
-            height: 24,
-            width: 24,
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color.fromRGBO(33, 33, 33, 1),
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: DragToMoveArea(
-            child: Container(),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Image.asset(
+              "assets/images/app-icon.png",
+              height: 24,
+              width: 24,
+            ),
           ),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: _appBarButtons
-              .map((btn) => InkWell(
-                  hoverColor: Colors.grey,
-                  onTap: btn.action,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Icon(
-                      btn.icon,
-                      size: 20,
-                    ),
-                  )))
-              .toList(),
-        ),
-      ],
+          Expanded(
+            flex: 1,
+            child: DragToMoveArea(
+              child: Container(),
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: _appBarButtons
+                .map((btn) => InkWell(
+                    hoverColor: Colors.grey,
+                    onTap: btn.action,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Icon(
+                        btn.icon,
+                        size: 20,
+                      ),
+                    )))
+                .toList(),
+          ),
+        ],
+      ),
     );
   }
 
