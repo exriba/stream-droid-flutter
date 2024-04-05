@@ -4,7 +4,6 @@ import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/dashboard/dashboard_view.dart';
 import 'package:stream_droid_app/home/home_view.dart';
-import 'package:stream_droid_app/layout/app_view.dart';
 import 'package:stream_droid_app/media/media_view.dart';
 import 'package:stream_droid_app/setting/settings_view.dart';
 import 'package:stream_droid_app/statistic/statistics_view.dart';
@@ -64,99 +63,96 @@ final class NavigationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserContext>(builder: (context, userContext, child) {
-      return AppView(
-        child: Row(
-          children: [
-            Column(
-              children: [
-                Flexible(
-                  flex: 9,
-                  child: NavigationRail(
-                    extended: false,
-                    selectedIndex: viewDestination?.index,
-                    indicatorColor: Colors.grey,
-                    backgroundColor: Colors.transparent,
-                    destinations: _navigationIcons
-                        .map(
-                          (item) => NavigationRailDestination(
-                            padding: const EdgeInsets.only(top: 30),
-                            icon: Icon(item),
-                            label: const SizedBox.shrink(),
-                          ),
-                        )
-                        .toList(),
-                    onDestinationSelected: (value) {
-                      _navigateToView(context, value);
+      return Row(
+        children: [
+          Column(
+            children: [
+              Flexible(
+                flex: 9,
+                child: NavigationRail(
+                  extended: false,
+                  selectedIndex: viewDestination?.index,
+                  indicatorColor: Colors.grey,
+                  backgroundColor: Colors.transparent,
+                  destinations: _navigationIcons
+                      .map(
+                        (item) => NavigationRailDestination(
+                          padding: const EdgeInsets.only(top: 30),
+                          icon: Icon(item),
+                          label: const SizedBox.shrink(),
+                        ),
+                      )
+                      .toList(),
+                  onDestinationSelected: (value) {
+                    _navigateToView(context, value);
+                  },
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: SizedBox(
+                  height: 32,
+                  width: 56,
+                  child: InkWell(
+                    hoverColor: Colors.transparent,
+                    customBorder: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Icon(Icons.logout),
+                    onTap: () {
+                      _handleLogout(context, userContext);
                     },
                   ),
                 ),
-                Flexible(
-                  flex: 1,
-                  child: SizedBox(
-                    height: 32,
-                    width: 56,
-                    child: InkWell(
-                      hoverColor: Colors.transparent,
-                      customBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(Icons.logout),
-                      onTap: () {
-                        _handleLogout(context, userContext);
-                      },
-                    ),
-                  ),
+              ),
+            ],
+          ),
+          Expanded(
+            flex: 1,
+            child: LayoutBuilder(builder: (context, constraints) {
+              return Container(
+                height: constraints.maxHeight,
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(33, 33, 33, 1),
                 ),
-              ],
-            ),
-            Expanded(
-              flex: 1,
-              child: LayoutBuilder(builder: (context, constraints) {
-                return Container(
-                  height: constraints.maxHeight,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(33, 33, 33, 1),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // TODO: Convert to custom widget. Add Text animation
-                      viewDestination == null
-                          ? const SizedBox.shrink()
-                          : Flexible(
-                              flex: 0,
-                              child: Container(
-                                width: constraints.maxWidth / 2,
-                                margin:
-                                    const EdgeInsets.only(top: 10, bottom: 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[700],
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(10),
-                                    bottomRight: Radius.circular(10),
-                                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // TODO: Convert to custom widget. Add Text animation
+                    viewDestination == null
+                        ? const SizedBox.shrink()
+                        : Flexible(
+                            flex: 0,
+                            child: Container(
+                              width: constraints.maxWidth / 2,
+                              margin:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[700],
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    viewDestination!.label,
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  viewDestination!.label,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),
-                      Flexible(
-                        flex: 1,
-                        child: this.child,
-                      ),
-                    ],
-                  ),
-                );
-              }),
-            ),
-          ],
-        ),
+                          ),
+                    Flexible(
+                      flex: 1,
+                      child: this.child,
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+        ],
       );
     });
   }

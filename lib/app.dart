@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stream_droid_app/context/theme_context.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/home/home_view.dart';
+import 'package:stream_droid_app/layout/custom_app_bar.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -30,7 +31,14 @@ class App extends StatelessWidget {
           throw StateError('widget is null');
         },
         theme: ThemeContext.from(context),
-        home: const HomeView(),
+        home: Scaffold(
+          backgroundColor: Colors.grey[700],
+          appBar: const CustomAppBar(),
+          body: Container(
+            margin: const EdgeInsets.only(left: 2, right: 2, bottom: 2),
+            child: const HomeView(),
+          ),
+        ),
       ),
     );
   }
