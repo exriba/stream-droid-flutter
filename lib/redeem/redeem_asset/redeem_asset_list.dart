@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/api/custom_http_client.dart';
 import 'package:stream_droid_app/context/user_context.dart';
+import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:stream_droid_app/redeem/redeem_asset/redeem_asset_list_item.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
 
@@ -118,11 +119,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
                 );
               }
 
-              return const Align(
-                child: CircularProgressIndicator(
-                  color: Colors.grey,
-                ),
-              );
+              return const LoadingView();
             }),
         floatingActionButton: FloatingActionButton(
           mini: true,

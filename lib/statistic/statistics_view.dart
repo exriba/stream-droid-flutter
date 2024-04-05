@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:stream_droid_app/api/custom_http_client.dart';
 import 'package:stream_droid_app/common/hex_color.dart';
 import 'package:stream_droid_app/common/types.dart';
+import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
 
 class StatisticsView extends StatelessWidget {
@@ -55,11 +56,7 @@ class StatisticsView extends StatelessWidget {
                 );
               });
             }
-            return const Align(
-              child: CircularProgressIndicator(
-                color: Colors.grey,
-              ),
-            );
+            return const LoadingView();
           }),
     );
   }
