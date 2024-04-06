@@ -115,7 +115,7 @@ class CustomHttpClient implements ICustomHttpClient {
 
 class _AuthenticatedHttpClient extends http.BaseClient {
   String _authCookie = '';
-  final baseAddress = constants.referer;
+  final baseAddress = constants.hostAddress;
   late ISecureStorage secureStorage;
 
   _AuthenticatedHttpClient() {

@@ -1,5 +1,6 @@
 const String appName = String.fromEnvironment("app_name");
-const String referer = String.fromEnvironment("referer");
-const int serverPort = int.fromEnvironment("server_port");
-const String apiBaseUrl = String.fromEnvironment("api_base_url");
-const String serverAddress = String.fromEnvironment("server_address");
+const int hostPort = int.fromEnvironment("host_port");
+const String hostName = String.fromEnvironment("host_name");
+const String hostAddress = String.fromEnvironment("host_address");
+const String serverHubAddress = String.fromEnvironment("server_hub_address");
+const String serverBaseAddress = String.fromEnvironment("server_base_address");

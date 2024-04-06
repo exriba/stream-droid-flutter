@@ -14,8 +14,7 @@ class CustomHttpServer implements ICustomHttpServer {
   @override
   Future<void> initializeHttpServer(
       {required Future<void> Function({required String value}) onData}) async {
-    _httpServer =
-        await HttpServer.bind(constants.serverAddress, constants.serverPort);
+    _httpServer = await HttpServer.bind(constants.hostName, constants.hostPort);
 
     await for (final request in _httpServer!) {
       final cookies = request.cookies.where(

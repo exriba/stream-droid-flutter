@@ -17,7 +17,7 @@ enum UrlFragment {
   redemption;
 
   Uri getFragment({String? id}) {
-    const baseUrl = constants.apiBaseUrl;
+    const baseUrl = constants.serverBaseAddress;
     return switch (this) {
       UrlFragment.me => Uri.parse("$baseUrl/me"),
       UrlFragment.meLogin => Uri.parse("$baseUrl/login"),
