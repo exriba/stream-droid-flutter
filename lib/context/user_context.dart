@@ -11,11 +11,7 @@ class UserContext extends ChangeNotifier {
     _secureStorage = DependencyManager.getIt.get<ISecureStorage>();
     _httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
   }
-  User _user = User(
-    id: '',
-    name: '',
-    preferences: Preferences(),
-  );
+  User _user = User.defaultUser();
   late ISecureStorage _secureStorage;
   late ICustomHttpClient _httpClient;
 
@@ -54,6 +50,7 @@ class UserContext extends ChangeNotifier {
   }
 
   Future<void> onLogout() async {
+    _user = User.defaultUser();
     await _secureStorage.delete(key: constants.appName);
     _httpClient.dispose();
     notifyListeners();
