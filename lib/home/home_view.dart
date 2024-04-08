@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:stream_droid_app/auth/login_view.dart';
 import 'package:stream_droid_app/context/user_context.dart';
@@ -26,7 +28,16 @@ class HomeView extends StatelessWidget {
           future: _verifyUserAuthentication(userContext),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              Error.throwWithStackTrace(snapshot.error!, snapshot.stackTrace!);
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                toastification.show(
+                    context: context,
+                    title: const Text('An error ocurred.'),
+                    type: ToastificationType.error,
+                    primaryColor: Colors.black,
+                    backgroundColor: Colors.red,
+                    autoCloseDuration: const Duration(seconds: 3));
+              });
+              return LoginView(userContext: userContext);
             }
 
             if (snapshot.hasData) {
