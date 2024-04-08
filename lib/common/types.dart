@@ -95,6 +95,9 @@ class User extends _BaseModel {
 
   User({required this.id, required this.name, required this.preferences});
 
+  factory User.defaultUser() =>
+      User(id: '', name: '', preferences: Preferences());
+
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json['id'],
         name: json['name'],
