@@ -9,7 +9,6 @@ import 'package:stream_droid_app/util/dependency_manager.dart';
 // TODO: Review app views and implement responsive design where necessary.
 const windowOptions = WindowOptions(
     center: true,
-    size: Size(900, 600),
     minimumSize: Size(900, 600),
     titleBarStyle: TitleBarStyle.hidden);
 
