@@ -16,7 +16,7 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         builder: (context, widget) {
           ErrorWidget.builder = (details) {
-            return Align(
+            return Center(
               child: Text(
                 'Something went wrong.',
                 style: Theme.of(context).textTheme.bodyMedium,
