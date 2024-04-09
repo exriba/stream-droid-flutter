@@ -231,3 +231,55 @@ class Asset extends _BaseModel {
         "volume": volume,
       };
 }
+
+class SpeechEvent extends _BaseModel {
+  final String id;
+  final int volume;
+  final String eventType;
+  final String message;
+
+  SpeechEvent(
+      {required this.id,
+      required this.eventType,
+      required this.message,
+      this.volume = 0});
+
+  factory SpeechEvent.fromJson(Map<String, dynamic> json) => SpeechEvent(
+        id: json['id'],
+        eventType: json['eventType'],
+        message: json['message'],
+        volume: json['volume'],
+      );
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+}
+
+class AssetEvent extends _BaseModel {
+  final String id;
+  final int volume;
+  final String eventType;
+  final String uri;
+
+  AssetEvent(
+      {required this.id,
+      required this.eventType,
+      required this.uri,
+      this.volume = 0});
+
+  factory AssetEvent.fromJson(Map<String, dynamic> json) => AssetEvent(
+        id: json['Id'],
+        eventType: json['EventType'],
+        uri: json['Uri'],
+        volume: json['Volume'],
+      );
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+}
