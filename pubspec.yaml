@@ -49,6 +49,8 @@ dependencies:
   get_it: ^7.6.7
   url_launcher: ^6.2.5
   file_picker: ^8.0.0+1
+  eventflux: ^1.6.9
+  toastification: ^1.2.1
 
 dev_dependencies:
   flutter_test:
