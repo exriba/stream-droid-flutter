@@ -29,6 +29,7 @@ Future<void> main() async {
   runApp(const App());
 }
 
+// TODO: logs
 bool onError(Object error, StackTrace stack) {
   print(error);
   print(stack);
