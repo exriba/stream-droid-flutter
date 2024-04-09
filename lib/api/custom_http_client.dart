@@ -75,11 +75,7 @@ class CustomHttpClient implements ICustomHttpClient {
       );
       request.files.add(multiPartFile);
     }
-    try {
-      await _httpClient.send(request);
-    } catch (e) {
-      print(e);
-    }
+    await _httpClient.send(request);
   }
 
   @override
