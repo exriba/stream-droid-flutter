@@ -61,7 +61,6 @@ class _MediaView extends State<MediaView> {
         await closeSseConnection();
         throw error;
       },
-      autoReconnect: true,
     );
   }
 
