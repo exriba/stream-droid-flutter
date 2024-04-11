@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -14,11 +15,17 @@ class HomeView extends StatelessWidget {
   final minimumSize = const Size(900, 600);
 
   Future<bool> _verifyUserAuthentication(UserContext userContext) async {
-    final authenticated = await userContext.isAuthenticated();
-    final size = authenticated ? maximumSize : minimumSize;
-    await windowManager.setSize(size);
-    await windowManager.center();
-    return authenticated;
+    try {
+      final authenticated = await userContext.isAuthenticated();
+      final size = authenticated ? maximumSize : minimumSize;
+      await windowManager.setSize(size);
+      return authenticated;
+    } catch (exception) {
+      await windowManager.setSize(minimumSize);
+      rethrow;
+    } finally {
+      await windowManager.center();
+    }
   }
 
   @override
@@ -29,9 +36,12 @@ class HomeView extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               SchedulerBinding.instance.addPostFrameCallback((_) {
+                final message = (snapshot.error is ClientException)
+                    ? 'Unable to reach backend server'
+                    : 'An error ocurred';
                 toastification.show(
                     context: context,
-                    title: const Text('An error ocurred.'),
+                    title: Text(message),
                     type: ToastificationType.error,
                     primaryColor: Colors.black,
                     backgroundColor: Colors.red,

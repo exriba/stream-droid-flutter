@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:async';
+import 'package:talker/talker.dart';
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:stream_droid_app/app.dart';
@@ -30,8 +31,9 @@ Future<void> main() async {
 }
 
 // TODO: logs
+Talker? talker;
 bool onError(Object error, StackTrace stack) {
-  print(error);
-  print(stack);
+  talker = talker ?? Talker();
+  talker?.handle(error, stack);
   return true;
 }
