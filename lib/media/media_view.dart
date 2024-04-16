@@ -21,7 +21,7 @@ class MediaView extends StatefulWidget {
 
 class _MediaView extends State<MediaView> {
   final key = constants.appName;
-  Player? videoPlayer;
+  Player videoPlayer = Player();
   VideoController? videoController;
   List<Player> audioPlayers = List.empty(growable: true);
 
@@ -82,21 +82,23 @@ class _MediaView extends State<MediaView> {
   Future<void> playVideo(AssetEvent event) async {
     final playable = Media(event.uri);
 
-    if (videoPlayer == null) {
-      videoPlayer = Player();
-      videoPlayer!.stream.completed.listen((completed) async {
+    if (videoController == null) {
+      videoPlayer.stream.completed.listen((completed) async {
         if (completed) {
-          await videoPlayer!.next();
+          await videoPlayer.next();
         }
       });
 
       setState(() {
-        videoController = VideoController(videoPlayer!);
+        videoController = VideoController(videoPlayer);
       });
 
-      await videoPlayer!.open(playable);
+      await videoPlayer.open(playable);
     } else {
-      await videoPlayer!.add(playable);
+      await videoPlayer.add(playable);
+      if (!videoPlayer.state.playing) {
+        await videoPlayer.play();
+      }
     }
   }
 
@@ -126,9 +128,9 @@ class _MediaView extends State<MediaView> {
   }
 
   Future<void> releaseVideoPlayer() async {
-    await videoPlayer?.stop();
+    await videoPlayer.stop();
     videoController = null;
-    await videoPlayer?.dispose();
+    await videoPlayer.dispose();
   }
 
   Future<void> closeSseConnection() async {
