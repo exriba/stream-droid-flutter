@@ -28,7 +28,17 @@ class _MediaView extends State<MediaView> {
   @override
   void initState() {
     super.initState();
+    initialize();
     connect();
+  }
+
+  void initialize() {
+    videoController = VideoController(videoPlayer);
+    videoPlayer.stream.completed.listen((completed) async {
+      if (completed && mounted) {
+        await videoPlayer.next();
+      }
+    });
   }
 
   Future<void> connect() async {
@@ -74,31 +84,19 @@ class _MediaView extends State<MediaView> {
     });
 
     final playable = Media(event.uri);
-    await audioPlayer.setVolume(50);
+    await audioPlayer.setVolume(event.volume.toDouble());
     await audioPlayer.open(playable);
     audioPlayers.add(audioPlayer);
   }
 
   Future<void> playVideo(AssetEvent event) async {
     final playable = Media(event.uri);
+    await videoPlayer.setVolume(event.volume.toDouble());
 
-    if (videoController == null) {
-      videoPlayer.stream.completed.listen((completed) async {
-        if (completed) {
-          await videoPlayer.next();
-        }
-      });
-
-      setState(() {
-        videoController = VideoController(videoPlayer);
-      });
-
+    if (!videoPlayer.state.playing) {
       await videoPlayer.open(playable);
     } else {
       await videoPlayer.add(playable);
-      if (!videoPlayer.state.playing) {
-        await videoPlayer.play();
-      }
     }
   }
 
