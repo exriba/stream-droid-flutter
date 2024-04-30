@@ -21,6 +21,7 @@ class MediaView extends StatefulWidget {
 
 class _MediaView extends State<MediaView> {
   final key = constants.appName;
+  int mediaIndex = 0;
   Player videoPlayer = Player();
   VideoController? videoController;
   List<Player> audioPlayers = List.empty(growable: true);
@@ -29,21 +30,26 @@ class _MediaView extends State<MediaView> {
   void initState() {
     super.initState();
     initialize();
-    connect();
   }
 
-  void initialize() {
-    videoController = VideoController(videoPlayer);
+  Future<void> initialize() async {
+    final secureStorage = DependencyManager.getIt.get<ISecureStorage>();
+    final value = await secureStorage.read(key: key);
+
     videoPlayer.stream.completed.listen((completed) async {
+      final currentMediaIndex = videoPlayer.state.playlist.index;
+      final lastMediaIndex = videoPlayer.state.playlist.medias.length - 1;
+
+      if (currentMediaIndex == lastMediaIndex) {
+        setState(() {
+          videoController = null;
+        });
+      }
+
       if (completed && mounted) {
         await videoPlayer.next();
       }
     });
-  }
-
-  Future<void> connect() async {
-    final secureStorage = DependencyManager.getIt.get<ISecureStorage>();
-    final value = await secureStorage.read(key: key);
 
     EventFlux.instance.connect(
       EventFluxConnectionType.get,
@@ -92,6 +98,12 @@ class _MediaView extends State<MediaView> {
   Future<void> playVideo(AssetEvent event) async {
     final playable = Media(event.uri);
     await videoPlayer.setVolume(event.volume.toDouble());
+
+    if (videoController == null) {
+      setState(() {
+        videoController = VideoController(videoPlayer);
+      });
+    }
 
     if (!videoPlayer.state.playing) {
       await videoPlayer.open(playable);
