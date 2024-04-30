@@ -1,46 +1,35 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/api/custom_http_client.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
+import 'package:stream_droid_app/util/local_storage.dart';
 import 'package:stream_droid_app/util/secure_storage.dart';
 import 'package:stream_droid_app/common/constants.dart' as constants;
 
+const _defaultVolumeKey = 'defaultVolume';
+
 class UserContext extends ChangeNotifier {
   UserContext() {
+    _localStorage = DependencyManager.getIt.get<ILocalStorage>();
     _secureStorage = DependencyManager.getIt.get<ISecureStorage>();
     _httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
   }
-  User _user = User.defaultUser();
+  late ILocalStorage _localStorage;
   late ISecureStorage _secureStorage;
   late ICustomHttpClient _httpClient;
 
   double get defaultMediaAssetVolume {
-    return _user.preferences.defaultVolume.toDouble();
-  }
-
-  void _setUser({String? id, String? name, Preferences? preferences}) {
-    _user = User(
-      id: id ?? _user.id,
-      name: name ?? _user.name,
-      preferences: preferences ?? _user.preferences,
-    );
+    final value = _localStorage.read(key: _defaultVolumeKey) ?? '50';
+    return double.parse(value);
   }
 
   Future<bool> isAuthenticated() async {
     final data = await _httpClient.get(urlFragment: UrlFragment.me);
-    if (data.isEmpty) {
-      return false;
-    }
-    _user = User.fromJson(jsonDecode(data));
-    return true;
+    return data.isNotEmpty;
   }
 
   Future<void> updateDefaultMediaAssetVolume(double value) async {
-    final preferences = Preferences(defaultVolume: value.toInt());
-    await _httpClient.post(
-        urlFragment: UrlFragment.mePreferences, object: preferences);
-    _setUser(preferences: preferences);
+    _localStorage.write(key: _defaultVolumeKey, value: value.toString());
     notifyListeners();
   }
 
@@ -50,7 +39,6 @@ class UserContext extends ChangeNotifier {
   }
 
   Future<void> onLogout() async {
-    _user = User.defaultUser();
     await _secureStorage.delete(key: constants.appName);
     _httpClient.dispose();
     notifyListeners();
