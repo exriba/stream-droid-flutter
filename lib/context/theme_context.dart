@@ -23,9 +23,9 @@ class ThemeContext extends ChangeNotifier {
       return _backgroundColor!;
     }
 
-    final color = _localStorage.read(key: backgroundColorKey);
+    final value = _localStorage.read(key: backgroundColorKey);
     _backgroundColor =
-        color != null ? Color(int.parse(color)) : defaultBackgroundColor;
+        value != null ? Color(int.parse(value)) : defaultBackgroundColor;
     return _backgroundColor!;
   }
 

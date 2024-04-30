@@ -18,19 +18,27 @@ class UserContext extends ChangeNotifier {
   late ISecureStorage _secureStorage;
   late ICustomHttpClient _httpClient;
 
+  double? _defaultVolume;
+
   double get defaultMediaAssetVolume {
+    if (_defaultVolume != null) {
+      return _defaultVolume!;
+    }
+
     final value = _localStorage.read(key: defaultVolumeKey) ?? '50';
-    return double.parse(value);
+    _defaultVolume = double.parse(value);
+    return _defaultVolume!;
+  }
+
+  void updateDefaultMediaAssetVolume(double value) {
+    _localStorage.write(key: defaultVolumeKey, value: value.toString());
+    _defaultVolume = value;
+    notifyListeners();
   }
 
   Future<bool> isAuthenticated() async {
     final data = await _httpClient.get(urlFragment: UrlFragment.me);
     return data.isNotEmpty;
-  }
-
-  Future<void> updateDefaultMediaAssetVolume(double value) async {
-    _localStorage.write(key: defaultVolumeKey, value: value.toString());
-    notifyListeners();
   }
 
   Future<void> onLogin(String value) async {
