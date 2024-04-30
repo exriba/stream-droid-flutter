@@ -13,8 +13,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => UserContext(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserContext()),
+        ChangeNotifierProvider(create: (_) => ThemeContext())
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         builder: (context, widget) {
@@ -46,11 +49,13 @@ class App extends StatelessWidget {
         home: Scaffold(
           backgroundColor: Colors.grey[700],
           appBar: const CustomAppBar(),
-          body: Container(
-            margin: const EdgeInsets.only(left: 2, right: 2, bottom: 2),
-            color: const Color.fromRGBO(33, 33, 33, 1),
-            child: const HomeView(),
-          ),
+          body: Consumer<ThemeContext>(builder: (context, themeContext, child) {
+            return Container(
+              margin: const EdgeInsets.only(left: 2, right: 2, bottom: 2),
+              color: themeContext.backgroundColor,
+              child: const HomeView(),
+            );
+          }),
         ),
       ),
     );
