@@ -6,7 +6,7 @@ import 'package:stream_droid_app/util/local_storage.dart';
 import 'package:stream_droid_app/util/secure_storage.dart';
 import 'package:stream_droid_app/common/constants.dart' as constants;
 
-const _defaultVolumeKey = 'defaultVolume';
+const defaultVolumeKey = 'defaultVolume';
 
 class UserContext extends ChangeNotifier {
   UserContext() {
@@ -19,7 +19,7 @@ class UserContext extends ChangeNotifier {
   late ICustomHttpClient _httpClient;
 
   double get defaultMediaAssetVolume {
-    final value = _localStorage.read(key: _defaultVolumeKey) ?? '50';
+    final value = _localStorage.read(key: defaultVolumeKey) ?? '50';
     return double.parse(value);
   }
 
@@ -29,7 +29,7 @@ class UserContext extends ChangeNotifier {
   }
 
   Future<void> updateDefaultMediaAssetVolume(double value) async {
-    _localStorage.write(key: _defaultVolumeKey, value: value.toString());
+    _localStorage.write(key: defaultVolumeKey, value: value.toString());
     notifyListeners();
   }
 
