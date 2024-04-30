@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/context/user_context.dart';
+import 'package:stream_droid_app/setting/setting_label.dart';
 import 'package:stream_droid_app/setting/volume_setting.dart';
 
 class SettingsView extends StatelessWidget {
@@ -10,18 +11,12 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-        height: constraints.maxHeight / 5,
+        height: constraints.maxHeight,
         margin: const EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Text(
-                'Media',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
+            const SettingLabel(label: 'Media'),
             const Divider(
               indent: 10,
               endIndent: 10,
