@@ -123,8 +123,6 @@ class _RedeemAssetList extends State<RedeemAssetList> {
             }),
         floatingActionButton: FloatingActionButton(
           mini: true,
-          foregroundColor: const Color.fromRGBO(33, 33, 33, 1),
-          backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
           onPressed: addRedeemAssets,
           child: const Icon(
             Icons.add,

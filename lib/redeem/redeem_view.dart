@@ -8,7 +8,6 @@ import 'package:stream_droid_app/redeem/redeem_card/redeem_card.dart';
 class RedeemView extends StatelessWidget {
   const RedeemView(
       {super.key, required this.redeem, required this.handleReturn});
-  final actionButtonColor = const Color.fromRGBO(33, 33, 33, 1);
   final Redeem redeem;
   final void Function(Redeem? redeem) handleReturn;
 
@@ -50,8 +49,6 @@ class RedeemView extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8, top: 8),
             child: FloatingActionButton(
               mini: true,
-              foregroundColor: const Color.fromRGBO(33, 33, 33, 1),
-              backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
               onPressed: () {
                 handleReturn(null);
               },

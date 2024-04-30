@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_droid_app/context/theme_context.dart';
 import 'package:window_manager/window_manager.dart';
 
 class _AppBarButton {
@@ -24,10 +25,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Color.fromRGBO(33, 33, 33, 1),
+            color: ThemeContext.defaultBackgroundColor,
           ),
         ),
       ),
