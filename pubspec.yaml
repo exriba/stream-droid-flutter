@@ -51,6 +51,7 @@ dependencies:
   eventflux: ^1.6.9
   toastification: ^1.2.1
   talker: ^4.1.3
+  localstorage: ^5.0.0
 
 dev_dependencies:
   flutter_test:

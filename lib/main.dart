@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:async';
+import 'package:localstorage/localstorage.dart';
 import 'package:talker/talker.dart';
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
@@ -18,9 +19,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
   DependencyManager.configure();
-
   PlatformDispatcher.instance.onError = onError;
 
+  await initLocalStorage();
   await windowManager.ensureInitialized();
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.setTitle("Stream Droid");
