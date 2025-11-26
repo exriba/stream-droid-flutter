@@ -6,6 +6,49 @@ import 'package:stream_droid_app/util/dependency_manager.dart';
 import 'package:stream_droid_app/util/secure_storage.dart';
 import 'package:stream_droid_app/common/constants.dart' as constants;
 
+class _AuthenticatedHttpClient extends http.BaseClient {
+  _AuthenticatedHttpClient() {
+    _secureStorage = DependencyManager.getIt.get<ISecureStorage>();
+  }
+
+  String _authCookie = '';
+  late ISecureStorage _secureStorage;
+
+  Future<String> get authCookie async {
+    if (_authCookie.isNotEmpty) {
+      return _authCookie;
+    }
+
+    _authCookie = await loadAuthCookieFromSecureStorage();
+    return _authCookie;
+  }
+
+  Future<String> loadAuthCookieFromSecureStorage() async {
+    const key = constants.appName;
+    final value = await _secureStorage.read(key: key);
+    return value != null ? '$key=$value' : '';
+  }
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    request.headers
+        .putIfAbsent(HttpHeaders.refererHeader, () => constants.hostAddress);
+
+    final cookie = await authCookie;
+    if (cookie.isNotEmpty) {
+      request.headers.putIfAbsent(HttpHeaders.cookieHeader, () => cookie);
+    }
+
+    return await request.send();
+  }
+
+  @override
+  void close() {
+    super.close();
+    _authCookie = '';
+  }
+}
+
 abstract class ICustomHttpClient {
   Future<String> get({
     required UrlFragment urlFragment,
@@ -106,48 +149,5 @@ class CustomHttpClient implements ICustomHttpClient {
   @override
   void dispose() {
     _httpClient.close();
-  }
-}
-
-class _AuthenticatedHttpClient extends http.BaseClient {
-  String _authCookie = '';
-  final baseAddress = constants.hostAddress;
-  late ISecureStorage secureStorage;
-
-  _AuthenticatedHttpClient() {
-    secureStorage = DependencyManager.getIt.get<ISecureStorage>();
-  }
-
-  Future<String> get authCookie async {
-    if (_authCookie.isNotEmpty) {
-      return _authCookie;
-    }
-
-    _authCookie = await loadAuthCookieFromSecureStorage();
-    return _authCookie;
-  }
-
-  Future<String> loadAuthCookieFromSecureStorage() async {
-    const key = constants.appName;
-    final value = await secureStorage.read(key: key);
-    return value != null ? '$key=$value' : '';
-  }
-
-  @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) async {
-    request.headers.putIfAbsent(HttpHeaders.refererHeader, () => baseAddress);
-
-    final cookie = await authCookie;
-    if (cookie.isNotEmpty) {
-      request.headers.putIfAbsent(HttpHeaders.cookieHeader, () => cookie);
-    }
-
-    return await request.send();
-  }
-
-  @override
-  void close() {
-    super.close();
-    _authCookie = '';
   }
 }
