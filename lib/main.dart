@@ -11,8 +11,9 @@ import 'package:stream_droid_app/util/dependency_manager.dart';
 // TODO: Review app views and implement responsive design where necessary.
 const windowOptions = WindowOptions(
     center: true,
-    minimumSize: Size(900, 600),
-    titleBarStyle: TitleBarStyle.hidden);
+    title: "Stream Droid",
+    size: Size(900, 600),
+    minimumSize: Size(900, 600));
 
 Future<void> main() async {
   FutureBuilder.debugRethrowError = true;
@@ -24,8 +25,8 @@ Future<void> main() async {
   await initLocalStorage();
   await windowManager.ensureInitialized();
   windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.setTitle("Stream Droid");
     await windowManager.show();
+    await windowManager.focus();
   });
 
   runApp(const App());

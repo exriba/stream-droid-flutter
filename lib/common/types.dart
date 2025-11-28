@@ -56,6 +56,18 @@ enum ViewDestination {
   final String label;
 }
 
+enum ViewRoute {
+  dashboard('/'),
+  redeems('/redeems/:id'),
+  media('/media'),
+  statistics('/statistics'),
+  settings('/settings'),
+  login('/login');
+
+  const ViewRoute(this.route);
+  final String route;
+}
+
 enum MediaExtension {
   mp3('MP3'),
   mp4('MP4');

@@ -1,15 +1,24 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:stream_droid_app/api/custom_http_client.dart';
 import 'package:stream_droid_app/common/types.dart';
-import 'package:stream_droid_app/context/user_context.dart';
+import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:stream_droid_app/redeem/redeem_asset/redeem_asset_list.dart';
 import 'package:stream_droid_app/redeem/redeem_card/redeem_card.dart';
+import 'package:stream_droid_app/util/dependency_manager.dart';
 
 class RedeemView extends StatelessWidget {
-  const RedeemView(
-      {super.key, required this.redeem, required this.handleReturn});
-  final Redeem redeem;
-  final void Function(Redeem? redeem) handleReturn;
+  const RedeemView({super.key, required this.redeemId});
+  final String redeemId;
+
+  Future<Redeem> _fetchRedeem() async {
+    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    final data =
+        await httpClient.get(urlFragment: UrlFragment.reward, id: redeemId);
+    final json = jsonDecode(data);
+    return Redeem.fromJson(json);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +34,22 @@ class RedeemView extends StatelessWidget {
             children: [
               Expanded(
                 flex: 2,
-                child: RedeemCard(
-                  redeem: redeem,
+                child: FutureBuilder<Redeem>(
+                  future: _fetchRedeem(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      Error.throwWithStackTrace(
+                          snapshot.error!, snapshot.stackTrace!);
+                    }
+
+                    if (snapshot.hasData) {
+                      return RedeemCard(
+                        redeem: snapshot.data!,
+                      );
+                    }
+
+                    return const LoadingView();
+                  },
                 ),
               ),
               const VerticalDivider(
@@ -35,13 +58,9 @@ class RedeemView extends StatelessWidget {
               ),
               Expanded(
                 flex: 5,
-                child: Consumer<UserContext>(
-                    builder: (context, userContext, child) {
-                  return RedeemAssetList(
-                    userContext: userContext,
-                    redeemId: redeem.id,
-                  );
-                }),
+                child: RedeemAssetList(
+                  redeemId: redeemId,
+                ),
               ),
             ],
           ),
@@ -49,8 +68,9 @@ class RedeemView extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8, top: 8),
             child: FloatingActionButton(
               mini: true,
+              heroTag: null,
               onPressed: () {
-                handleReturn(null);
+                context.go(ViewRoute.dashboard.route);
               },
               child: const Icon(
                 Icons.arrow_back_ios_rounded,

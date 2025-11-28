@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/api/custom_http_client.dart';
 import 'package:stream_droid_app/context/user_context.dart';
@@ -10,9 +11,7 @@ import 'package:stream_droid_app/redeem/redeem_asset/redeem_asset_list_item.dart
 import 'package:stream_droid_app/util/dependency_manager.dart';
 
 class RedeemAssetList extends StatefulWidget {
-  const RedeemAssetList(
-      {super.key, required this.userContext, required this.redeemId});
-  final UserContext userContext;
+  const RedeemAssetList({super.key, required this.redeemId});
   final String redeemId;
 
   @override
@@ -43,7 +42,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
         : parsed.map<Asset>((json) => Asset.fromJson(json)).toList();
   }
 
-  Future<void> addRedeemAssets() async {
+  Future<void> addRedeemAssets(UserContext userContext) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['mp3', 'mp4'],
@@ -53,8 +52,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
     if (result != null) {
       final files = result.paths.map((path) => File(path!)).toList();
       final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
-      final volume =
-          widget.userContext.defaultMediaAssetVolume.toInt().toString();
+      final volume = userContext.defaultMediaAssetVolume.toInt().toString();
       httpClient
           .multipart(
               urlFragment: UrlFragment.rewardAssets,
@@ -79,6 +77,8 @@ class _RedeemAssetList extends State<RedeemAssetList> {
 
   @override
   Widget build(BuildContext context) {
+    final userContext = context.read<UserContext>();
+
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -123,7 +123,10 @@ class _RedeemAssetList extends State<RedeemAssetList> {
             }),
         floatingActionButton: FloatingActionButton(
           mini: true,
-          onPressed: addRedeemAssets,
+          heroTag: null,
+          onPressed: () async {
+            await addRedeemAssets(userContext);
+          },
           child: const Icon(
             Icons.add,
             color: Colors.white,
