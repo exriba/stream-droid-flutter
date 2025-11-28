@@ -10,6 +10,8 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userContext = context.read<UserContext>();
+
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
         height: constraints.maxHeight,
@@ -38,19 +40,16 @@ class SettingsView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20),
-              child:
-                  Consumer<UserContext>(builder: (context, userContext, child) {
-                return VolumeSetting(
-                  text: Text(
-                    'Default asset volume',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  volume: userContext.defaultMediaAssetVolume,
-                  handleVolumeChange: (value) {
-                    userContext.updateDefaultMediaAssetVolume(value);
-                  },
-                );
-              }),
+              child: VolumeSetting(
+                text: Text(
+                  'Default asset volume',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                volume: userContext.defaultMediaAssetVolume,
+                handleVolumeChange: (value) {
+                  userContext.updateDefaultMediaAssetVolume(value);
+                },
+              ),
             ),
           ],
         ),
