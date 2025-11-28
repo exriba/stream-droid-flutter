@@ -20,8 +20,6 @@ class MediaView extends StatefulWidget {
 }
 
 class _MediaView extends State<MediaView> {
-  final key = constants.appName;
-  int mediaIndex = 0;
   Player videoPlayer = Player();
   VideoController? videoController;
   List<Player> audioPlayers = List.empty(growable: true);
@@ -33,6 +31,7 @@ class _MediaView extends State<MediaView> {
   }
 
   Future<void> initialize() async {
+    final key = constants.appName;
     final secureStorage = DependencyManager.getIt.get<ISecureStorage>();
     final value = await secureStorage.read(key: key);
 
