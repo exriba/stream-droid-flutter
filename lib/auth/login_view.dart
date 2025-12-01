@@ -93,7 +93,7 @@ final class _LoginView extends State<LoginView> {
 
   @override
   void dispose() {
-    super.dispose();
     httpServer.dispose();
+    super.dispose();
   }
 }

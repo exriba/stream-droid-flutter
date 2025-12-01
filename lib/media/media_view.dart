@@ -123,10 +123,10 @@ class _MediaView extends State<MediaView> {
 
   @override
   void dispose() {
-    super.dispose();
     releaseAudioPlayers();
     releaseVideoPlayer();
     closeSseConnection();
+    super.dispose();
   }
 
   Future<void> releaseAudioPlayers() async {
