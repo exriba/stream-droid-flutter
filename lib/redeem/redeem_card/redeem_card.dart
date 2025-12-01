@@ -102,7 +102,7 @@ class _RedeemCard extends State<RedeemCard> {
                       flex: 1,
                       child: Switch(
                         value: speech.enabled,
-                        activeColor: Colors.black,
+                        activeThumbColor: Colors.black,
                         onChanged: toggleTextToSpeech,
                       ),
                     ),
