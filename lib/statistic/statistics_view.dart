@@ -38,13 +38,13 @@ class StatisticsView extends StatelessWidget {
                 return PieChart(
                   PieChartData(
                     sections: snapshot.data!
-                        .map((x) => PieChartSectionData(
-                              color: HexColor.fromHex(x.color),
-                              value: x.number,
+                        .map((redeemRedemption) => PieChartSectionData(
+                              color: HexColor.fromHex(redeemRedemption.color),
+                              value: redeemRedemption.number,
                               badgeWidget: Tooltip(
-                                message: x.name,
+                                message: redeemRedemption.name,
                                 child: Text(
-                                  '${x.number.toString()}%',
+                                  '${redeemRedemption.number.toString()}%',
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
