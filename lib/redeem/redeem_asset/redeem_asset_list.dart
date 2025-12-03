@@ -29,7 +29,6 @@ class _RedeemAssetList extends State<RedeemAssetList> {
   }
 
   Future<List<Asset>> _fetchRedeemAssets() async {
-    print('fetching');
     final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
     final data = await httpClient.get(
         urlFragment: UrlFragment.rewardAssets, id: widget.redeemId);
@@ -90,7 +89,6 @@ class _RedeemAssetList extends State<RedeemAssetList> {
 
   @override
   Widget build(BuildContext context) {
-    print('building');
     final userContext = context.read<UserContext>();
 
     return Container(
