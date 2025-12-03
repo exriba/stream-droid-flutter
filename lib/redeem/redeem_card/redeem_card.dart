@@ -27,7 +27,9 @@ class _RedeemCard extends State<RedeemCard> {
         urlFragment: UrlFragment.rewardSpeech,
         id: widget.redeem.id,
         object: redeemSpeech);
-    setState(() => speech = redeemSpeech);
+    setState(() {
+      speech = redeemSpeech;
+    });
   }
 
   @override
@@ -114,10 +116,5 @@ class _RedeemCard extends State<RedeemCard> {
         ),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

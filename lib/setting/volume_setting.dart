@@ -19,7 +19,6 @@ class VolumeSetting extends StatefulWidget {
 class _VolumeSetting extends State<VolumeSetting> {
   double volume = 0;
   IconData iconData = Icons.volume_mute_rounded;
-  final volumeIconColor = const Color.fromRGBO(225, 225, 225, 1);
 
   @override
   void initState() {
@@ -55,14 +54,9 @@ class _VolumeSetting extends State<VolumeSetting> {
         ),
         Icon(
           iconData,
-          color: volumeIconColor,
+          color: const Color.fromRGBO(225, 225, 225, 1),
         ),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

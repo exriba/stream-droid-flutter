@@ -121,14 +121,6 @@ class _MediaView extends State<MediaView> {
         : const SizedBox.shrink();
   }
 
-  @override
-  void dispose() {
-    releaseAudioPlayers();
-    releaseVideoPlayer();
-    closeSseConnection();
-    super.dispose();
-  }
-
   Future<void> releaseAudioPlayers() async {
     final futures1 = audioPlayers.map((e) => e.stop());
     await Future.wait(futures1);
@@ -144,5 +136,13 @@ class _MediaView extends State<MediaView> {
 
   Future<void> closeSseConnection() async {
     await EventFlux.instance.disconnect();
+  }
+
+  @override
+  void dispose() {
+    releaseAudioPlayers();
+    releaseVideoPlayer();
+    closeSseConnection();
+    super.dispose();
   }
 }

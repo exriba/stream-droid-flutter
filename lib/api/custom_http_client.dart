@@ -44,8 +44,8 @@ class _AuthenticatedHttpClient extends http.BaseClient {
 
   @override
   void close() {
-    super.close();
     _authCookie = '';
+    super.close();
   }
 }
 

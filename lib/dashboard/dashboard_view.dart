@@ -8,8 +8,21 @@ import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:stream_droid_app/common/hex_color.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _DashboardView();
+}
+
+class _DashboardView extends State<DashboardView> {
+  late Future<List<Redeem>> _channelRedeems;
+
+  @override
+  void initState() {
+    super.initState();
+    _channelRedeems = _fetchChannelRedeems();
+  }
 
   Future<List<Redeem>> _fetchChannelRedeems() async {
     final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
@@ -23,10 +36,14 @@ class DashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Redeem>>(
-      future: _fetchChannelRedeems(),
+      future: _channelRedeems,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           Error.throwWithStackTrace(snapshot.error!, snapshot.stackTrace!);
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingView();
         }
 
         if (snapshot.hasData) {
@@ -74,7 +91,8 @@ class DashboardView extends StatelessWidget {
           );
         }
 
-        return const LoadingView();
+        // TODO: No data available widget
+        return const SizedBox.shrink();
       },
     );
   }

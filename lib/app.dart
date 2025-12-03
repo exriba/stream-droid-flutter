@@ -115,7 +115,6 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp.router(
         routerConfig: routerConfiguration,
-        debugShowCheckedModeBanner: false,
         theme: ThemeContext.from(context),
         builder: (context, widget) {
           // TODO: Needs a central component for error handling.
