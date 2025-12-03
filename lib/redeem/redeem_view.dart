@@ -8,14 +8,27 @@ import 'package:stream_droid_app/redeem/redeem_asset/redeem_asset_list.dart';
 import 'package:stream_droid_app/redeem/redeem_card/redeem_card.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
 
-class RedeemView extends StatelessWidget {
+class RedeemView extends StatefulWidget {
   const RedeemView({super.key, required this.redeemId});
   final String redeemId;
 
+  @override
+  State<StatefulWidget> createState() => _RedeemView();
+}
+
+class _RedeemView extends State<RedeemView> {
+  late Future<Redeem> _redeem;
+
+  @override
+  void initState() {
+    super.initState();
+    _redeem = _fetchRedeem();
+  }
+
   Future<Redeem> _fetchRedeem() async {
     final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
-    final data =
-        await httpClient.get(urlFragment: UrlFragment.reward, id: redeemId);
+    final data = await httpClient.get(
+        urlFragment: UrlFragment.reward, id: widget.redeemId);
     final json = jsonDecode(data);
     return Redeem.fromJson(json);
   }
@@ -35,11 +48,15 @@ class RedeemView extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: FutureBuilder<Redeem>(
-                  future: _fetchRedeem(),
+                  future: _redeem,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       Error.throwWithStackTrace(
                           snapshot.error!, snapshot.stackTrace!);
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const LoadingView();
                     }
 
                     if (snapshot.hasData) {
@@ -48,7 +65,8 @@ class RedeemView extends StatelessWidget {
                       );
                     }
 
-                    return const LoadingView();
+                    // TODO: No data available widget
+                    return const SizedBox.shrink();
                   },
                 ),
               ),
@@ -59,7 +77,7 @@ class RedeemView extends StatelessWidget {
               Expanded(
                 flex: 5,
                 child: RedeemAssetList(
-                  redeemId: redeemId,
+                  redeemId: widget.redeemId,
                 ),
               ),
             ],

@@ -19,20 +19,17 @@ class RedeemAssetList extends StatefulWidget {
 }
 
 class _RedeemAssetList extends State<RedeemAssetList> {
-  bool loading = false;
+  late Future<List<Asset>> _redeemAssets;
+  late bool loading = false;
 
   @override
   void initState() {
     super.initState();
+    _redeemAssets = _fetchRedeemAssets();
   }
 
-  void setLoading(bool value) {
-    setState(() {
-      loading = value;
-    });
-  }
-
-  Future<List<Asset>> fetchRedeemAssets() async {
+  Future<List<Asset>> _fetchRedeemAssets() async {
+    print('fetching');
     final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
     final data = await httpClient.get(
         urlFragment: UrlFragment.rewardAssets, id: widget.redeemId);
@@ -42,7 +39,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
         : parsed.map<Asset>((json) => Asset.fromJson(json)).toList();
   }
 
-  Future<void> addRedeemAssets(UserContext userContext) async {
+  Future<void> _addRedeemAssets(UserContext userContext) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['mp3', 'mp4'],
@@ -53,30 +50,47 @@ class _RedeemAssetList extends State<RedeemAssetList> {
       final files = result.paths.map((path) => File(path!)).toList();
       final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
       final volume = userContext.defaultMediaAssetVolume.toInt().toString();
-      httpClient
-          .multipart(
-              urlFragment: UrlFragment.rewardAssets,
-              id: widget.redeemId,
-              fields: {"volume": volume},
-              files: files)
-          .whenComplete(() => setLoading(false));
-      setState(() => setLoading(true));
+      final future = httpClient.multipart(
+          urlFragment: UrlFragment.rewardAssets,
+          id: widget.redeemId,
+          fields: {"volume": volume},
+          files: files);
+
+      future.whenComplete(() {
+        setState(() {
+          loading = false;
+          _redeemAssets = _fetchRedeemAssets();
+        });
+      });
+
+      setState(() {
+        loading = true;
+      });
     }
   }
 
-  void removeRedeemAsset(String fileName) {
+  void _removeRedeemAsset(String fileName) {
     final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
-    httpClient.delete(
+    final future = httpClient.delete(
         urlFragment: UrlFragment.rewardAssets,
         id: widget.redeemId,
-        headers: {
-          "ASSET_NAME": fileName
-        }).whenComplete(() => setLoading(false));
-    setState(() => setLoading(true));
+        headers: {"ASSET_NAME": fileName});
+
+    future.whenComplete(() {
+      setState(() {
+        loading = false;
+        _redeemAssets = _fetchRedeemAssets();
+      });
+    });
+
+    setState(() {
+      loading = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('building');
     final userContext = context.read<UserContext>();
 
     return Container(
@@ -88,14 +102,19 @@ class _RedeemAssetList extends State<RedeemAssetList> {
       child: Scaffold(
         backgroundColor: Colors.grey[700],
         body: FutureBuilder<List<Asset>>(
-            future: fetchRedeemAssets(),
+            future: _redeemAssets,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 Error.throwWithStackTrace(
                     snapshot.error!, snapshot.stackTrace!);
               }
 
-              if (snapshot.hasData && !loading) {
+              if (loading ||
+                  snapshot.connectionState == ConnectionState.waiting) {
+                return const LoadingView();
+              }
+
+              if (snapshot.hasData) {
                 return ListView.builder(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
@@ -105,7 +124,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
                           key: Key(snapshot.data!.first.id),
                           asset: snapshot.data!.first,
                           redeemId: widget.redeemId,
-                          handleRemove: removeRedeemAsset,
+                          handleRemove: _removeRedeemAsset,
                         )
                       : null,
                   itemBuilder: (context, index) {
@@ -113,7 +132,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
                       key: Key(snapshot.data![index].id),
                       asset: snapshot.data![index],
                       redeemId: widget.redeemId,
-                      handleRemove: removeRedeemAsset,
+                      handleRemove: _removeRedeemAsset,
                     );
                   },
                 );
@@ -125,7 +144,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
           mini: true,
           heroTag: null,
           onPressed: () async {
-            await addRedeemAssets(userContext);
+            await _addRedeemAssets(userContext);
           },
           child: const Icon(
             Icons.add,
@@ -134,10 +153,5 @@ class _RedeemAssetList extends State<RedeemAssetList> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

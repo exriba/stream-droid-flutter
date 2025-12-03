@@ -7,8 +7,21 @@ import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
 
-class StatisticsView extends StatelessWidget {
+class StatisticsView extends StatefulWidget {
   const StatisticsView({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _StatisticsView();
+}
+
+class _StatisticsView extends State<StatisticsView> {
+  late Future<List<RedeemRedemption>> _channelRedeemRedemptions;
+
+  @override
+  void initState() {
+    super.initState();
+    _channelRedeemRedemptions = _fetchChannelRedeemRedemptions();
+  }
 
   Future<List<RedeemRedemption>> _fetchChannelRedeemRedemptions() async {
     final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
@@ -26,10 +39,14 @@ class StatisticsView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: FutureBuilder<List<RedeemRedemption>>(
-          future: _fetchChannelRedeemRedemptions(),
+          future: _channelRedeemRedemptions,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               Error.throwWithStackTrace(snapshot.error!, snapshot.stackTrace!);
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const LoadingView();
             }
 
             if (snapshot.hasData) {
@@ -56,7 +73,9 @@ class StatisticsView extends StatelessWidget {
                 );
               });
             }
-            return const LoadingView();
+
+            // TODO: No data available widget
+            return const SizedBox.shrink();
           }),
     );
   }
