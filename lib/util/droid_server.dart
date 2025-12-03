@@ -10,7 +10,7 @@ class DroidServer {
     Cookie? cookie;
     String? token;
     bool completed = false;
-    final redirectUrl = Uri.parse(constants.redirectUrl);
+    final redirectUri = Uri.parse(constants.redirectUrl);
 
     HttpServer httpServer = await HttpServer.bind(
       constants.hostName,
@@ -18,23 +18,24 @@ class DroidServer {
     );
 
     await for (final request in httpServer) {
-      if (request.requestedUri == redirectUrl) {
+      String content = '';
+      request.response.headers.set('Content-Type', 'text/html; charset=utf-8');
+
+      if (request.requestedUri == redirectUri) {
         cookie = request.cookies.firstWhereLogTypeOrNull(
-            (cookie) => cookie.name == constants.appName);
+          (cookie) => cookie.name == constants.appName,
+        );
         token = request.uri.queryParameters['accessToken'];
-        final content = await rootBundle.loadString('assets/html/Success.html');
+        content = await rootBundle.loadString('assets/html/Success.html');
         request.response.statusCode = HttpStatus.ok;
-        request.response.headers
-            .set('Content-Type', 'text/html; charset=utf-8');
-        request.response.write(content);
         completed = true;
       } else {
-        final content = await rootBundle.loadString('assets/html/Error.html');
-        request.response.statusCode = HttpStatus.methodNotAllowed;
-        request.response.headers
-            .set('Content-Type', 'text/html; charset=utf-8');
-        request.response.write(content);
+        content = await rootBundle.loadString('assets/html/Error.html');
+        request.response.statusCode = HttpStatus.unauthorized;
       }
+
+      request.response.write(content);
+      await request.response.flush();
       await request.response.close();
 
       if (completed) {
