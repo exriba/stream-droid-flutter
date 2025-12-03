@@ -32,7 +32,7 @@ class _AuthenticatedHttpClient extends http.BaseClient {
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
     request.headers
-        .putIfAbsent(HttpHeaders.refererHeader, () => constants.hostAddress);
+        .putIfAbsent(HttpHeaders.refererHeader, () => constants.redirectUrl);
 
     final cookie = await authCookie;
     if (cookie.isNotEmpty) {

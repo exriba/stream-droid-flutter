@@ -5,3 +5,4 @@ const String hostAddress = String.fromEnvironment("host_address");
 const String serverBaseAddress = String.fromEnvironment("server_base_address");
 const String serverEventAddress =
     String.fromEnvironment("server_event_address");
+const String redirectUrl = String.fromEnvironment("redirect_url");
