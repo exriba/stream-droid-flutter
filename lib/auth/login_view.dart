@@ -26,6 +26,18 @@ final class _LoginView extends State<LoginView> {
     super.initState();
     httpServer = DependencyManager.getIt.get<ICustomHttpServer>();
     httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    initializeServer();
+  }
+
+  void initializeServer() {
+    final userContext = context.read<UserContext>();
+    httpServer.initializeHttpServer(onData: ({required String value}) async {
+      await userContext.onLogin(value);
+
+      if (context.mounted) {
+        context.go(ViewRoute.dashboard.route);
+      }
+    });
   }
 
   Future<void> handleLogin() async {
@@ -39,14 +51,6 @@ final class _LoginView extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final themeContext = context.read<ThemeContext>();
-    httpServer.initializeHttpServer(onData: ({required String value}) async {
-      final userContext = context.read<UserContext>();
-      await userContext.onLogin(value);
-
-      if (context.mounted) {
-        context.go(ViewRoute.dashboard.route);
-      }
-    });
 
     return Scaffold(
       backgroundColor: themeContext.backgroundColor,
