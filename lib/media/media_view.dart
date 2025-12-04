@@ -54,7 +54,7 @@ class _MediaView extends State<MediaView> {
       EventFluxConnectionType.get,
       constants.serverEventAddress,
       header: {
-        HttpHeaders.cookieHeader: '$key=$value',
+        HttpHeaders.authorizationHeader: 'Bearer $value',
         HttpHeaders.acceptHeader: "text/event-stream",
         HttpHeaders.cacheControlHeader: "no-cache",
       },
@@ -74,7 +74,6 @@ class _MediaView extends State<MediaView> {
       },
       onError: (error) async {
         await closeSseConnection();
-        throw error;
       },
     );
   }

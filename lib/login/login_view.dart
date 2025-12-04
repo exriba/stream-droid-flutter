@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/api/custom_http_client.dart';
+import 'package:stream_droid_app/util/droid_client.dart';
 import 'package:stream_droid_app/util/droid_server.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/context/theme_context.dart';
@@ -15,15 +15,15 @@ class LoginView extends StatelessWidget {
 
   Future<void> _handleLogin(BuildContext context) async {
     final userContext = context.read<UserContext>();
-    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    final httpClient = DependencyManager.getIt.get<IDroidClient>();
     final authUri = await httpClient.get(urlFragment: UrlFragment.meLogin);
     final authUrl = Uri.parse(authUri);
     if (await canLaunchUrl(authUrl)) {
       final httpServer = DroidServer();
       await launchUrl(authUrl);
-      httpServer.initializeServer(callback: (cookie, token) async {
-        if (cookie != null) {
-          await userContext.onLogin(cookie.value);
+      httpServer.initializeServer(callback: (token) async {
+        if (token != null) {
+          await userContext.onLogin(token);
         }
         if (context.mounted) {
           context.go(ViewRoute.dashboard.route);
