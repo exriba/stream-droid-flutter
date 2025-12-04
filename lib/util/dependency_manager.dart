@@ -6,7 +6,7 @@ import 'package:stream_droid_app/util/secure_storage.dart';
 class DependencyManager {
   static final GetIt getIt = GetIt.instance;
 
-  static void configure() async {
+  static void configure() {
     getIt.registerSingleton<ILocalStorage>(LocalStorage());
     getIt.registerSingleton<ISecureStorage>(SecureStorage());
     getIt.registerSingleton<IDroidClient>(
