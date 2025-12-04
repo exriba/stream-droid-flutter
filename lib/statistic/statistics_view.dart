@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_droid_app/api/custom_http_client.dart';
+import 'package:stream_droid_app/util/droid_client.dart';
 import 'package:stream_droid_app/common/hex_color.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/layout/loading_view.dart';
@@ -24,7 +24,7 @@ class _StatisticsView extends State<StatisticsView> {
   }
 
   Future<List<RedeemRedemption>> _fetchChannelRedeemRedemptions() async {
-    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    final httpClient = DependencyManager.getIt.get<IDroidClient>();
     final data = await httpClient.get(urlFragment: UrlFragment.redemptions);
     final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
     return parsed.isEmpty

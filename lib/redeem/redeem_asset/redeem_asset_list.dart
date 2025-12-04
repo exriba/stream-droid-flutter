@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/common/types.dart';
-import 'package:stream_droid_app/api/custom_http_client.dart';
+import 'package:stream_droid_app/util/droid_client.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:stream_droid_app/redeem/redeem_asset/redeem_asset_list_item.dart';
@@ -19,17 +19,18 @@ class RedeemAssetList extends StatefulWidget {
 }
 
 class _RedeemAssetList extends State<RedeemAssetList> {
-  late Future<List<Asset>> _redeemAssets;
+  late Future<List<Asset>> redeemAssets;
+  late IDroidClient httpClient;
   late bool loading = false;
 
   @override
   void initState() {
     super.initState();
-    _redeemAssets = _fetchRedeemAssets();
+    httpClient = DependencyManager.getIt.get<IDroidClient>();
+    redeemAssets = _fetchRedeemAssets();
   }
 
   Future<List<Asset>> _fetchRedeemAssets() async {
-    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
     final data = await httpClient.get(
         urlFragment: UrlFragment.rewardAssets, id: widget.redeemId);
     final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
@@ -47,7 +48,6 @@ class _RedeemAssetList extends State<RedeemAssetList> {
 
     if (result != null) {
       final files = result.paths.map((path) => File(path!)).toList();
-      final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
       final volume = userContext.defaultMediaAssetVolume.toInt().toString();
       final future = httpClient.multipart(
           urlFragment: UrlFragment.rewardAssets,
@@ -58,7 +58,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
       future.whenComplete(() {
         setState(() {
           loading = false;
-          _redeemAssets = _fetchRedeemAssets();
+          redeemAssets = _fetchRedeemAssets();
         });
       });
 
@@ -69,7 +69,6 @@ class _RedeemAssetList extends State<RedeemAssetList> {
   }
 
   void _removeRedeemAsset(String fileName) {
-    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
     final future = httpClient.delete(
         urlFragment: UrlFragment.rewardAssets,
         id: widget.redeemId,
@@ -78,7 +77,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
     future.whenComplete(() {
       setState(() {
         loading = false;
-        _redeemAssets = _fetchRedeemAssets();
+        redeemAssets = _fetchRedeemAssets();
       });
     });
 
@@ -100,7 +99,7 @@ class _RedeemAssetList extends State<RedeemAssetList> {
       child: Scaffold(
         backgroundColor: Colors.grey[700],
         body: FutureBuilder<List<Asset>>(
-            future: _redeemAssets,
+            future: redeemAssets,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 Error.throwWithStackTrace(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/common/types.dart';
-import 'package:stream_droid_app/api/custom_http_client.dart';
+import 'package:stream_droid_app/util/droid_client.dart';
 import 'package:stream_droid_app/setting/volume_setting.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
 
@@ -15,7 +15,7 @@ class RedeemAssetListItem extends StatelessWidget {
   final void Function(String fileName) handleRemove;
 
   Future<void> _updateAssetVolume(double volume) async {
-    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    final httpClient = DependencyManager.getIt.get<IDroidClient>();
     final map = {asset.fileName: volume.toInt()};
     await httpClient.put(
         urlFragment: UrlFragment.rewardAssets, id: redeemId, object: map);

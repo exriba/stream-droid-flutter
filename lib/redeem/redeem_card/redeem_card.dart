@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stream_droid_app/api/custom_http_client.dart';
+import 'package:stream_droid_app/util/droid_client.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
 
@@ -22,7 +22,7 @@ class _RedeemCard extends State<RedeemCard> {
 
   Future<void> toggleTextToSpeech(bool value) async {
     final redeemSpeech = Speech(enabled: value);
-    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    final httpClient = DependencyManager.getIt.get<IDroidClient>();
     await httpClient.put(
         urlFragment: UrlFragment.rewardSpeech,
         id: widget.redeem.id,
