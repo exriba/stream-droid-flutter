@@ -1,16 +1,13 @@
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:stream_droid_app/common/constants.dart' as constants;
-import 'package:talker/talker.dart';
 
 class DroidServer {
+  // TODO: Find a package that does this
   Future<void> initializeServer({
-    required Future<void> Function(Cookie? cookie, String? token) callback,
+    required Future<void> Function(String? token) callback,
   }) async {
-    Cookie? cookie;
     String? token;
-    bool completed = false;
-    final redirectUri = Uri.parse(constants.redirectUrl);
 
     HttpServer httpServer = await HttpServer.bind(
       constants.hostName,
@@ -18,32 +15,34 @@ class DroidServer {
     );
 
     await for (final request in httpServer) {
-      String content = '';
-      request.response.headers.set('Content-Type', 'text/html; charset=utf-8');
-
-      if (request.requestedUri == redirectUri) {
-        cookie = request.cookies.firstWhereLogTypeOrNull(
-          (cookie) => cookie.name == constants.appName,
-        );
-        token = request.uri.queryParameters['accessToken'];
-        content = await rootBundle.loadString('assets/html/Success.html');
-        request.response.statusCode = HttpStatus.ok;
-        completed = true;
-      } else {
-        content = await rootBundle.loadString('assets/html/Error.html');
-        request.response.statusCode = HttpStatus.unauthorized;
+      switch (request.uri.path) {
+        case '/callback':
+          if (request.uri.queryParameters.containsKey('accessToken')) {
+            token = request.uri.queryParameters['accessToken'];
+            final content =
+                await rootBundle.loadString('assets/html/Success.html');
+            request.response.statusCode = HttpStatus.ok;
+            request.response.headers
+                .set('Content-Type', 'text/html; charset=utf-8');
+            request.response.write(content);
+          }
+        default:
+          final content = await rootBundle.loadString('assets/html/Error.html');
+          request.response.statusCode = HttpStatus.unauthorized;
+          request.response.headers
+              .set('Content-Type', 'text/html; charset=utf-8');
+          request.response.write(content);
       }
 
-      request.response.write(content);
       await request.response.flush();
       await request.response.close();
 
-      if (completed) {
+      if (token != null) {
         break;
       }
     }
 
     await httpServer.close();
-    await callback(cookie, token);
+    await callback(token);
   }
 }
