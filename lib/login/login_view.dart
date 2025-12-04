@@ -2,49 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/api/custom_http_client.dart';
-import 'package:stream_droid_app/api/custom_http_server.dart';
+import 'package:stream_droid_app/util/droid_client.dart';
+import 'package:stream_droid_app/util/droid_server.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/context/theme_context.dart';
 import 'package:stream_droid_app/util/dependency_manager.dart';
 import 'package:stream_droid_app/context/user_context.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final class LoginView extends StatefulWidget {
+class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
-  @override
-  State<StatefulWidget> createState() => _LoginView();
-}
-
-final class _LoginView extends State<LoginView> {
-  late ICustomHttpServer httpServer;
-  late ICustomHttpClient httpClient;
-
-  @override
-  void initState() {
-    super.initState();
-    httpServer = DependencyManager.getIt.get<ICustomHttpServer>();
-    httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
-    initializeServer();
-  }
-
-  void initializeServer() {
+  Future<void> _handleLogin(BuildContext context) async {
     final userContext = context.read<UserContext>();
-    httpServer.initializeHttpServer(onData: ({required String value}) async {
-      await userContext.onLogin(value);
-
-      if (context.mounted) {
-        context.go(ViewRoute.dashboard.route);
-      }
-    });
-  }
-
-  Future<void> handleLogin() async {
-    final redirectUrl = await httpClient.get(urlFragment: UrlFragment.meLogin);
-    final authorizationUrl = Uri.parse(redirectUrl);
-    if (await canLaunchUrl(authorizationUrl)) {
-      await launchUrl(authorizationUrl);
+    final httpClient = DependencyManager.getIt.get<IDroidClient>();
+    final authUri = await httpClient.get(urlFragment: UrlFragment.meLogin);
+    final authUrl = Uri.parse(authUri);
+    if (await canLaunchUrl(authUrl)) {
+      final httpServer = DroidServer();
+      await launchUrl(authUrl);
+      httpServer.initializeServer(callback: (token) async {
+        if (token != null) {
+          await userContext.onLogin(token);
+        }
+        if (context.mounted) {
+          context.go(ViewRoute.dashboard.route);
+        }
+      });
     }
   }
 
@@ -85,7 +69,7 @@ final class _LoginView extends State<LoginView> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 onPressed: () async {
-                  await handleLogin();
+                  await _handleLogin(context);
                 },
               ),
             ),
@@ -93,11 +77,5 @@ final class _LoginView extends State<LoginView> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    httpServer.dispose();
-    super.dispose();
   }
 }

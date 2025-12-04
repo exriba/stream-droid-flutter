@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stream_droid_app/api/custom_http_client.dart';
+import 'package:stream_droid_app/util/droid_client.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:stream_droid_app/redeem/redeem_asset/redeem_asset_list.dart';
@@ -26,7 +26,7 @@ class _RedeemView extends State<RedeemView> {
   }
 
   Future<Redeem> _fetchRedeem() async {
-    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    final httpClient = DependencyManager.getIt.get<IDroidClient>();
     final data = await httpClient.get(
         urlFragment: UrlFragment.reward, id: widget.redeemId);
     final json = jsonDecode(data);

@@ -3,7 +3,7 @@ import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/auth/login_view.dart';
+import 'package:stream_droid_app/login/login_view.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/context/theme_context.dart';
 import 'package:stream_droid_app/context/user_context.dart';

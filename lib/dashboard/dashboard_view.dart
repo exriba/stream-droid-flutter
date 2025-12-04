@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:stream_droid_app/api/custom_http_client.dart';
+import 'package:stream_droid_app/util/droid_client.dart';
 import 'package:stream_droid_app/common/types.dart';
 import 'package:stream_droid_app/layout/loading_view.dart';
 import 'package:stream_droid_app/common/hex_color.dart';
@@ -25,7 +25,7 @@ class _DashboardView extends State<DashboardView> {
   }
 
   Future<List<Redeem>> _fetchChannelRedeems() async {
-    final httpClient = DependencyManager.getIt.get<ICustomHttpClient>();
+    final httpClient = DependencyManager.getIt.get<IDroidClient>();
     final data = await httpClient.get(urlFragment: UrlFragment.rewards);
     final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
     return parsed.isEmpty
