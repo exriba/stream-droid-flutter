@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/core/context/user_context.dart';
+import 'package:stream_droid_app/core/context/preference_context.dart';
 import 'package:stream_droid_app/presentation/viewmodels/redeem_card_asset_list_view_model.dart';
 import 'package:stream_droid_app/presentation/widgets/circular_progress.dart';
 import 'package:stream_droid_app/presentation/widgets/redeem_card_asset.dart';
@@ -11,11 +11,15 @@ class RedeemCardAssetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final preferenceContext =
+        Provider.of<PreferenceContext>(context, listen: false);
+    final defaultMediaAssetVolume = preferenceContext.defaultMediaAssetVolume;
+
     return ChangeNotifierProvider(
       create: (context) {
-        final userContext = context.read<UserContext>();
-        final viewModel = RedeemCardAssetListViewModel(redeemId, userContext);
-        viewModel.fetchChannelRedeems();
+        final viewModel =
+            RedeemCardAssetListViewModel(redeemId, defaultMediaAssetVolume);
+        viewModel.loadRedeemAssets();
         return viewModel;
       },
       child: Container(
