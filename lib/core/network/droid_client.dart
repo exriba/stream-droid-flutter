@@ -39,7 +39,7 @@ class DroidClient implements IDroidClient {
     _secureStorage = secureStorage;
   }
 
-  String _accessToken = '';
+  String _authCookie = '';
   late ISecureStorage _secureStorage;
   late bool _disposed = false;
   late http.Client _innerClient = http.Client();
@@ -54,26 +54,26 @@ class DroidClient implements IDroidClient {
     return _innerClient;
   }
 
-  Future<String> get accessToken async {
-    if (_accessToken.isNotEmpty) {
-      return _accessToken;
+  Future<String> get authCookie async {
+    if (_authCookie.isNotEmpty) {
+      return _authCookie;
     }
 
-    _accessToken = await _loadAccessTokenFromSecureStorage();
-    return _accessToken;
+    _authCookie = await loadAuthCookieFromSecureStorage();
+    return _authCookie;
   }
 
-  Future<String> _loadAccessTokenFromSecureStorage() async {
+  Future<String> loadAuthCookieFromSecureStorage() async {
     const key = constants.appName;
     final value = await _secureStorage.read(key: key);
-    return value != null ? 'Bearer $value' : '';
+    return value != null ? '$key=$value' : '';
   }
 
   Future<Map<String, String>> _configureHeaders() async {
-    final token = await accessToken;
+    final cookie = await authCookie;
     return {
       HttpHeaders.refererHeader: constants.redirectUrl,
-      HttpHeaders.authorizationHeader: token
+      HttpHeaders.cookieHeader: cookie
     };
   }
 
@@ -143,7 +143,7 @@ class DroidClient implements IDroidClient {
 
   @override
   void dispose() {
-    _accessToken = '';
+    _authCookie = '';
     _disposed = true;
     _innerClient.close();
   }

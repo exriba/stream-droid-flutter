@@ -19,9 +19,9 @@ class Login extends StatelessWidget {
     if (await canLaunchUrl(authUrl)) {
       final httpServer = DroidServer();
       await launchUrl(authUrl);
-      httpServer.initializeServer(callback: (token) async {
-        if (token != null) {
-          await userService.onLogin(token);
+      httpServer.initializeServer(callback: (cookie) async {
+        if (cookie != null) {
+          await userService.onLogin(cookie.value);
         }
         if (context.mounted) {
           context.go(ViewRoute.dashboard.route);
