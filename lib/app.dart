@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/core/configuration/router.dart';
+import 'package:stream_droid_app/core/context/preference_context.dart';
 import 'package:stream_droid_app/core/context/theme_context.dart';
-import 'package:stream_droid_app/core/context/user_context.dart';
 import 'package:toastification/toastification.dart';
 
 class App extends StatelessWidget {
@@ -14,8 +14,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserContext()),
         ChangeNotifierProvider(create: (_) => ThemeContext()),
+        ChangeNotifierProvider(create: (_) => PreferenceContext()),
       ],
       child: MaterialApp.router(
         routerConfig: routerConfiguration,

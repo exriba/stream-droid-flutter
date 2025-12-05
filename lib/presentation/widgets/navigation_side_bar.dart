@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/core/utils/types.dart';
 import 'package:stream_droid_app/core/context/theme_context.dart';
-import 'package:stream_droid_app/core/context/user_context.dart';
+import 'package:stream_droid_app/domain/services/user_service.dart';
 
 class NavigationSideBar extends StatelessWidget {
   const NavigationSideBar({super.key, required this.view});
   final Widget view;
 
-  Future<void> handleLogout(
-      BuildContext context, UserContext userContext) async {
-    await userContext.onLogout();
+  Future<void> handleLogout(BuildContext context) async {
+    final userService = DependencyManager.getIt<UserService>();
+    await userService.onLogout();
 
     if (context.mounted) {
       context.go(ViewRoute.login.route);
@@ -20,8 +21,6 @@ class NavigationSideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userContext = context.read<UserContext>();
-
     return Row(
       children: [
         Container(
@@ -85,7 +84,7 @@ class NavigationSideBar extends StatelessWidget {
                   highlightColor: Colors.transparent,
                   icon: const Icon(Icons.logout),
                   onPressed: () async {
-                    await handleLogout(context, userContext);
+                    await handleLogout(context);
                   },
                 ),
               ),

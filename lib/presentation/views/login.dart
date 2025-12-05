@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/core/network/droid_client.dart';
 import 'package:stream_droid_app/core/network/droid_server.dart';
 import 'package:stream_droid_app/core/utils/types.dart';
 import 'package:stream_droid_app/core/context/theme_context.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
-import 'package:stream_droid_app/core/context/user_context.dart';
+import 'package:stream_droid_app/domain/services/user_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
 
   Future<void> _handleLogin(BuildContext context) async {
-    final userContext = context.read<UserContext>();
-    final httpClient = DependencyManager.getIt.get<IDroidClient>();
-    final authUri = await httpClient.get(urlFragment: UrlFragment.meLogin);
+    final userService = DependencyManager.getIt.get<UserService>();
+    final authUri = await userService.authorizationUrl();
     final authUrl = Uri.parse(authUri);
     if (await canLaunchUrl(authUrl)) {
       final httpServer = DroidServer();
       await launchUrl(authUrl);
       httpServer.initializeServer(callback: (token) async {
         if (token != null) {
-          await userContext.onLogin(token);
+          await userService.onLogin(token);
         }
         if (context.mounted) {
           context.go(ViewRoute.dashboard.route);

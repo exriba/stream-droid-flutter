@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/core/context/user_context.dart';
+import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/core/utils/types.dart';
+import 'package:stream_droid_app/domain/services/user_service.dart';
 import 'package:stream_droid_app/presentation/viewmodels/dashboard_view_model.dart';
 import 'package:stream_droid_app/presentation/viewmodels/media_view_model.dart';
 import 'package:stream_droid_app/presentation/viewmodels/redeem_screen_view_model.dart';
@@ -21,9 +22,9 @@ final GoRouter routerConfiguration = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: ViewRoute.dashboard.route,
   redirect: (context, state) async {
-    final userContext = context.read<UserContext>();
+    final userService = DependencyManager.getIt<UserService>();
     final loginRoute = state.matchedLocation == ViewRoute.login.route;
-    final authenticated = await userContext.isAuthenticated();
+    final authenticated = await userService.isAuthenticated();
 
     if (!authenticated && !loginRoute) {
       return ViewRoute.login.route;
@@ -51,7 +52,7 @@ final GoRouter routerConfiguration = GoRouter(
               child: ChangeNotifierProvider(
                 create: (context) {
                   final viewModel = DashboardViewModel();
-                  viewModel.fetchChannelRedeems();
+                  viewModel.loadRedeems();
                   return viewModel;
                 },
                 child: const Dashboard(),
@@ -62,13 +63,13 @@ final GoRouter routerConfiguration = GoRouter(
         GoRoute(
           path: ViewRoute.redeems.route,
           pageBuilder: (context, state) {
-            final id = state.pathParameters['id'];
+            final redeemId = state.pathParameters['id'];
             return NoTransitionPage(
               key: state.pageKey,
               child: ChangeNotifierProvider(
                 create: (context) {
-                  final viewModel = RedeemScreenViewModel(redeemId: id!);
-                  viewModel.fetchRedeem();
+                  final viewModel = RedeemScreenViewModel(redeemId!);
+                  viewModel.loadRedeem();
                   return viewModel;
                 },
                 child: const RedeemScreen(),
@@ -100,7 +101,7 @@ final GoRouter routerConfiguration = GoRouter(
               child: ChangeNotifierProvider(
                 create: (context) {
                   final viewModel = StatisticsViewModel();
-                  viewModel.fetchChannelRedeemRedemptions();
+                  viewModel.loadRedeemRedemptions();
                   return viewModel;
                 },
                 child: const Statistics(),
