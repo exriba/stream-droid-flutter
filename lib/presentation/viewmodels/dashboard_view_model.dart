@@ -1,25 +1,23 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:stream_droid_app/core/network/droid_client.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
-import 'package:stream_droid_app/core/utils/types.dart';
 import 'package:stream_droid_app/data/models/redeem.dart';
+import 'package:stream_droid_app/domain/services/redeem_service.dart';
 
 class DashboardViewModel extends ChangeNotifier {
+  DashboardViewModel() {
+    _redeemService = DependencyManager.getIt<RedeemService>();
+  }
+  late RedeemService _redeemService;
+
   List<Redeem> channelRedeems = [];
   bool loading = false;
 
-  Future<void> fetchChannelRedeems() async {
+  Future<void> loadRedeems() async {
     loading = true;
     notifyListeners();
 
-    final httpClient = DependencyManager.getIt.get<IDroidClient>();
-    final data = await httpClient.get(urlFragment: UrlFragment.rewards);
-    final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
+    channelRedeems = await _redeemService.fetchRedeems();
 
-    channelRedeems = parsed.isEmpty
-        ? []
-        : parsed.map<Redeem>((json) => Redeem.fromJson(json)).toList();
     loading = false;
     notifyListeners();
   }

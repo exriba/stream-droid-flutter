@@ -1,40 +1,29 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_droid_app/core/context/user_context.dart';
-import 'package:stream_droid_app/core/network/droid_client.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
-import 'package:stream_droid_app/core/utils/types.dart';
 import 'package:stream_droid_app/data/models/asset.dart';
+import 'package:stream_droid_app/domain/services/redeem_service.dart';
 
 class RedeemCardAssetListViewModel extends ChangeNotifier {
-  RedeemCardAssetListViewModel(this.redeemId, this.userContext) {
-    _httpClient = DependencyManager.getIt.get<IDroidClient>();
+  RedeemCardAssetListViewModel(this._redeemId, this._defaultVolume) {
+    _redeemService = DependencyManager.getIt.get<RedeemService>();
   }
-
-  final String redeemId;
-  final UserContext userContext;
-  late IDroidClient _httpClient;
+  final String _redeemId;
+  final double _defaultVolume;
+  late RedeemService _redeemService;
 
   List<Asset> redeemAssets = [];
   bool loading = false;
 
-  Future<void> fetchChannelRedeems() async {
+  Future<void> loadRedeemAssets() async {
     if (!loading) {
       loading = true;
       notifyListeners();
     }
 
-    final httpClient = DependencyManager.getIt.get<IDroidClient>();
-    final data = await httpClient.get(
-        urlFragment: UrlFragment.rewardAssets, id: redeemId);
-    final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
+    redeemAssets = await _redeemService.fetchRedeemAssets(_redeemId);
 
-    redeemAssets = parsed.isEmpty
-        ? []
-        : parsed.map<Asset>((json) => Asset.fromJson(json)).toList();
     loading = false;
     notifyListeners();
   }
@@ -48,17 +37,11 @@ class RedeemCardAssetListViewModel extends ChangeNotifier {
 
     if (result != null) {
       final files = result.paths.map((path) => File(path!)).toList();
-      final volume = userContext.defaultMediaAssetVolume.toInt().toString();
-
       loading = true;
       notifyListeners();
 
-      await _httpClient.multipart(
-          urlFragment: UrlFragment.rewardAssets,
-          id: redeemId,
-          fields: {"volume": volume},
-          files: files);
-      await fetchChannelRedeems();
+      await _redeemService.addRedeemAssets(_redeemId, _defaultVolume, files);
+      await loadRedeemAssets();
     }
   }
 
@@ -66,10 +49,7 @@ class RedeemCardAssetListViewModel extends ChangeNotifier {
     loading = true;
     notifyListeners();
 
-    await _httpClient.delete(
-        urlFragment: UrlFragment.rewardAssets,
-        id: redeemId,
-        headers: {"ASSET_NAME": fileName});
-    await fetchChannelRedeems();
+    await _redeemService.deleteRedeemAsset(_redeemId, fileName);
+    await loadRedeemAssets();
   }
 }

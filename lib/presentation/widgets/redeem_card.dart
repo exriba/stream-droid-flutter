@@ -54,7 +54,7 @@ class RedeemCard extends StatelessWidget {
         Expanded(
           flex: 3,
           child: ChangeNotifierProvider(
-            create: (context) => RedeemCardViewModel(redeem),
+            create: (context) => RedeemCardViewModel(redeem.id, redeem.speech),
             child: LayoutBuilder(builder: (context, constraints) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
