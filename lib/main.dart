@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:stream_droid_app/app.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:stream_droid_app/util/dependency_manager.dart';
+import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 
 // TODO: Review app views and implement responsive design where necessary.
 const windowOptions = WindowOptions(
