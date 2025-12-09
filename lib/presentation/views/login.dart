@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/core/network/droid_server.dart';
 import 'package:stream_droid_app/core/utils/types.dart';
 import 'package:stream_droid_app/core/context/theme_context.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
@@ -17,16 +16,11 @@ class Login extends StatelessWidget {
     final authUri = await userService.authorizationUrl();
     final authUrl = Uri.parse(authUri);
     if (await canLaunchUrl(authUrl)) {
-      final httpServer = DroidServer();
       await launchUrl(authUrl);
-      httpServer.initializeServer(callback: (token) async {
-        if (token != null) {
-          await userService.onLogin(token);
-        }
-        if (context.mounted) {
-          context.go(ViewRoute.dashboard.route);
-        }
-      });
+      await userService.monitorAuthentication();
+      if (context.mounted) {
+        context.go(ViewRoute.dashboard.route);
+      }
     }
   }
 
