@@ -4,16 +4,16 @@ import "common/user.proto";
 import "google/protobuf/empty.proto";
 
 service GrpcUserService {
-  rpc Login(SessionRequest) returns (LoginResponse);
-  rpc AuthenticationSession(SessionRequest) returns (stream SessionStatus);
-  rpc Me (google.protobuf.Empty) returns (MeResponse);
+  rpc GenerateLoginUrl(SessionRequest) returns (LoginUrlResponse);
+  rpc MonitorAuthenticationSessionStatus(SessionRequest) returns (stream SessionStatus);
+  rpc FindUser(google.protobuf.Empty) returns (UserResponse);
 }
 
 message SessionRequest {
   string session_id = 1;
 }
 
-message LoginResponse {
+message LoginUrlResponse {
   string session_id = 1;
   string authorization_url = 2;
 }
@@ -30,10 +30,6 @@ message SessionStatus {
     string message = 3;
 }
 
-message AuthenticationResponse {
-  string message = 1;
-}
-
-message MeResponse {
+message UserResponse {
   grpc.model.User user = 1;
 }

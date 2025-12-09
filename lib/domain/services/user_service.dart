@@ -28,13 +28,13 @@ class UserService {
   Future<String> authorizationUrl() async {
     _sessionId = uuid.v4();
     final sessionRequest = SessionRequest(sessionId: _sessionId);
-    final sessionResponse = await _client.login(sessionRequest);
+    final sessionResponse = await _client.generateLoginUrl(sessionRequest);
     return sessionResponse.authorizationUrl;
   }
 
   Future<void> monitorAuthentication() async {
     final sessionRequest = SessionRequest(sessionId: _sessionId);
-    final response = _client.authenticationSession(sessionRequest);
+    final response = _client.monitorAuthenticationSessionStatus(sessionRequest);
 
     await for (final update in response) {
       if (update.status == SessionStatus_Status.ERROR) {
@@ -54,7 +54,7 @@ class UserService {
 
   Future<bool> isAuthenticated() async {
     final emptyRequest = Empty();
-    final meResponse = await _client.me(emptyRequest);
+    final meResponse = await _client.findUser(emptyRequest);
     return meResponse.user.userType != User_UserType.UNSPECIFIED;
   }
 
