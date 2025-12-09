@@ -6,3 +6,5 @@ const String serverBaseAddress = String.fromEnvironment("server_base_address");
 const String serverEventAddress =
     String.fromEnvironment("server_event_address");
 const String redirectUrl = String.fromEnvironment("redirect_url");
+const String serverName = String.fromEnvironment("server_name");
+const int serverPort = int.fromEnvironment("server_port");
