@@ -34,45 +34,45 @@ class GrpcUserServiceClient extends $grpc.Client {
 
   GrpcUserServiceClient(super.channel, {super.options, super.interceptors});
 
-  $grpc.ResponseFuture<$0.LoginResponse> login(
+  $grpc.ResponseFuture<$0.LoginUrlResponse> generateLoginUrl(
     $0.SessionRequest request, {
     $grpc.CallOptions? options,
   }) {
-    return $createUnaryCall(_$login, request, options: options);
+    return $createUnaryCall(_$generateLoginUrl, request, options: options);
   }
 
-  $grpc.ResponseStream<$0.SessionStatus> authenticationSession(
+  $grpc.ResponseStream<$0.SessionStatus> monitorAuthenticationSessionStatus(
     $0.SessionRequest request, {
     $grpc.CallOptions? options,
   }) {
-    return $createStreamingCall(
-        _$authenticationSession, $async.Stream.fromIterable([request]),
+    return $createStreamingCall(_$monitorAuthenticationSessionStatus,
+        $async.Stream.fromIterable([request]),
         options: options);
   }
 
-  $grpc.ResponseFuture<$0.MeResponse> me(
+  $grpc.ResponseFuture<$0.UserResponse> findUser(
     $1.Empty request, {
     $grpc.CallOptions? options,
   }) {
-    return $createUnaryCall(_$me, request, options: options);
+    return $createUnaryCall(_$findUser, request, options: options);
   }
 
   // method descriptors
 
-  static final _$login =
-      $grpc.ClientMethod<$0.SessionRequest, $0.LoginResponse>(
-          '/GrpcUserService/Login',
+  static final _$generateLoginUrl =
+      $grpc.ClientMethod<$0.SessionRequest, $0.LoginUrlResponse>(
+          '/GrpcUserService/GenerateLoginUrl',
           ($0.SessionRequest value) => value.writeToBuffer(),
-          $0.LoginResponse.fromBuffer);
-  static final _$authenticationSession =
+          $0.LoginUrlResponse.fromBuffer);
+  static final _$monitorAuthenticationSessionStatus =
       $grpc.ClientMethod<$0.SessionRequest, $0.SessionStatus>(
-          '/GrpcUserService/AuthenticationSession',
+          '/GrpcUserService/MonitorAuthenticationSessionStatus',
           ($0.SessionRequest value) => value.writeToBuffer(),
           $0.SessionStatus.fromBuffer);
-  static final _$me = $grpc.ClientMethod<$1.Empty, $0.MeResponse>(
-      '/GrpcUserService/Me',
+  static final _$findUser = $grpc.ClientMethod<$1.Empty, $0.UserResponse>(
+      '/GrpcUserService/FindUser',
       ($1.Empty value) => value.writeToBuffer(),
-      $0.MeResponse.fromBuffer);
+      $0.UserResponse.fromBuffer);
 }
 
 @$pb.GrpcServiceName('GrpcUserService')
@@ -80,50 +80,52 @@ abstract class GrpcUserServiceBase extends $grpc.Service {
   $core.String get $name => 'GrpcUserService';
 
   GrpcUserServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.SessionRequest, $0.LoginResponse>(
-        'Login',
-        login_Pre,
+    $addMethod($grpc.ServiceMethod<$0.SessionRequest, $0.LoginUrlResponse>(
+        'GenerateLoginUrl',
+        generateLoginUrl_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.SessionRequest.fromBuffer(value),
-        ($0.LoginResponse value) => value.writeToBuffer()));
+        ($0.LoginUrlResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.SessionRequest, $0.SessionStatus>(
-        'AuthenticationSession',
-        authenticationSession_Pre,
+        'MonitorAuthenticationSessionStatus',
+        monitorAuthenticationSessionStatus_Pre,
         false,
         true,
         ($core.List<$core.int> value) => $0.SessionRequest.fromBuffer(value),
         ($0.SessionStatus value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.Empty, $0.MeResponse>(
-        'Me',
-        me_Pre,
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.UserResponse>(
+        'FindUser',
+        findUser_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
-        ($0.MeResponse value) => value.writeToBuffer()));
+        ($0.UserResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.LoginResponse> login_Pre($grpc.ServiceCall $call,
+  $async.Future<$0.LoginUrlResponse> generateLoginUrl_Pre(
+      $grpc.ServiceCall $call,
       $async.Future<$0.SessionRequest> $request) async {
-    return login($call, await $request);
+    return generateLoginUrl($call, await $request);
   }
 
-  $async.Future<$0.LoginResponse> login(
+  $async.Future<$0.LoginUrlResponse> generateLoginUrl(
       $grpc.ServiceCall call, $0.SessionRequest request);
 
-  $async.Stream<$0.SessionStatus> authenticationSession_Pre(
+  $async.Stream<$0.SessionStatus> monitorAuthenticationSessionStatus_Pre(
       $grpc.ServiceCall $call,
       $async.Future<$0.SessionRequest> $request) async* {
-    yield* authenticationSession($call, await $request);
+    yield* monitorAuthenticationSessionStatus($call, await $request);
   }
 
-  $async.Stream<$0.SessionStatus> authenticationSession(
+  $async.Stream<$0.SessionStatus> monitorAuthenticationSessionStatus(
       $grpc.ServiceCall call, $0.SessionRequest request);
 
-  $async.Future<$0.MeResponse> me_Pre(
+  $async.Future<$0.UserResponse> findUser_Pre(
       $grpc.ServiceCall $call, $async.Future<$1.Empty> $request) async {
-    return me($call, await $request);
+    return findUser($call, await $request);
   }
 
-  $async.Future<$0.MeResponse> me($grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$0.UserResponse> findUser(
+      $grpc.ServiceCall call, $1.Empty request);
 }

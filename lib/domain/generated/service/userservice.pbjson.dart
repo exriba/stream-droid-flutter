@@ -27,9 +27,9 @@ const SessionRequest$json = {
 final $typed_data.Uint8List sessionRequestDescriptor = $convert.base64Decode(
     'Cg5TZXNzaW9uUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQ=');
 
-@$core.Deprecated('Use loginResponseDescriptor instead')
-const LoginResponse$json = {
-  '1': 'LoginResponse',
+@$core.Deprecated('Use loginUrlResponseDescriptor instead')
+const LoginUrlResponse$json = {
+  '1': 'LoginUrlResponse',
   '2': [
     {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
     {
@@ -42,10 +42,10 @@ const LoginResponse$json = {
   ],
 };
 
-/// Descriptor for `LoginResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List loginResponseDescriptor = $convert.base64Decode(
-    'Cg1Mb2dpblJlc3BvbnNlEh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIrChFhdXRob3'
-    'JpemF0aW9uX3VybBgCIAEoCVIQYXV0aG9yaXphdGlvblVybA==');
+/// Descriptor for `LoginUrlResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List loginUrlResponseDescriptor = $convert.base64Decode(
+    'ChBMb2dpblVybFJlc3BvbnNlEh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIrChFhdX'
+    'Rob3JpemF0aW9uX3VybBgCIAEoCVIQYXV0aG9yaXphdGlvblVybA==');
 
 @$core.Deprecated('Use sessionStatusDescriptor instead')
 const SessionStatus$json = {
@@ -82,22 +82,9 @@ final $typed_data.Uint8List sessionStatusDescriptor = $convert.base64Decode(
     'ASgJUgdtZXNzYWdlIjAKBlN0YXR1cxILCgdQRU5ESU5HEAASDgoKQVVUSE9SSVpFRBABEgkKBU'
     'VSUk9SEAI=');
 
-@$core.Deprecated('Use authenticationResponseDescriptor instead')
-const AuthenticationResponse$json = {
-  '1': 'AuthenticationResponse',
-  '2': [
-    {'1': 'message', '3': 1, '4': 1, '5': 9, '10': 'message'},
-  ],
-};
-
-/// Descriptor for `AuthenticationResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List authenticationResponseDescriptor =
-    $convert.base64Decode(
-        'ChZBdXRoZW50aWNhdGlvblJlc3BvbnNlEhgKB21lc3NhZ2UYASABKAlSB21lc3NhZ2U=');
-
-@$core.Deprecated('Use meResponseDescriptor instead')
-const MeResponse$json = {
-  '1': 'MeResponse',
+@$core.Deprecated('Use userResponseDescriptor instead')
+const UserResponse$json = {
+  '1': 'UserResponse',
   '2': [
     {
       '1': 'user',
@@ -110,6 +97,6 @@ const MeResponse$json = {
   ],
 };
 
-/// Descriptor for `MeResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List meResponseDescriptor = $convert.base64Decode(
-    'CgpNZVJlc3BvbnNlEiQKBHVzZXIYASABKAsyEC5ncnBjLm1vZGVsLlVzZXJSBHVzZXI=');
+/// Descriptor for `UserResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List userResponseDescriptor = $convert.base64Decode(
+    'CgxVc2VyUmVzcG9uc2USJAoEdXNlchgBIAEoCzIQLmdycGMubW9kZWwuVXNlclIEdXNlcg==');

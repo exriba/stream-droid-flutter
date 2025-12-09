@@ -74,8 +74,8 @@ class SessionRequest extends $pb.GeneratedMessage {
   void clearSessionId() => $_clearField(1);
 }
 
-class LoginResponse extends $pb.GeneratedMessage {
-  factory LoginResponse({
+class LoginUrlResponse extends $pb.GeneratedMessage {
+  factory LoginUrlResponse({
     $core.String? sessionId,
     $core.String? authorizationUrl,
   }) {
@@ -85,40 +85,40 @@ class LoginResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  LoginResponse._();
+  LoginUrlResponse._();
 
-  factory LoginResponse.fromBuffer($core.List<$core.int> data,
+  factory LoginUrlResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory LoginResponse.fromJson($core.String json,
+  factory LoginUrlResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'LoginResponse',
+      _omitMessageNames ? '' : 'LoginUrlResponse',
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'sessionId')
     ..aOS(2, _omitFieldNames ? '' : 'authorizationUrl')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  LoginResponse clone() => deepCopy();
+  LoginUrlResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  LoginResponse copyWith(void Function(LoginResponse) updates) =>
-      super.copyWith((message) => updates(message as LoginResponse))
-          as LoginResponse;
+  LoginUrlResponse copyWith(void Function(LoginUrlResponse) updates) =>
+      super.copyWith((message) => updates(message as LoginUrlResponse))
+          as LoginUrlResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static LoginResponse create() => LoginResponse._();
+  static LoginUrlResponse create() => LoginUrlResponse._();
   @$core.override
-  LoginResponse createEmptyInstance() => create();
+  LoginUrlResponse createEmptyInstance() => create();
   @$core.pragma('dart2js:noInline')
-  static LoginResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<LoginResponse>(create);
-  static LoginResponse? _defaultInstance;
+  static LoginUrlResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<LoginUrlResponse>(create);
+  static LoginUrlResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get sessionId => $_getSZ(0);
@@ -217,62 +217,8 @@ class SessionStatus extends $pb.GeneratedMessage {
   void clearMessage() => $_clearField(3);
 }
 
-class AuthenticationResponse extends $pb.GeneratedMessage {
-  factory AuthenticationResponse({
-    $core.String? message,
-  }) {
-    final result = create();
-    if (message != null) result.message = message;
-    return result;
-  }
-
-  AuthenticationResponse._();
-
-  factory AuthenticationResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory AuthenticationResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'AuthenticationResponse',
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'message')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AuthenticationResponse clone() => deepCopy();
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AuthenticationResponse copyWith(
-          void Function(AuthenticationResponse) updates) =>
-      super.copyWith((message) => updates(message as AuthenticationResponse))
-          as AuthenticationResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static AuthenticationResponse create() => AuthenticationResponse._();
-  @$core.override
-  AuthenticationResponse createEmptyInstance() => create();
-  @$core.pragma('dart2js:noInline')
-  static AuthenticationResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<AuthenticationResponse>(create);
-  static AuthenticationResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get message => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set message($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasMessage() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearMessage() => $_clearField(1);
-}
-
-class MeResponse extends $pb.GeneratedMessage {
-  factory MeResponse({
+class UserResponse extends $pb.GeneratedMessage {
+  factory UserResponse({
     $2.User? user,
   }) {
     final result = create();
@@ -280,38 +226,39 @@ class MeResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  MeResponse._();
+  UserResponse._();
 
-  factory MeResponse.fromBuffer($core.List<$core.int> data,
+  factory UserResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory MeResponse.fromJson($core.String json,
+  factory UserResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'MeResponse',
+      _omitMessageNames ? '' : 'UserResponse',
       createEmptyInstance: create)
     ..aOM<$2.User>(1, _omitFieldNames ? '' : 'user', subBuilder: $2.User.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MeResponse clone() => deepCopy();
+  UserResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MeResponse copyWith(void Function(MeResponse) updates) =>
-      super.copyWith((message) => updates(message as MeResponse)) as MeResponse;
+  UserResponse copyWith(void Function(UserResponse) updates) =>
+      super.copyWith((message) => updates(message as UserResponse))
+          as UserResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static MeResponse create() => MeResponse._();
+  static UserResponse create() => UserResponse._();
   @$core.override
-  MeResponse createEmptyInstance() => create();
+  UserResponse createEmptyInstance() => create();
   @$core.pragma('dart2js:noInline')
-  static MeResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MeResponse>(create);
-  static MeResponse? _defaultInstance;
+  static UserResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UserResponse>(create);
+  static UserResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $2.User get user => $_getN(0);
