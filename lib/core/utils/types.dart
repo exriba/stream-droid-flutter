@@ -58,7 +58,7 @@ enum ViewDestination {
 
 enum ViewRoute {
   dashboard('/'),
-  redeems('/redeems/:id'),
+  rewards('/rewards/:id'),
   media('/media'),
   statistics('/statistics'),
   settings('/settings'),
