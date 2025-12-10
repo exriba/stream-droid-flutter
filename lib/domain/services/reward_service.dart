@@ -5,6 +5,7 @@ import 'package:stream_droid_app/domain/generated/service/rewardservice.pbgrpc.d
 import 'package:stream_droid_app/domain/services/auth_interceptor.dart';
 import 'package:stream_droid_app/core/constants/constants.dart' as constants;
 
+// TODO: handle errors for all these methods.
 class RewardService {
   RewardService(AuthInterceptor authInterceptor) {
     final channel = ClientChannel(

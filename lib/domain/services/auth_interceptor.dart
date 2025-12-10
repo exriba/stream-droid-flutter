@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/core/utils/secure_storage.dart';
 import 'package:stream_droid_app/core/constants/constants.dart' as constants;

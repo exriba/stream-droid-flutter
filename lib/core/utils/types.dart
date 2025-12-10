@@ -1,4 +1,5 @@
 import 'package:stream_droid_app/core/constants/constants.dart' as constants;
+//TODO: Almost everything here and in lib/data can be removed.
 
 enum UrlFragment {
   // ======================== User Routes ========================

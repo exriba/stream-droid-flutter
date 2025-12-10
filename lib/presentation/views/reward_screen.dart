@@ -29,7 +29,7 @@ class RewardScreen extends StatelessWidget {
                     child: viewModel.loading
                         ? const CircularProgress()
                         : RewardCard(
-                            reward: viewModel.reward!,
+                            reward: viewModel.reward,
                           ),
                   ),
                   const VerticalDivider(

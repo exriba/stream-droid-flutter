@@ -10,8 +10,8 @@ class RewardScreenViewModel extends ChangeNotifier {
   final String rewardId;
   late RewardService _rewardService;
 
+  late Reward reward;
   bool loading = false;
-  Reward? reward;
 
   Future<void> loadReward() async {
     loading = true;
