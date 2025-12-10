@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
-import 'package:stream_droid_app/data/models/redeem.dart';
+import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/domain/services/reward_service.dart';
 
 class DashboardViewModel extends ChangeNotifier {
@@ -9,14 +9,14 @@ class DashboardViewModel extends ChangeNotifier {
   }
   late RewardService _rewardService;
 
-  List<Redeem> channelRedeems = [];
+  List<Reward> rewards = [];
   bool loading = false;
 
   Future<void> loadRedeems() async {
     loading = true;
     notifyListeners();
 
-    channelRedeems = await _rewardService.fetchRedeems();
+    rewards = await _rewardService.fetchRewards();
 
     loading = false;
     notifyListeners();

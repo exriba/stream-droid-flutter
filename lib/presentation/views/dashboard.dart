@@ -25,9 +25,9 @@ class Dashboard extends StatelessWidget {
             responsiveValue(context, xs: 1, sm: 2, md: 3, lg: 4, xl: 5),
         childAspectRatio: 1.4,
         // TODO: Convert to custom widget. Add zoom animation.
-        children: viewModel.channelRedeems
+        children: viewModel.rewards
             .map(
-              (redeem) => Material(
+              (reward) => Material(
                 color: Colors.transparent,
                 child: InkWell(
                   mouseCursor: SystemMouseCursors.click,
@@ -35,24 +35,24 @@ class Dashboard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Card(
-                    key: Key(redeem.id),
+                    key: Key(reward.id),
                     elevation: 5,
-                    color: HexColor.fromHex(redeem.backgroundColor),
+                    color: HexColor.fromHex(reward.backgroundColor),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Image.network(redeem.imageUrl),
+                        Image.network(reward.imageUrl),
                         Text(
-                          redeem.title,
+                          reward.title,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),
                   ),
                   onTap: () {
-                    final redeemRoute =
-                        ViewRoute.redeems.route.replaceFirst(':id', redeem.id);
-                    context.go(redeemRoute);
+                    final rewardRoute =
+                        ViewRoute.rewards.route.replaceFirst(':id', reward.id);
+                    context.go(rewardRoute);
                   },
                 ),
               ),
