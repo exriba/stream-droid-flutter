@@ -101,7 +101,7 @@ final GoRouter routerConfiguration = GoRouter(
               child: ChangeNotifierProvider(
                 create: (context) {
                   final viewModel = StatisticsViewModel();
-                  viewModel.loadRedeemRedemptions();
+                  viewModel.loadRewardRedeems();
                   return viewModel;
                 },
                 child: const Statistics(),

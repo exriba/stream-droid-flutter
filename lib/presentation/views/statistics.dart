@@ -22,14 +22,14 @@ class Statistics extends StatelessWidget {
           final shortestSide = constraints.biggest.shortestSide;
           return PieChart(
             PieChartData(
-              sections: viewModel.channelRedeemRedemptions
-                  .map((redeemRedemption) => PieChartSectionData(
-                        color: HexColor.fromHex(redeemRedemption.color),
-                        value: redeemRedemption.number,
+              sections: viewModel.rewardRedeems
+                  .map((rewardRedeem) => PieChartSectionData(
+                        color: HexColor.fromHex(rewardRedeem.fill),
+                        value: double.parse(rewardRedeem.percentage),
                         badgeWidget: Tooltip(
-                          message: redeemRedemption.name,
+                          message: rewardRedeem.rewardTitle,
                           child: Text(
-                            '${redeemRedemption.number.toString()}%',
+                            '${rewardRedeem.percentage}%',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),

@@ -1,68 +1,29 @@
-import 'dart:io';
-import 'dart:convert';
-import 'package:stream_droid_app/core/network/droid_client.dart';
-import 'package:stream_droid_app/core/utils/types.dart';
-import 'package:stream_droid_app/data/models/asset.dart';
-import 'package:stream_droid_app/data/models/redeem.dart';
-import 'package:stream_droid_app/data/models/redeem_redemption.dart';
-import 'package:stream_droid_app/data/models/speech.dart';
+import 'package:stream_droid_app/core/constants/constants.dart' as constants;
+import 'package:grpc/grpc.dart';
+import 'package:stream_droid_app/domain/generated/common/redeem.pb.dart';
+import 'package:stream_droid_app/domain/generated/google/protobuf/empty.pb.dart';
+import 'package:stream_droid_app/domain/generated/service/redeemservice.pbgrpc.dart';
+import 'package:stream_droid_app/domain/services/auth_interceptor.dart';
 
+// TODO: handle errors for all these methods.
 class RedeemService {
-  RedeemService(this._httpClient);
-  final IDroidClient _httpClient;
-
-  Future<List<Redeem>> fetchRedeems() async {
-    final data = await _httpClient.get(urlFragment: UrlFragment.rewards);
-    final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
-    return parsed.isEmpty
-        ? []
-        : parsed.map((json) => Redeem.fromJson(json)).toList();
+  RedeemService(AuthInterceptor authInterceptor) {
+    final channel = ClientChannel(
+      constants.serverName,
+      port: constants.serverPort,
+      options: const ChannelOptions(
+        credentials: ChannelCredentials.insecure(),
+        // TODO: Use secure credentials for production
+      ),
+    );
+    _client = GrpcRedeemServiceClient(channel, interceptors: [authInterceptor]);
   }
+  late GrpcRedeemServiceClient _client;
 
-  Future<Redeem?> fetchRedeem(String redeemId) async {
-    final data =
-        await _httpClient.get(urlFragment: UrlFragment.reward, id: redeemId);
-    final json = jsonDecode(data);
-    return Redeem.fromJson(json);
-  }
-
-  Future<List<RedeemRedemption>> fetchRedeemRedemptions() async {
-    final data = await _httpClient.get(urlFragment: UrlFragment.redemptions);
-    final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
-    return parsed.isEmpty
-        ? []
-        : parsed
-            .map<RedeemRedemption>((json) => RedeemRedemption.fromJson(json))
-            .toList();
-  }
-
-  Future<void> updateTextToSpeech(String redeemId, Speech speech) async {
-    await _httpClient.put(
-        urlFragment: UrlFragment.rewardSpeech, id: redeemId, object: speech);
-  }
-
-  Future<List<Asset>> fetchRedeemAssets(String redeemId) async {
-    final data = await _httpClient.get(
-        urlFragment: UrlFragment.rewardAssets, id: redeemId);
-    final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
-    return parsed.isEmpty
-        ? []
-        : parsed.map<Asset>((json) => Asset.fromJson(json)).toList();
-  }
-
-  Future<void> addRedeemAssets(
-      String redeemId, double volume, List<File> files) async {
-    await _httpClient.multipart(
-        urlFragment: UrlFragment.rewardAssets,
-        id: redeemId,
-        fields: {"volume": volume.toInt().toString()},
-        files: files);
-  }
-
-  Future<void> deleteRedeemAsset(String redeemId, String fileName) async {
-    await _httpClient.delete(
-        urlFragment: UrlFragment.rewardAssets,
-        id: redeemId,
-        headers: {"ASSET_NAME": fileName});
+  Future<List<RewardRedeem>> fetchRewardRedeems() async {
+    final emptyRequest = Empty();
+    final rewardRedeemResponse =
+        await _client.findRewardRedeemStatisticsFromUser(emptyRequest);
+    return rewardRedeemResponse.rewardRedeems;
   }
 }
