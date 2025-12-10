@@ -6,15 +6,15 @@ import 'package:stream_droid_app/domain/services/reward_service.dart';
 class RedeemCardViewModel extends ChangeNotifier {
   RedeemCardViewModel(this._redeemId, Speech? redeemSpeech) {
     speech = redeemSpeech ?? Speech(enabled: false);
-    _redeemService = DependencyManager.getIt<RewardService>();
+    _rewardService = DependencyManager.getIt<RewardService>();
   }
   final String _redeemId;
-  late RewardService _redeemService;
+  late RewardService _rewardService;
   late Speech speech;
 
   Future<void> toggleTextToSpeech(bool value) async {
     final redeemSpeech = Speech(enabled: value);
-    await _redeemService.updateTextToSpeech(_redeemId, speech);
+    await _rewardService.updateTextToSpeech(_redeemId, speech);
 
     speech = redeemSpeech;
     notifyListeners();

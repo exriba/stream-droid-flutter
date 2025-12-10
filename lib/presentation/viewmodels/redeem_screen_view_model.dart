@@ -3,13 +3,12 @@ import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/data/models/redeem.dart';
 import 'package:stream_droid_app/domain/services/reward_service.dart';
 
-// TODO: Rename service
 class RedeemScreenViewModel extends ChangeNotifier {
   RedeemScreenViewModel(this.redeemId) {
-    _redeemService = DependencyManager.getIt<RewardService>();
+    _rewardService = DependencyManager.getIt<RewardService>();
   }
   final String redeemId;
-  late RewardService _redeemService;
+  late RewardService _rewardService;
 
   bool loading = false;
   Redeem? redeem;
@@ -18,7 +17,7 @@ class RedeemScreenViewModel extends ChangeNotifier {
     loading = true;
     notifyListeners();
 
-    redeem = await _redeemService.fetchRedeem(redeemId);
+    redeem = await _rewardService.fetchRedeem(redeemId);
 
     loading = false;
     notifyListeners();

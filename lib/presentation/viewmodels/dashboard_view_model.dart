@@ -5,9 +5,9 @@ import 'package:stream_droid_app/domain/services/reward_service.dart';
 
 class DashboardViewModel extends ChangeNotifier {
   DashboardViewModel() {
-    _redeemService = DependencyManager.getIt<RewardService>();
+    _rewardService = DependencyManager.getIt<RewardService>();
   }
-  late RewardService _redeemService;
+  late RewardService _rewardService;
 
   List<Redeem> channelRedeems = [];
   bool loading = false;
@@ -16,7 +16,7 @@ class DashboardViewModel extends ChangeNotifier {
     loading = true;
     notifyListeners();
 
-    channelRedeems = await _redeemService.fetchRedeems();
+    channelRedeems = await _rewardService.fetchRedeems();
 
     loading = false;
     notifyListeners();
