@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/data/models/redeem.dart';
-import 'package:stream_droid_app/domain/services/redeem_service.dart';
+import 'package:stream_droid_app/domain/services/reward_service.dart';
 
 class DashboardViewModel extends ChangeNotifier {
   DashboardViewModel() {
-    _redeemService = DependencyManager.getIt<RedeemService>();
+    _redeemService = DependencyManager.getIt<RewardService>();
   }
-  late RedeemService _redeemService;
+  late RewardService _redeemService;
 
   List<Redeem> channelRedeems = [];
   bool loading = false;
