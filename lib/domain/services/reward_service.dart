@@ -1,57 +1,71 @@
-import 'dart:io';
-import 'dart:convert';
-import 'package:stream_droid_app/core/network/droid_client.dart';
-import 'package:stream_droid_app/core/utils/types.dart';
-import 'package:stream_droid_app/data/models/asset.dart';
-import 'package:stream_droid_app/data/models/redeem.dart';
-import 'package:stream_droid_app/data/models/speech.dart';
+import 'package:grpc/grpc.dart';
+import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
+import 'package:stream_droid_app/domain/generated/google/protobuf/empty.pb.dart';
+import 'package:stream_droid_app/domain/generated/service/rewardservice.pbgrpc.dart';
+import 'package:stream_droid_app/domain/services/auth_interceptor.dart';
+import 'package:stream_droid_app/core/constants/constants.dart' as constants;
 
 class RewardService {
-  RewardService(this._httpClient);
-  final IDroidClient _httpClient;
+  RewardService(AuthInterceptor authInterceptor) {
+    final channel = ClientChannel(
+      constants.serverName,
+      port: constants.serverPort,
+      options: const ChannelOptions(
+        credentials: ChannelCredentials.insecure(),
+        // TODO: Use secure credentials for production
+      ),
+    );
+    _client = GrpcRewardServiceClient(channel, interceptors: [authInterceptor]);
+  }
+  late GrpcRewardServiceClient _client;
 
-  Future<List<Redeem>> fetchRedeems() async {
-    final data = await _httpClient.get(urlFragment: UrlFragment.rewards);
-    final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
-    return parsed.isEmpty
-        ? []
-        : parsed.map((json) => Redeem.fromJson(json)).toList();
+  Future<List<Reward>> fetchRewards() async {
+    final request = Empty();
+    final List<Reward> rewards = [];
+    final response = _client.findUserRewards(request);
+
+    await for (final update in response) {
+      rewards.add(update.reward);
+    }
+
+    return rewards;
   }
 
-  Future<Redeem?> fetchRedeem(String redeemId) async {
-    final data =
-        await _httpClient.get(urlFragment: UrlFragment.reward, id: redeemId);
-    final json = jsonDecode(data);
-    return Redeem.fromJson(json);
+  Future<Reward> fetchReward(String rewardId) async {
+    final request = RewardRequest(rewardId: rewardId);
+    final response = await _client.findReward(request);
+    return response.reward;
   }
 
-  Future<void> updateTextToSpeech(String redeemId, Speech speech) async {
-    await _httpClient.put(
-        urlFragment: UrlFragment.rewardSpeech, id: redeemId, object: speech);
+  Future<Speech> updateRewardSpeech(String rewardId, Speech speech) async {
+    final request = RewardSpeechRequest(rewardId: rewardId, speech: speech);
+    final response = await _client.updateRewardSpeech(request);
+    return response.reward.speech;
   }
 
-  Future<List<Asset>> fetchRedeemAssets(String redeemId) async {
-    final data = await _httpClient.get(
-        urlFragment: UrlFragment.rewardAssets, id: redeemId);
-    final parsed = (jsonDecode(data) as List).cast<Map<String, dynamic>>();
-    return parsed.isEmpty
-        ? []
-        : parsed.map<Asset>((json) => Asset.fromJson(json)).toList();
+  Future<List<Asset>> fetchRewardAssets(String rewardId) async {
+    final reward = await fetchReward(rewardId);
+    return reward.assets;
   }
 
-  Future<void> addRedeemAssets(
-      String redeemId, double volume, List<File> files) async {
-    await _httpClient.multipart(
-        urlFragment: UrlFragment.rewardAssets,
-        id: redeemId,
-        fields: {"volume": volume.toInt().toString()},
-        files: files);
+  Future<List<Asset>> addRewardAssets(
+      Stream<AddRewardAssetRequest> request) async {
+    final response = await _client.addRewardAssets(request);
+    return response.reward.assets;
   }
 
-  Future<void> deleteRedeemAsset(String redeemId, String fileName) async {
-    await _httpClient.delete(
-        urlFragment: UrlFragment.rewardAssets,
-        id: redeemId,
-        headers: {"ASSET_NAME": fileName});
+  Future<void> updateRewardAssets(
+      String rewardId, String fileName, int volume) async {
+    final request = UpdateRewardAssetRequest(
+        rewardId: rewardId, fileName: fileName, volume: volume);
+    await _client.updateRewardAssets(request);
+  }
+
+  Future<List<Asset>> deleteRewardAsset(
+      String rewardId, String fileName) async {
+    final request = RemoveRewardAssetRequest(rewardId: rewardId);
+    request.fileName.add(fileName);
+    final response = await _client.removeRewardAssets(request);
+    return response.reward.assets;
   }
 }

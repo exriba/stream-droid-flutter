@@ -23,7 +23,7 @@ class DependencyManager {
       UserService(getIt<ISecureStorage>(), getIt<AuthInterceptor>()),
     );
     getIt.registerSingleton<RewardService>(
-      RewardService(getIt<IDroidClient>()),
+      RewardService(getIt<AuthInterceptor>()),
     );
     getIt.registerSingleton<RedeemService>(
       RedeemService(getIt<AuthInterceptor>()),
