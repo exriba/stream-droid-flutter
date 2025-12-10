@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_droid_app/data/models/redeem.dart';
-import 'package:stream_droid_app/presentation/viewmodels/redeem_card_view_model.dart';
+import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
+import 'package:stream_droid_app/presentation/viewmodels/reward_card_view_model.dart';
 
-class RedeemCard extends StatelessWidget {
-  const RedeemCard({super.key, required this.redeem});
-  final Redeem redeem;
+class RewardCard extends StatelessWidget {
+  const RewardCard({super.key, required this.reward});
+  final Reward reward;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class RedeemCard extends StatelessWidget {
                 child: SizedBox(
                   width: 100,
                   child: Text(
-                    redeem.title,
+                    reward.title,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -29,7 +29,7 @@ class RedeemCard extends StatelessWidget {
               ),
               Flexible(
                 flex: 1,
-                child: Image.network(redeem.imageUrl),
+                child: Image.network(reward.imageUrl),
               ),
               Flexible(
                 flex: 2,
@@ -43,7 +43,7 @@ class RedeemCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    redeem.prompt,
+                    reward.prompt,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
@@ -54,7 +54,7 @@ class RedeemCard extends StatelessWidget {
         Expanded(
           flex: 3,
           child: ChangeNotifierProvider(
-            create: (context) => RedeemCardViewModel(redeem.id, redeem.speech),
+            create: (context) => RewardCardViewModel(reward.id, reward.speech),
             child: LayoutBuilder(builder: (context, constraints) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,7 +79,7 @@ class RedeemCard extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 1,
-                        child: Consumer<RedeemCardViewModel>(
+                        child: Consumer<RewardCardViewModel>(
                           builder: (context, viewModel, child) {
                             return Switch(
                               value: viewModel.speech.enabled,

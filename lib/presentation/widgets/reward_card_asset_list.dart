@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/core/context/preference_context.dart';
-import 'package:stream_droid_app/presentation/viewmodels/redeem_card_asset_list_view_model.dart';
+import 'package:stream_droid_app/presentation/viewmodels/reward_card_asset_list_view_model.dart';
 import 'package:stream_droid_app/presentation/widgets/circular_progress.dart';
-import 'package:stream_droid_app/presentation/widgets/redeem_card_asset.dart';
+import 'package:stream_droid_app/presentation/widgets/reward_card_asset.dart';
 
-class RedeemCardAssetList extends StatelessWidget {
-  const RedeemCardAssetList({super.key, required this.redeemId});
-  final String redeemId;
+class RewardCardAssetList extends StatelessWidget {
+  const RewardCardAssetList({super.key, required this.rewardId});
+  final String rewardId;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class RedeemCardAssetList extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) {
         final viewModel =
-            RedeemCardAssetListViewModel(redeemId, defaultMediaAssetVolume);
-        viewModel.loadRedeemAssets();
+            RewardCardAssetListViewModel(rewardId, defaultMediaAssetVolume);
+        viewModel.loadRewardAssets();
         return viewModel;
       },
       child: Container(
@@ -28,7 +28,7 @@ class RedeemCardAssetList extends StatelessWidget {
           color: Colors.grey[700],
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Consumer<RedeemCardAssetListViewModel>(
+        child: Consumer<RewardCardAssetListViewModel>(
           builder: (context, viewModel, child) {
             return Scaffold(
               backgroundColor: Colors.grey[700],
@@ -37,21 +37,21 @@ class RedeemCardAssetList extends StatelessWidget {
                   : ListView.builder(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 8),
-                      itemCount: viewModel.redeemAssets.length,
-                      prototypeItem: viewModel.redeemAssets.isNotEmpty
-                          ? RedeemCardAsset(
-                              key: Key(viewModel.redeemAssets.first.id),
-                              asset: viewModel.redeemAssets.first,
-                              redeemId: redeemId,
-                              handleRemove: viewModel.removeRedeemAsset,
+                      itemCount: viewModel.rewardAssets.length,
+                      prototypeItem: viewModel.rewardAssets.isNotEmpty
+                          ? RewardCardAsset(
+                              key: Key(viewModel.rewardAssets.first.id),
+                              asset: viewModel.rewardAssets.first,
+                              rewardId: rewardId,
+                              handleRemove: viewModel.removeRewardAsset,
                             )
                           : null,
                       itemBuilder: (context, index) {
-                        return RedeemCardAsset(
-                          key: Key(viewModel.redeemAssets[index].id),
-                          asset: viewModel.redeemAssets[index],
-                          redeemId: redeemId,
-                          handleRemove: viewModel.removeRedeemAsset,
+                        return RewardCardAsset(
+                          key: Key(viewModel.rewardAssets[index].id),
+                          asset: viewModel.rewardAssets[index],
+                          rewardId: rewardId,
+                          handleRemove: viewModel.removeRewardAsset,
                         );
                       },
                     ),
@@ -59,7 +59,7 @@ class RedeemCardAssetList extends StatelessWidget {
                 mini: true,
                 heroTag: null,
                 onPressed: () async {
-                  await viewModel.addRedeemAssets();
+                  await viewModel.addRewardAssets();
                 },
                 child: const Icon(
                   Icons.add,

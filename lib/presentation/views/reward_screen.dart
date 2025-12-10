@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/core/utils/types.dart';
-import 'package:stream_droid_app/presentation/viewmodels/redeem_screen_view_model.dart';
+import 'package:stream_droid_app/presentation/viewmodels/reward_screen_view_model.dart';
 import 'package:stream_droid_app/presentation/widgets/circular_progress.dart';
-import 'package:stream_droid_app/presentation/widgets/redeem_card_asset_list.dart';
-import 'package:stream_droid_app/presentation/widgets/redeem_card.dart';
+import 'package:stream_droid_app/presentation/widgets/reward_card_asset_list.dart';
+import 'package:stream_droid_app/presentation/widgets/reward_card.dart';
 
-class RedeemScreen extends StatelessWidget {
-  const RedeemScreen({super.key});
+class RewardScreen extends StatelessWidget {
+  const RewardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RedeemScreenViewModel>(
+    return Consumer<RewardScreenViewModel>(
       builder: (context, viewModel, child) {
         return Container(
           margin: const EdgeInsets.all(10),
@@ -28,8 +28,8 @@ class RedeemScreen extends StatelessWidget {
                     flex: 2,
                     child: viewModel.loading
                         ? const CircularProgress()
-                        : RedeemCard(
-                            redeem: viewModel.redeem!,
+                        : RewardCard(
+                            reward: viewModel.reward!,
                           ),
                   ),
                   const VerticalDivider(
@@ -38,8 +38,8 @@ class RedeemScreen extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 5,
-                    child: RedeemCardAssetList(
-                      redeemId: viewModel.redeemId,
+                    child: RewardCardAssetList(
+                      rewardId: viewModel.rewardId,
                     ),
                   ),
                 ],

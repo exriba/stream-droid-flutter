@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
-import 'package:stream_droid_app/data/models/redeem.dart';
+import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/domain/services/reward_service.dart';
 
-class RedeemScreenViewModel extends ChangeNotifier {
-  RedeemScreenViewModel(this.redeemId) {
+class RewardScreenViewModel extends ChangeNotifier {
+  RewardScreenViewModel(this.rewardId) {
     _rewardService = DependencyManager.getIt<RewardService>();
   }
-  final String redeemId;
+  final String rewardId;
   late RewardService _rewardService;
 
   bool loading = false;
-  Redeem? redeem;
+  Reward? reward;
 
-  Future<void> loadRedeem() async {
+  Future<void> loadReward() async {
     loading = true;
     notifyListeners();
 
-    redeem = await _rewardService.fetchRedeem(redeemId);
+    reward = await _rewardService.fetchReward(rewardId);
 
     loading = false;
     notifyListeners();

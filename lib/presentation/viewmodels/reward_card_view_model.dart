@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
-import 'package:stream_droid_app/data/models/speech.dart';
+import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/domain/services/reward_service.dart';
 
-class RedeemCardViewModel extends ChangeNotifier {
-  RedeemCardViewModel(this._redeemId, Speech? redeemSpeech) {
-    speech = redeemSpeech ?? Speech(enabled: false);
+class RewardCardViewModel extends ChangeNotifier {
+  RewardCardViewModel(this._rewardId, Speech? _speech) {
+    speech = _speech ?? Speech(enabled: false);
     _rewardService = DependencyManager.getIt<RewardService>();
   }
-  final String _redeemId;
+  final String _rewardId;
   late RewardService _rewardService;
   late Speech speech;
 
   Future<void> toggleTextToSpeech(bool value) async {
-    final redeemSpeech = Speech(enabled: value);
-    await _rewardService.updateTextToSpeech(_redeemId, speech);
-
-    speech = redeemSpeech;
+    final rewardSpeech = Speech(enabled: value);
+    speech = await _rewardService.updateRewardSpeech(_rewardId, rewardSpeech);
     notifyListeners();
   }
 }
