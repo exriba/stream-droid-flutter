@@ -15,18 +15,6 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use rewardRequestDescriptor instead')
-const RewardRequest$json = {
-  '1': 'RewardRequest',
-  '2': [
-    {'1': 'reward_id', '3': 1, '4': 1, '5': 9, '10': 'rewardId'},
-  ],
-};
-
-/// Descriptor for `RewardRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List rewardRequestDescriptor = $convert.base64Decode(
-    'Cg1SZXdhcmRSZXF1ZXN0EhsKCXJld2FyZF9pZBgBIAEoCVIIcmV3YXJkSWQ=');
-
 @$core.Deprecated('Use userRedeemResponseDescriptor instead')
 const UserRedeemResponse$json = {
   '1': 'UserRedeemResponse',

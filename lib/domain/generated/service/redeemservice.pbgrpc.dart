@@ -19,6 +19,7 @@ import 'package:stream_droid_app/domain/generated/google/protobuf/empty.pb.dart'
     as $0;
 
 import 'redeemservice.pb.dart' as $1;
+import 'rewardservice.pb.dart' as $2;
 
 export 'redeemservice.pb.dart';
 
@@ -44,7 +45,7 @@ class GrpcRedeemServiceClient extends $grpc.Client {
   }
 
   $grpc.ResponseFuture<$1.UserRedeemResponse> findUserRedeemStatisticsByReward(
-    $1.RewardRequest request, {
+    $2.RewardRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$findUserRedeemStatisticsByReward, request,
@@ -59,9 +60,9 @@ class GrpcRedeemServiceClient extends $grpc.Client {
           ($0.Empty value) => value.writeToBuffer(),
           $1.RewardRedeemResponse.fromBuffer);
   static final _$findUserRedeemStatisticsByReward =
-      $grpc.ClientMethod<$1.RewardRequest, $1.UserRedeemResponse>(
+      $grpc.ClientMethod<$2.RewardRequest, $1.UserRedeemResponse>(
           '/GrpcRedeemService/FindUserRedeemStatisticsByReward',
-          ($1.RewardRequest value) => value.writeToBuffer(),
+          ($2.RewardRequest value) => value.writeToBuffer(),
           $1.UserRedeemResponse.fromBuffer);
 }
 
@@ -77,12 +78,12 @@ abstract class GrpcRedeemServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($1.RewardRedeemResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.RewardRequest, $1.UserRedeemResponse>(
+    $addMethod($grpc.ServiceMethod<$2.RewardRequest, $1.UserRedeemResponse>(
         'FindUserRedeemStatisticsByReward',
         findUserRedeemStatisticsByReward_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.RewardRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $2.RewardRequest.fromBuffer(value),
         ($1.UserRedeemResponse value) => value.writeToBuffer()));
   }
 
@@ -95,10 +96,10 @@ abstract class GrpcRedeemServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.Empty request);
 
   $async.Future<$1.UserRedeemResponse> findUserRedeemStatisticsByReward_Pre(
-      $grpc.ServiceCall $call, $async.Future<$1.RewardRequest> $request) async {
+      $grpc.ServiceCall $call, $async.Future<$2.RewardRequest> $request) async {
     return findUserRedeemStatisticsByReward($call, await $request);
   }
 
   $async.Future<$1.UserRedeemResponse> findUserRedeemStatisticsByReward(
-      $grpc.ServiceCall call, $1.RewardRequest request);
+      $grpc.ServiceCall call, $2.RewardRequest request);
 }
