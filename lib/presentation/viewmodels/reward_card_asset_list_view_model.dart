@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
@@ -26,23 +25,17 @@ class RewardCardAssetListViewModel extends ChangeNotifier {
   }
 
   Future<void> addRewardAssets() async {
-    FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['mp3', 'mp4'],
-      allowMultiple: true,
-      withData: true,
-    );
+    loading = true;
+    notifyListeners();
 
-    if (filePickerResult != null) {
-      loading = true;
-      notifyListeners();
-
-      rewardAssets = await _rewardService.addRewardAssets(
-          filePickerResult, _rewardId, _defaultVolume.toInt());
-
-      loading = false;
-      notifyListeners();
+    final assets =
+        await _rewardService.addRewardAssets(_rewardId, _defaultVolume.toInt());
+    if (assets.isNotEmpty) {
+      rewardAssets = assets;
     }
+
+    loading = false;
+    notifyListeners();
   }
 
   Future<void> removeRewardAsset(String fileName) async {

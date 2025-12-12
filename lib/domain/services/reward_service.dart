@@ -1,24 +1,14 @@
 import 'dart:async';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:grpc/grpc.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/domain/generated/google/protobuf/empty.pb.dart';
 import 'package:stream_droid_app/domain/generated/service/rewardservice.pbgrpc.dart';
 import 'package:stream_droid_app/domain/services/auth_interceptor.dart';
-import 'package:stream_droid_app/core/constants/constants.dart' as constants;
 
 // TODO: handle errors for all these methods.
 class RewardService {
-  RewardService(AuthInterceptor authInterceptor) {
-    final channel = ClientChannel(
-      constants.serverName,
-      port: constants.serverPort,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
-        // TODO: Use secure credentials for production
-      ),
-    );
+  RewardService(ClientChannel channel, AuthInterceptor authInterceptor) {
     _client = GrpcRewardServiceClient(channel, interceptors: [authInterceptor]);
   }
   late GrpcRewardServiceClient _client;
@@ -53,23 +43,46 @@ class RewardService {
   }
 
   Future<List<Asset>> addRewardAssets(
-      FilePickerResult result, String rewardId, int defaultVolume) async {
-    final requestController = StreamController<AddRewardAssetRequest>();
-    final future = _client.addRewardAssets(requestController.stream);
+      String rewardId, int defaultVolume) async {
+    int totalFileSize = 0;
+    final int maxTotalSizeBytes = 25 * 1024 * 1024;
+    FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['mp3', 'mp4'],
+      allowMultiple: true,
+      withData: true,
+    );
 
-    for (final file in result.files) {
-      final request = AddRewardAssetRequest(
-        rewardId: rewardId,
-        fileName: file.name,
-        volume: defaultVolume,
-        file: file.bytes,
-      );
-      requestController.add(request);
+    if (filePickerResult != null) {
+      for (var file in filePickerResult.files) {
+        totalFileSize += file.size;
+      }
+
+      if (totalFileSize > maxTotalSizeBytes) {
+        return [];
+        // throw Exception(
+        //     'Total file size exceeds the maximum limit of 25 MB.');
+      }
+
+      final requestController = StreamController<AddRewardAssetRequest>();
+      final future = _client.addRewardAssets(requestController.stream);
+
+      for (final file in filePickerResult.files) {
+        final request = AddRewardAssetRequest(
+          rewardId: rewardId,
+          fileName: file.name,
+          volume: defaultVolume,
+          file: file.bytes,
+        );
+        requestController.add(request);
+      }
+      requestController.close();
+
+      final response = await future;
+      return response.reward.assets;
     }
-    requestController.close();
 
-    final response = await future;
-    return response.reward.assets;
+    return [];
   }
 
   Future<void> updateRewardAssets(
