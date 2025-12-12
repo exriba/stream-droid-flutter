@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
-import 'package:stream_droid_app/domain/generated/service/rewardservice.pb.dart';
 import 'package:stream_droid_app/domain/services/reward_service.dart';
 
 class RewardCardAssetListViewModel extends ChangeNotifier {
@@ -28,32 +26,19 @@ class RewardCardAssetListViewModel extends ChangeNotifier {
   }
 
   Future<void> addRewardAssets() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['mp3', 'mp4'],
       allowMultiple: true,
+      withData: true,
     );
 
-    if (result != null) {
+    if (filePickerResult != null) {
       loading = true;
       notifyListeners();
 
-      List<AddRewardAssetRequest> requests = [];
-
-      for (final path in result.paths) {
-        final file = File(path!);
-        final bytes = await file.readAsBytes();
-        final request = AddRewardAssetRequest(
-          rewardId: _rewardId,
-          fileName: path,
-          volume: _defaultVolume.toInt(),
-          file: bytes,
-        );
-        requests.add(request);
-      }
-
-      Stream<AddRewardAssetRequest> request = Stream.fromIterable(requests);
-      rewardAssets = await _rewardService.addRewardAssets(request);
+      rewardAssets = await _rewardService.addRewardAssets(
+          filePickerResult, _rewardId, _defaultVolume.toInt());
 
       loading = false;
       notifyListeners();

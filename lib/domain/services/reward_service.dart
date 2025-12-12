@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/domain/generated/google/protobuf/empty.pb.dart';
@@ -50,8 +53,22 @@ class RewardService {
   }
 
   Future<List<Asset>> addRewardAssets(
-      Stream<AddRewardAssetRequest> request) async {
-    final response = await _client.addRewardAssets(request);
+      FilePickerResult result, String rewardId, int defaultVolume) async {
+    final requestController = StreamController<AddRewardAssetRequest>();
+    final future = _client.addRewardAssets(requestController.stream);
+
+    for (final file in result.files) {
+      final request = AddRewardAssetRequest(
+        rewardId: rewardId,
+        fileName: file.name,
+        volume: defaultVolume,
+        file: file.bytes,
+      );
+      requestController.add(request);
+    }
+    requestController.close();
+
+    final response = await future;
     return response.reward.assets;
   }
 
