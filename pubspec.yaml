@@ -48,7 +48,6 @@ dependencies:
   get_it: ^9.1.1
   url_launcher: ^6.2.5
   file_picker: ^10.3.7
-  eventflux: ^2.2.1
   toastification: ^3.0.3
   talker: ^5.1.1
   localstorage: ^6.0.0
