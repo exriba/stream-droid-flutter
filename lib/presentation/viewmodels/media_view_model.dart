@@ -1,26 +1,26 @@
-import 'dart:io';
-import 'dart:convert';
-import 'package:eventflux/client.dart';
-import 'package:eventflux/enum.dart';
-import 'package:eventflux/models/response.dart';
+import 'package:grpc/grpc.dart';
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:stream_droid_app/core/constants/constants.dart' as constants;
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
-import 'package:stream_droid_app/core/utils/secure_storage.dart';
-import 'package:stream_droid_app/data/models/asset_event.dart';
+import 'package:stream_droid_app/domain/generated/common/event.pb.dart';
+import 'package:stream_droid_app/domain/generated/service/eventservice.pb.dart';
+import 'package:stream_droid_app/domain/services/event_service.dart';
 
 class MediaViewModel extends ChangeNotifier {
-  VideoController? videoController;
-  final Player _videoPlayer = Player();
-  final List<Player> _audioPlayers = List.empty(growable: true);
+  MediaViewModel() {
+    videoController = null;
+    _videoPlayer = Player();
+    _audioPlayers = List.empty(growable: true);
+    _eventService = DependencyManager.getIt<EventService>();
+  }
+  late ResponseStream<EventResponse> _eventResponse;
+  late VideoController? videoController;
+  late EventService _eventService;
+  late List<Player> _audioPlayers;
+  late Player _videoPlayer;
 
   Future<void> initialize() async {
-    final key = constants.appName;
-    final secureStorage = DependencyManager.getIt.get<ISecureStorage>();
-    final token = await secureStorage.read(key: key);
-
     _videoPlayer.stream.completed.listen((completed) async {
       final currentMediaIndex = _videoPlayer.state.playlist.index;
       final lastMediaIndex = _videoPlayer.state.playlist.medias.length - 1;
@@ -30,57 +30,50 @@ class MediaViewModel extends ChangeNotifier {
         notifyListeners();
       }
 
-      if (completed && hasListeners) {
+      if (completed) {
         await _videoPlayer.next();
       }
     });
 
-    EventFlux.instance.connect(
-      EventFluxConnectionType.get,
-      constants.serverEventAddress,
-      header: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-        HttpHeaders.acceptHeader: "text/event-stream",
-        HttpHeaders.cacheControlHeader: "no-cache",
-      },
-      onSuccessCallback: (EventFluxResponse? response) {
-        response?.stream?.listen((x) {
-          if (x.event == 'AUDIO') {
-            final json = jsonDecode(x.data);
-            final assetEvent = AssetEvent.fromJson(json);
-            playAudio(assetEvent);
-          }
-          if (x.event == 'VIDEO') {
-            final json = jsonDecode(x.data);
-            final assetEvent = AssetEvent.fromJson(json);
-            playVideo(assetEvent);
-          }
-        });
-      },
-      onError: (error) async {
-        await _closeSseConnection();
-      },
-    );
+    _eventResponse = _eventService.listen();
+
+    try {
+      await for (final notification in _eventResponse) {
+        if (notification.event.eventType == NotificationEvent_EventType.AUDIO) {
+          await playAudio(notification.event);
+        } else if (notification.event.eventType ==
+            NotificationEvent_EventType.VIDEO) {
+          await playVideo(notification.event);
+        } else {}
+      }
+    } on GrpcError catch (error) {
+      if (error.code == StatusCode.cancelled) {
+        // Stream was cancelled, likely due to disposal. Ignore.
+        return;
+      } else {
+        print('Error receiving event notifications: $error');
+      }
+    }
   }
 
-  Future<void> playAudio(AssetEvent event) async {
+  Future<void> playAudio(NotificationEvent notification) async {
     final audioPlayer = Player();
     audioPlayer.stream.completed.listen((completed) async {
-      if (completed && hasListeners) {
+      if (completed) {
         await audioPlayer.dispose();
         _audioPlayers.remove(audioPlayer);
       }
     });
 
-    final playable = Media(event.uri);
-    await audioPlayer.setVolume(event.volume.toDouble());
+    final playable = Media(notification.assetFileEvent.uri);
+    await audioPlayer.setVolume(notification.assetFileEvent.volume.toDouble());
     await audioPlayer.open(playable);
     _audioPlayers.add(audioPlayer);
   }
 
-  Future<void> playVideo(AssetEvent event) async {
-    final playable = Media(event.uri);
-    await _videoPlayer.setVolume(event.volume.toDouble());
+  Future<void> playVideo(NotificationEvent notification) async {
+    final playable = Media(notification.assetFileEvent.uri);
+    await _videoPlayer.setVolume(notification.assetFileEvent.volume.toDouble());
 
     if (videoController == null) {
       videoController = VideoController(_videoPlayer);
@@ -95,10 +88,10 @@ class MediaViewModel extends ChangeNotifier {
   }
 
   Future<void> _releaseAudioPlayers() async {
-    final futures1 = _audioPlayers.map((player) => player.stop());
-    await Future.wait(futures1);
-    final futures2 = _audioPlayers.map((player) => player.dispose());
-    await Future.wait(futures2);
+    final closePlayers = _audioPlayers.map((player) => player.stop());
+    await Future.wait(closePlayers);
+    final disposePlayers = _audioPlayers.map((player) => player.dispose());
+    await Future.wait(disposePlayers);
   }
 
   Future<void> _releaseVideoPlayer() async {
@@ -107,13 +100,9 @@ class MediaViewModel extends ChangeNotifier {
     await _videoPlayer.dispose();
   }
 
-  Future<void> _closeSseConnection() async {
-    await EventFlux.instance.disconnect();
-  }
-
   @override
   void dispose() {
-    _closeSseConnection();
+    _eventResponse.cancel();
     _releaseAudioPlayers();
     _releaseVideoPlayer();
     super.dispose();
