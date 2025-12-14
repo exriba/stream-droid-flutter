@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/core/utils/types.dart';
 import 'package:stream_droid_app/domain/services/user_service.dart';
 import 'package:stream_droid_app/presentation/viewmodels/dashboard_view_model.dart';
+import 'package:stream_droid_app/presentation/viewmodels/login_view_model.dart';
 import 'package:stream_droid_app/presentation/viewmodels/media_view_model.dart';
 import 'package:stream_droid_app/presentation/viewmodels/reward_screen_view_model.dart';
 import 'package:stream_droid_app/presentation/viewmodels/statistics_view_model.dart';
@@ -23,18 +25,17 @@ final GoRouter routerConfiguration = GoRouter(
   initialLocation: ViewRoute.dashboard.route,
   redirect: (context, state) async {
     final userService = DependencyManager.getIt<UserService>();
-    final loginRoute = state.matchedLocation == ViewRoute.login.route;
-    final authenticated = await userService.isAuthenticated();
+    bool authenticated = false;
 
-    if (!authenticated && !loginRoute) {
-      return ViewRoute.login.route;
+    try {
+      authenticated = await userService.authenticationStatus();
+    } on GrpcError catch (error) {
+      // TODO: Handle error appropriately. Send user to error page?
+      print('Error during redirection: $error');
+      await userService.logout();
     }
 
-    if (authenticated && loginRoute) {
-      return ViewRoute.dashboard.route;
-    }
-
-    return null;
+    return authenticated ? null : ViewRoute.login.route;
   },
   routes: [
     ShellRoute(
@@ -52,7 +53,7 @@ final GoRouter routerConfiguration = GoRouter(
               child: ChangeNotifierProvider(
                 create: (context) {
                   final viewModel = DashboardViewModel();
-                  viewModel.loadRedeems();
+                  viewModel.loadRewards();
                   return viewModel;
                 },
                 child: const Dashboard(),
@@ -124,7 +125,14 @@ final GoRouter routerConfiguration = GoRouter(
       path: ViewRoute.login.route,
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) {
-        return const Login();
+        return ChangeNotifierProvider(
+          create: (context) {
+            final viewModel = LoginViewModel();
+            viewModel.loadUrl();
+            return viewModel;
+          },
+          child: const Login(),
+        );
       },
     ),
   ],

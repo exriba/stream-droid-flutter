@@ -10,9 +10,9 @@ class NavigationSideBar extends StatelessWidget {
   const NavigationSideBar({super.key, required this.view});
   final Widget view;
 
-  Future<void> handleLogout(BuildContext context) async {
+  Future<void> _handleLogout(BuildContext context) async {
     final userService = DependencyManager.getIt<UserService>();
-    await userService.onLogout();
+    await userService.logout();
 
     if (context.mounted) {
       context.go(ViewRoute.login.route);
@@ -84,7 +84,7 @@ class NavigationSideBar extends StatelessWidget {
                   highlightColor: Colors.transparent,
                   icon: const Icon(Icons.logout),
                   onPressed: () async {
-                    await handleLogout(context);
+                    await _handleLogout(context);
                   },
                 ),
               ),
