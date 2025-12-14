@@ -14,7 +14,7 @@ class Statistics extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child:
           Consumer<StatisticsViewModel>(builder: (context, viewModel, child) {
-        if (viewModel.loading) {
+        if (viewModel.state.loading) {
           return const CircularProgress();
         }
 
@@ -22,7 +22,7 @@ class Statistics extends StatelessWidget {
           final shortestSide = constraints.biggest.shortestSide;
           return PieChart(
             PieChartData(
-              sections: viewModel.rewardRedeems
+              sections: viewModel.state.data!
                   .map((rewardRedeem) => PieChartSectionData(
                         color: HexColor.fromHex(rewardRedeem.fill),
                         value: double.parse(rewardRedeem.percentage),
