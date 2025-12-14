@@ -14,9 +14,9 @@ class MediaViewModel extends ChangeNotifier {
     _audioPlayers = List.empty(growable: true);
     _eventService = DependencyManager.getIt<EventService>();
   }
-  late ResponseStream<EventResponse> _eventResponse;
-  late VideoController? videoController;
   late EventService _eventService;
+  ResponseStream<EventResponse>? _request;
+  late VideoController? videoController;
   late List<Player> _audioPlayers;
   late Player _videoPlayer;
 
@@ -35,10 +35,9 @@ class MediaViewModel extends ChangeNotifier {
       }
     });
 
-    _eventResponse = _eventService.listen();
-
     try {
-      await for (final notification in _eventResponse) {
+      _request = _eventService.listen();
+      await for (final notification in _request!) {
         if (notification.event.eventType == NotificationEvent_EventType.AUDIO) {
           await playAudio(notification.event);
         } else if (notification.event.eventType ==
@@ -102,7 +101,8 @@ class MediaViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    _eventResponse.cancel();
+    _request?.cancel();
+    _request = null;
     _releaseAudioPlayers();
     _releaseVideoPlayer();
     super.dispose();
