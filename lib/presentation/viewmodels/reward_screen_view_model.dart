@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
+import 'package:stream_droid_app/data/models/api_state.dart';
 import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
+import 'package:stream_droid_app/domain/generated/service/rewardservice.pb.dart';
 import 'package:stream_droid_app/domain/services/reward_service.dart';
 
 class RewardScreenViewModel extends ChangeNotifier {
@@ -9,17 +12,28 @@ class RewardScreenViewModel extends ChangeNotifier {
   }
   final String rewardId;
   late RewardService _rewardService;
-
-  late Reward reward;
-  bool loading = false;
+  ResponseFuture<RewardResponse>? _request;
+  late ApiState<Reward> state = ApiState.initial();
 
   Future<void> loadReward() async {
-    loading = true;
+    state = ApiState.loading();
     notifyListeners();
 
-    reward = await _rewardService.fetchReward(rewardId);
+    try {
+      _request = _rewardService.fetchReward(rewardId);
+      final response = await _request;
+      state = ApiState.success(response!.reward);
+      notifyListeners();
+    } on GrpcError catch (error) {
+      state = ApiState.error(error);
+      notifyListeners();
+    }
+  }
 
-    loading = false;
-    notifyListeners();
+  @override
+  void dispose() {
+    _request?.cancel();
+    _request = null;
+    super.dispose();
   }
 }

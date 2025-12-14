@@ -82,7 +82,7 @@ class RewardCard extends StatelessWidget {
                         child: Consumer<RewardCardViewModel>(
                           builder: (context, viewModel, child) {
                             return Switch(
-                              value: viewModel.speech.enabled,
+                              value: viewModel.state.data!.enabled,
                               activeThumbColor: Colors.black,
                               onChanged: (value) async {
                                 await viewModel.toggleTextToSpeech(value);

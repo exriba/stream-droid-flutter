@@ -13,7 +13,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DashboardViewModel>(builder: (context, viewModel, child) {
-      if (viewModel.loading) {
+      if (viewModel.state.loading) {
         return const CircularProgress();
       }
 
@@ -25,7 +25,7 @@ class Dashboard extends StatelessWidget {
             responsiveValue(context, xs: 1, sm: 2, md: 3, lg: 4, xl: 5),
         childAspectRatio: 1.4,
         // TODO: Convert to custom widget. Add zoom animation.
-        children: viewModel.rewards
+        children: viewModel.state.data!
             .map(
               (reward) => Material(
                 color: Colors.transparent,

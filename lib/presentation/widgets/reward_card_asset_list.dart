@@ -32,24 +32,24 @@ class RewardCardAssetList extends StatelessWidget {
           builder: (context, viewModel, child) {
             return Scaffold(
               backgroundColor: Colors.grey[700],
-              body: viewModel.loading
+              body: viewModel.state.loading
                   ? const CircularProgress()
                   : ListView.builder(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 8),
-                      itemCount: viewModel.rewardAssets.length,
-                      prototypeItem: viewModel.rewardAssets.isNotEmpty
+                      itemCount: viewModel.state.data!.length,
+                      prototypeItem: viewModel.state.data!.isNotEmpty
                           ? RewardCardAsset(
-                              key: Key(viewModel.rewardAssets.first.id),
-                              asset: viewModel.rewardAssets.first,
+                              key: Key(viewModel.state.data!.first.id),
+                              asset: viewModel.state.data!.first,
                               rewardId: rewardId,
                               handleRemove: viewModel.removeRewardAsset,
                             )
                           : null,
                       itemBuilder: (context, index) {
                         return RewardCardAsset(
-                          key: Key(viewModel.rewardAssets[index].id),
-                          asset: viewModel.rewardAssets[index],
+                          key: Key(viewModel.state.data![index].id),
+                          asset: viewModel.state.data![index],
                           rewardId: rewardId,
                           handleRemove: viewModel.removeRewardAsset,
                         );
