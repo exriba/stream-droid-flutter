@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/data/models/api_state.dart';
 import 'package:stream_droid_app/domain/generated/service/userservice.pbenum.dart';
 import 'package:stream_droid_app/domain/services/user_service.dart';
+import 'package:stream_droid_app/presentation/viewmodels/base_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LoginViewModel extends ChangeNotifier {
+class LoginViewModel extends BaseViewModel {
   LoginViewModel() {
     _userService = DependencyManager.getIt<UserService>();
   }

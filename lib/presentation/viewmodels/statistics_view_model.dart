@@ -1,12 +1,12 @@
 import 'package:grpc/grpc.dart';
-import 'package:flutter/material.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/data/models/api_state.dart';
 import 'package:stream_droid_app/domain/generated/common/redeem.pb.dart';
 import 'package:stream_droid_app/domain/generated/service/redeemservice.pb.dart';
 import 'package:stream_droid_app/domain/services/redeem_service.dart';
+import 'package:stream_droid_app/presentation/viewmodels/base_view_model.dart';
 
-class StatisticsViewModel extends ChangeNotifier {
+class StatisticsViewModel extends BaseViewModel {
   StatisticsViewModel() {
     _redeemService = DependencyManager.getIt<RedeemService>();
   }
@@ -25,7 +25,9 @@ class StatisticsViewModel extends ChangeNotifier {
       notifyListeners();
     } on GrpcError catch (error) {
       state = ApiState.error(error);
-      notifyListeners();
+      if (!super.disposed) {
+        notifyListeners();
+      }
     }
   }
 

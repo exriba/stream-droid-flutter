@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/core/utils/dependency_manager.dart';
 import 'package:stream_droid_app/data/models/api_state.dart';
 import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/domain/generated/service/rewardservice.pb.dart';
 import 'package:stream_droid_app/domain/services/reward_service.dart';
+import 'package:stream_droid_app/presentation/viewmodels/base_view_model.dart';
 
-class RewardCardAssetListViewModel extends ChangeNotifier {
+class RewardCardAssetListViewModel extends BaseViewModel {
   RewardCardAssetListViewModel(this._rewardId, this._defaultVolume) {
     _rewardService = DependencyManager.getIt.get<RewardService>();
   }
@@ -29,7 +29,9 @@ class RewardCardAssetListViewModel extends ChangeNotifier {
       notifyListeners();
     } on GrpcError catch (error) {
       state = ApiState.error(error);
-      notifyListeners();
+      if (!super.disposed) {
+        notifyListeners();
+      }
     }
   }
 
@@ -73,7 +75,9 @@ class RewardCardAssetListViewModel extends ChangeNotifier {
           notifyListeners();
         } on GrpcError catch (error) {
           state = ApiState.error(error);
-          notifyListeners();
+          if (!super.disposed) {
+            notifyListeners();
+          }
         } on Exception catch (error) {
           requestController.addError(error);
         } finally {
@@ -96,7 +100,9 @@ class RewardCardAssetListViewModel extends ChangeNotifier {
       notifyListeners();
     } on GrpcError catch (error) {
       state = ApiState.error(error);
-      notifyListeners();
+      if (!super.disposed) {
+        notifyListeners();
+      }
     }
   }
 
