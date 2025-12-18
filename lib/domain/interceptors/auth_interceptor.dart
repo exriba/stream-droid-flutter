@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:grpc/grpc.dart';
+import 'package:mutex/mutex.dart';
 import 'package:stream_droid_app/core/utils/secure_storage.dart';
 
 class AuthInterceptor implements ClientInterceptor {
-  AuthInterceptor(this._secureStorage);
+  AuthInterceptor(this._secureStorage) {
+    _tokenUpdateMutex = Mutex();
+  }
   final ISecureStorage _secureStorage;
+  late Mutex _tokenUpdateMutex;
 
   @override
   ResponseStream<R> interceptStreaming<Q, R>(
@@ -17,9 +21,7 @@ class AuthInterceptor implements ClientInterceptor {
     );
 
     final call = invoker(method, requests, newOptions);
-
-    call.headers.then(_handleResponseMetadata);
-
+    call.trailers.then(_handleTrailers);
     return call;
   }
 
@@ -31,9 +33,7 @@ class AuthInterceptor implements ClientInterceptor {
     );
 
     final call = invoker(method, request, newOptions);
-
-    call.headers.then(_handleResponseMetadata);
-
+    call.headers.then(_handleTrailers);
     return call;
   }
 
@@ -45,13 +45,15 @@ class AuthInterceptor implements ClientInterceptor {
     }
   }
 
-  FutureOr<void> _handleResponseMetadata(Map<String, String> metadata) async {
-    final bearerToken = metadata['authorization'];
-    if (bearerToken != null) {
-      final token = bearerToken.startsWith('Bearer ')
-          ? bearerToken.substring(7)
-          : bearerToken;
-      await _secureStorage.saveToken(token: token);
+  FutureOr<void> _handleTrailers(Map<String, String> metadata) async {
+    if (metadata.containsKey("access-token")) {
+      final newToken = metadata["access-token"];
+      await _tokenUpdateMutex.protect(() async {
+        final currentToken = await _secureStorage.getToken();
+        if (newToken != currentToken) {
+          await _secureStorage.saveToken(token: newToken!);
+        }
+      });
     }
   }
 }
