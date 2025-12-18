@@ -64,8 +64,7 @@ class DroidClient implements IDroidClient {
   }
 
   Future<String> _loadAccessTokenFromSecureStorage() async {
-    const key = constants.appName;
-    final value = await _secureStorage.read(key: key);
+    final value = await _secureStorage.getToken();
     return value != null ? 'Bearer $value' : '';
   }
 
