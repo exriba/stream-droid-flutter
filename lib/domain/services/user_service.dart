@@ -2,7 +2,6 @@ import 'package:grpc/grpc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:stream_droid_app/domain/generated/common/user.pbenum.dart';
 import 'package:stream_droid_app/core/utils/secure_storage.dart';
-import 'package:stream_droid_app/core/constants/constants.dart' as constants;
 import 'package:stream_droid_app/domain/generated/google/protobuf/empty.pb.dart';
 import 'package:stream_droid_app/domain/generated/service/userservice.pbgrpc.dart';
 import 'package:stream_droid_app/domain/services/auth_interceptor.dart';
@@ -35,11 +34,10 @@ class UserService {
   }
 
   Future<void> login(SessionStatus update) async {
-    await _secureStorage.write(
-        key: constants.appName, value: update.accessToken);
+    await _secureStorage.saveToken(token: update.accessToken);
   }
 
   Future<void> logout() async {
-    await _secureStorage.delete(key: constants.appName);
+    await _secureStorage.deleteToken();
   }
 }

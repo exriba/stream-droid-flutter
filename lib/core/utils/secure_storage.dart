@@ -1,9 +1,10 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:stream_droid_app/core/constants/constants.dart' as constants;
 
 abstract class ISecureStorage {
-  Future<String?> read({required String key});
-  Future<void> write({required String key, required String value});
-  Future<void> delete({required String key});
+  Future<String?> getToken();
+  Future<void> saveToken({required String token});
+  Future<void> deleteToken();
 }
 
 class SecureStorage implements ISecureStorage {
@@ -11,17 +12,17 @@ class SecureStorage implements ISecureStorage {
       const FlutterSecureStorage();
 
   @override
-  Future<String?> read({required String key}) async {
-    return await _flutterSecureStorage.read(key: key);
+  Future<String?> getToken() async {
+    return await _flutterSecureStorage.read(key: constants.appName);
   }
 
   @override
-  Future<void> write({required String key, required String value}) async {
-    await _flutterSecureStorage.write(key: key, value: value);
+  Future<void> saveToken({required String token}) async {
+    await _flutterSecureStorage.write(key: constants.appName, value: token);
   }
 
   @override
-  Future<void> delete({required String key}) async {
-    await _flutterSecureStorage.delete(key: key);
+  Future<void> deleteToken() async {
+    await _flutterSecureStorage.delete(key: constants.appName);
   }
 }
