@@ -4,7 +4,7 @@ import 'package:stream_droid_app/domain/generated/common/user.pbenum.dart';
 import 'package:stream_droid_app/core/utils/secure_storage.dart';
 import 'package:stream_droid_app/domain/generated/google/protobuf/empty.pb.dart';
 import 'package:stream_droid_app/domain/generated/service/userservice.pbgrpc.dart';
-import 'package:stream_droid_app/domain/services/auth_interceptor.dart';
+import 'package:stream_droid_app/domain/interceptors/auth_interceptor.dart';
 
 class UserService {
   UserService(this._secureStorage, ClientChannel channel,

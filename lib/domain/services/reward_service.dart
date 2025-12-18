@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/domain/generated/google/protobuf/empty.pb.dart';
 import 'package:stream_droid_app/domain/generated/service/rewardservice.pbgrpc.dart';
-import 'package:stream_droid_app/domain/services/auth_interceptor.dart';
+import 'package:stream_droid_app/domain/interceptors/auth_interceptor.dart';
 
 class RewardService {
   RewardService(ClientChannel channel, AuthInterceptor authInterceptor) {
