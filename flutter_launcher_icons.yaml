@@ -1,16 +1,13 @@
 flutter_launcher_icons:
-  android: false
-  ios: false
   image_path: "assets/icons/app-icon.png"
+  android: 
+    generate: false
+  ios: 
+    generate: false
   web:
     generate: false
-    image_path: "assets/icons/app-icon.png"
-    # background_color: "#hexcode"
-    # theme_color: "#hexcode"
-  windows:
-    generate: true
-    image_path: "assets/icons/app-icon.png"
-    icon_size: 256 # min:48, max:256, default: 48
   macos:
     generate: false
-    image_path: "assets/icons/app-icon.png"
+  windows:
+    generate: true
+    icon_size: 256 # min:48, max:256, default: 48
