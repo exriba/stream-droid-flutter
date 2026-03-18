@@ -112,7 +112,7 @@ class AppRouter {
     // Global redirect function
     redirect: (context, state) async {
       final container = ProviderScope.containerOf(context);
-      final service = container.read(usersProvider.notifier);
+      final service = container.read(userControllerProvider);
       bool authenticated = false;
 
       try {

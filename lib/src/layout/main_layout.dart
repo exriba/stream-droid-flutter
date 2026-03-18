@@ -33,7 +33,7 @@ final List<AppBarAction> _appBarActions = [
   AppBarAction(
     icon: Icons.logout_outlined,
     onPressed: (context, ref) async {
-      final service = ref.read(usersProvider.notifier);
+      final service = ref.read(userControllerProvider);
       await service.logout();
 
       if (context.mounted) {
