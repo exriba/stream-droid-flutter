@@ -9,10 +9,10 @@ import 'package:stream_droid_app/src/generated/service/eventservice.pb.dart';
 import 'package:stream_droid_app/src/providers/media_events.dart';
 import 'package:stream_droid_app/src/services/event_service.dart';
 
-part 'media_event_controller.g.dart';
+part 'media_event_subscriber.g.dart';
 
 @riverpod
-class MediaEventController extends _$MediaEventController {
+class MediaEventSubscriber extends _$MediaEventSubscriber {
   late final EventService _service;
   late final VideoController _videoController;
   final List<Player> _audioPlayers = [];
@@ -22,7 +22,7 @@ class MediaEventController extends _$MediaEventController {
   VideoController get controller => _videoController;
 
   @override
-  MediaEventController build() {
+  MediaEventSubscriber build() {
     _service = ref.read(eventServiceProvider);
     _videoController = VideoController(Player());
 

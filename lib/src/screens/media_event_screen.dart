@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:stream_droid_app/src/controllers/media_event_controller.dart';
+import 'package:stream_droid_app/src/notifiers/media_event_subscriber.dart';
 
 class MediaEventScreen extends ConsumerWidget {
   const MediaEventScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mediaEventController = ref.watch(mediaEventControllerProvider);
+    final mediaEventSubscriber = ref.watch(mediaEventSubscriberProvider);
 
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
@@ -20,7 +20,7 @@ class MediaEventScreen extends ConsumerWidget {
         ),
       ),
       child: Video(
-        controller: mediaEventController.controller,
+        controller: mediaEventSubscriber.controller,
         controls: NoVideoControls,
       ),
     );
