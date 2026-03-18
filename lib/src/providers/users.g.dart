@@ -20,20 +20,20 @@ final userServiceProvider = AutoDisposeProvider<UserService>.internal(
 );
 
 typedef UserServiceRef = AutoDisposeProviderRef<UserService>;
-String _$usersHash() => r'47e6703e8a1c0900eb14a3116d698c58481206a7';
+String _$userControllerHash() => r'9b64a781345e8a89f77eea854ebef12e45d60821';
 
-/// See also [Users].
-@ProviderFor(Users)
-final usersProvider =
-    AutoDisposeAsyncNotifierProvider<Users, LoginUrlResponse>.internal(
-  Users.new,
-  name: r'usersProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$usersHash,
+/// See also [userController].
+@ProviderFor(userController)
+final userControllerProvider = AutoDisposeProvider<UserController>.internal(
+  userController,
+  name: r'userControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Users = AutoDisposeAsyncNotifier<LoginUrlResponse>;
+typedef UserControllerRef = AutoDisposeProviderRef<UserController>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
