@@ -6,11 +6,11 @@ part of 'rewards.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$rewardServiceHash() => r'2004dc49706473c4669cc12c931f1dd06f40a16c';
+String _$rewardServiceHash() => r'd75a704e25e14757d7b5962cefb51eaa75948c08';
 
 /// See also [rewardService].
 @ProviderFor(rewardService)
-final rewardServiceProvider = AutoDisposeProvider<RewardService>.internal(
+final rewardServiceProvider = Provider<RewardService>.internal(
   rewardService,
   name: r'rewardServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,8 +20,23 @@ final rewardServiceProvider = AutoDisposeProvider<RewardService>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef RewardServiceRef = AutoDisposeProviderRef<RewardService>;
-String _$rewardsHash() => r'ada166e3ed7c52f8ac81752ce54def4afd93f991';
+typedef RewardServiceRef = ProviderRef<RewardService>;
+String _$rewardControllerHash() => r'e3c4c8c696ab27ecafe3cd08f8108662dad71404';
+
+/// See also [rewardController].
+@ProviderFor(rewardController)
+final rewardControllerProvider = AutoDisposeProvider<RewardController>.internal(
+  rewardController,
+  name: r'rewardControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$rewardControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef RewardControllerRef = AutoDisposeProviderRef<RewardController>;
+String _$rewardsHash() => r'fc7abc7dfe94eebfaf1fdf7ca3d587bb10dcf70d';
 
 /// See also [Rewards].
 @ProviderFor(Rewards)
