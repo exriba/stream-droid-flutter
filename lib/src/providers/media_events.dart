@@ -5,7 +5,7 @@ import 'package:stream_droid_app/src/services/event_service.dart';
 
 part 'media_events.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 EventService eventService(EventServiceRef ref) {
   final clientChannel = ref.read(clientChannelProvider);
   final authInterceptor = ref.read(authInterceptorProvider);

@@ -6,7 +6,7 @@ import 'package:stream_droid_app/src/services/redeem_service.dart';
 
 part 'redeems.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 RedeemService redeemService(RedeemServiceRef ref) {
   final clientChannel = ref.read(clientChannelProvider);
   final authInterceptor = ref.read(authInterceptorProvider);

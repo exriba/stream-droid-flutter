@@ -7,7 +7,7 @@ import 'package:stream_droid_app/src/services/user_service.dart';
 
 part 'users.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 UserService userService(UserServiceRef ref) {
   final clientChannel = ref.read(clientChannelProvider);
   final authInterceptor = ref.read(authInterceptorProvider);

@@ -4,7 +4,7 @@ import 'package:stream_droid_app/src/providers/secure_storage.dart';
 
 part 'auth_interceptor.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AuthInterceptor authInterceptor(AuthInterceptorRef ref) {
   final secureStorage = ref.read(secureStorageProvider);
   return AuthInterceptor(secureStorage);

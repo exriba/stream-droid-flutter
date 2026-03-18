@@ -4,7 +4,7 @@ import 'package:stream_droid_app/src/services/secure_storage.dart';
 
 part 'secure_storage.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 SecureStorage secureStorage(SecureStorageRef ref) {
   const secureStorage = FlutterSecureStorage();
   return SecureStorage(secureStorage);

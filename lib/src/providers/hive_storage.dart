@@ -5,7 +5,7 @@ import 'package:stream_droid_app/src/constants/constants.dart' as constants;
 
 part 'hive_storage.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 HiveStorage hiveStorage(HiveStorageRef ref) {
   final hiveBox = Hive.box(constants.settings);
   return HiveStorage(hiveBox);

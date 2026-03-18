@@ -4,7 +4,7 @@ import 'package:stream_droid_app/src/constants/constants.dart' as constants;
 
 part 'client_channel.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ClientChannel clientChannel(ClientChannelRef ref) {
   final channel = ClientChannel(
     constants.serverName,
