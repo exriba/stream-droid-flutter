@@ -2,5 +2,5 @@
 
 StreamDroid UI Application built with Flutter.
 
-<img width="1132" height="593" alt="image" src="https://github.com/user-attachments/assets/0f92b5cf-b059-4e6c-b4ef-c3efb42a9a8e" />
+<img width="987" height="595" alt="image" src="https://github.com/user-attachments/assets/1b8ffaae-84cb-42b7-91c9-22d8d3d65701" />
 <img width="984" height="593" alt="image" src="https://github.com/user-attachments/assets/a3a51f79-3b98-4e78-ac2b-cd60f3c0005c" />
