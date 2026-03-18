@@ -7,5 +7,5 @@ part 'secure_storage.g.dart';
 @riverpod
 SecureStorage secureStorage(SecureStorageRef ref) {
   const secureStorage = FlutterSecureStorage();
-  return SecureStorage(storage: secureStorage);
+  return SecureStorage(secureStorage);
 }

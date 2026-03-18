@@ -5,11 +5,13 @@ import 'package:stream_droid_app/src/generated/service/userservice.pbgrpc.dart';
 import 'package:stream_droid_app/src/interceptors/auth_interceptor.dart';
 
 class UserService {
-  UserService(ClientChannel channel, AuthInterceptor authInterceptor) {
-    _client = GrpcUserServiceClient(channel, interceptors: [authInterceptor]);
-  }
+  UserService(ClientChannel channel, AuthInterceptor authInterceptor)
+      : _client = GrpcUserServiceClient(
+          channel,
+          interceptors: [authInterceptor],
+        );
   final Uuid _uuid = const Uuid();
-  late GrpcUserServiceClient _client;
+  final GrpcUserServiceClient _client;
 
   Future<LoginUrlResponse> authorizationUrl() {
     final sessionId = _uuid.v4();

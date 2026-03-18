@@ -6,10 +6,13 @@ import 'package:stream_droid_app/src/generated/service/rewardservice.pbgrpc.dart
 import 'package:stream_droid_app/src/interceptors/auth_interceptor.dart';
 
 class RewardService {
-  RewardService(ClientChannel channel, AuthInterceptor authInterceptor) {
-    _client = GrpcRewardServiceClient(channel, interceptors: [authInterceptor]);
-  }
-  late GrpcRewardServiceClient _client;
+  RewardService(ClientChannel channel, AuthInterceptor authInterceptor)
+      : _client = GrpcRewardServiceClient(
+          channel,
+          interceptors: [authInterceptor],
+        );
+
+  final GrpcRewardServiceClient _client;
 
   Stream<RewardResponse> fetchRewards() {
     return _client.findUserRewards(Empty());

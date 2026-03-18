@@ -5,18 +5,21 @@ import 'package:stream_droid_app/src/services/user_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserController {
-  UserController({required this.service, required this.storage});
-  final UserService service;
-  final SecureStorage storage;
+  UserController(UserService service, SecureStorage storage)
+      : _service = service,
+        _storage = storage;
+
+  final UserService _service;
+  final SecureStorage _storage;
 
   Future<bool> isAuthenticated() async {
-    final userResponse = await service.authenticationStatus();
+    final userResponse = await _service.authenticationStatus();
     return userResponse.user.userType != User_UserType.UNSPECIFIED;
   }
 
   Future<bool> login() async {
     bool authenticated = false;
-    final response = await service.authorizationUrl();
+    final response = await _service.authorizationUrl();
     final authorizationUri = Uri.parse(response.authorizationUrl);
     final canLaunchAuthorizationUri = await canLaunchUrl(authorizationUri);
 
@@ -25,7 +28,7 @@ class UserController {
     }
 
     await launchUrl(authorizationUri, mode: LaunchMode.externalApplication);
-    final stream = service.monitorAuthentication(response.sessionId);
+    final stream = _service.monitorAuthentication(response.sessionId);
 
     await for (final update in stream) {
       if (update.status == SessionStatus_Status.ERROR) {
@@ -33,7 +36,7 @@ class UserController {
       }
 
       if (update.status == SessionStatus_Status.AUTHORIZED) {
-        await storage.saveToken(token: update.accessToken);
+        await _storage.saveToken(token: update.accessToken);
         authenticated = true;
         break;
       }
@@ -43,6 +46,6 @@ class UserController {
   }
 
   Future<void> logout() async {
-    await storage.deleteToken();
+    await _storage.deleteToken();
   }
 }

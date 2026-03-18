@@ -1,14 +1,14 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveStorage {
-  HiveStorage({required this.box});
-  final Box box;
+  HiveStorage(Box box) : _box = box;
+  final Box _box;
 
   Future<void> set(String key, dynamic value) async {
-    await box.put(key, value);
+    await _box.put(key, value);
   }
 
   T get<T>(String key, {T? defaultValue}) {
-    return box.get(key, defaultValue: defaultValue) as T;
+    return _box.get(key, defaultValue: defaultValue) as T;
   }
 }

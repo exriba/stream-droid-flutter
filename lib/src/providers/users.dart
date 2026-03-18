@@ -18,5 +18,5 @@ UserService userService(UserServiceRef ref) {
 UserController userController(UserControllerRef ref) {
   final secureStorage = ref.read(secureStorageProvider);
   final userService = ref.read(userServiceProvider);
-  return UserController(service: userService, storage: secureStorage);
+  return UserController(userService, secureStorage);
 }

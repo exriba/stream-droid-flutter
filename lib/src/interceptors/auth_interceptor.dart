@@ -4,11 +4,12 @@ import 'package:mutex/mutex.dart';
 import 'package:stream_droid_app/src/services/secure_storage.dart';
 
 class AuthInterceptor implements ClientInterceptor {
-  AuthInterceptor(this._secureStorage) {
-    _tokenUpdateMutex = Mutex();
-  }
-  final SecureStorage _secureStorage;
-  late Mutex _tokenUpdateMutex;
+  AuthInterceptor(SecureStorage storage)
+      : _storage = storage,
+        _mutex = Mutex();
+
+  final SecureStorage _storage;
+  final Mutex _mutex;
 
   @override
   ResponseStream<R> interceptStreaming<Q, R>(
@@ -46,7 +47,7 @@ class AuthInterceptor implements ClientInterceptor {
     Map<String, String> metadata,
     String uri,
   ) async {
-    final token = await _secureStorage.getToken();
+    final token = await _storage.getToken();
     if (token != null) {
       metadata['authorization'] = 'Bearer $token';
     }
@@ -55,10 +56,10 @@ class AuthInterceptor implements ClientInterceptor {
   FutureOr<void> _handleTrailers(Map<String, String> metadata) async {
     if (metadata.containsKey("access-token")) {
       final newToken = metadata["access-token"];
-      await _tokenUpdateMutex.protect(() async {
-        final currentToken = await _secureStorage.getToken();
+      await _mutex.protect(() async {
+        final currentToken = await _storage.getToken();
         if (newToken != currentToken) {
-          await _secureStorage.saveToken(token: newToken!);
+          await _storage.saveToken(token: newToken!);
         }
       });
     }
