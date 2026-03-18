@@ -7,6 +7,6 @@ part 'hive_storage.g.dart';
 
 @riverpod
 HiveStorage hiveStorage(HiveStorageRef ref) {
-  final box = Hive.box(constants.settings);
-  return HiveStorage(box);
+  final hiveBox = Hive.box(constants.settings);
+  return HiveStorage(box: hiveBox);
 }
