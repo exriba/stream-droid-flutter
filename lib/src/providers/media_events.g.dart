@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'media_event.dart';
+part of 'media_events.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -20,20 +20,5 @@ final eventServiceProvider = AutoDisposeProvider<EventService>.internal(
 );
 
 typedef EventServiceRef = AutoDisposeProviderRef<EventService>;
-String _$mediaEventHash() => r'af701c511f851ac41a9587a60bce6c9363cc9501';
-
-/// See also [MediaEvent].
-@ProviderFor(MediaEvent)
-final mediaEventProvider =
-    AutoDisposeAsyncNotifierProvider<MediaEvent, void>.internal(
-  MediaEvent.new,
-  name: r'mediaEventProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$mediaEventHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$MediaEvent = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
