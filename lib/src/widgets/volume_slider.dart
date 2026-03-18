@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class VolumeSetting extends ConsumerStatefulWidget {
-  const VolumeSetting({
+class VolumeSlider extends ConsumerStatefulWidget {
+  const VolumeSlider({
     super.key,
     this.text,
     this.volume = 0,
@@ -15,10 +15,10 @@ class VolumeSetting extends ConsumerStatefulWidget {
   final void Function(double value) handleVolumeChange;
 
   @override
-  ConsumerState<VolumeSetting> createState() => _VolumeSetting();
+  ConsumerState<VolumeSlider> createState() => _VolumeSetting();
 }
 
-class _VolumeSetting extends ConsumerState<VolumeSetting> {
+class _VolumeSetting extends ConsumerState<VolumeSlider> {
   double volume = 0;
   IconData iconData = Icons.volume_mute_rounded;
 

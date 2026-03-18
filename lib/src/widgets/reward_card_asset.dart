@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
-import 'package:stream_droid_app/src/widgets/volume_setting.dart';
+import 'package:stream_droid_app/src/widgets/volume_slider.dart';
 
 class RewardCardAsset extends ConsumerWidget {
   const RewardCardAsset({
@@ -43,7 +43,7 @@ class RewardCardAsset extends ConsumerWidget {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          VolumeSetting(
+          VolumeSlider(
             volume: asset.volume.toDouble(),
             handleVolumeChange: (value) {
               // TODO: Implement this
