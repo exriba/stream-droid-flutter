@@ -51,57 +51,63 @@ class MainLayout extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            margin: const EdgeInsets.all(4),
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Colors.purple[300],
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(
-                color: Colors.black,
-                width: 1,
-              ),
-              boxShadow: const [
-                BoxShadow(
-                  blurRadius: 4,
+      body: Container(
+        margin: const EdgeInsets.all(4),
+        child: Row(
+          spacing: 2,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: Colors.purple[300],
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
                   color: Colors.black,
-                  offset: Offset(-2, 2),
+                  width: 1,
                 ),
-              ],
-            ),
-            child: Column(
-              spacing: 10,
-              children: _appBarActions
-                  .map(
-                    (action) => Flexible(
-                      fit: FlexFit.tight,
-                      child: IconButton(
-                        iconSize: 32,
-                        icon: Icon(
-                          action.icon,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          action.onPressed(context, ref);
-                        },
-                        style: IconButton.styleFrom(
-                          splashFactory: NoSplash.splashFactory,
-                          highlightColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 4,
+                    color: Colors.black,
+                    offset: Offset(-2, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                spacing: 10,
+                children: _appBarActions
+                    .map(
+                      (action) => Flexible(
+                        fit: FlexFit.tight,
+                        child: IconButton(
+                          iconSize: 32,
+                          icon: Icon(
+                            action.icon,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            action.onPressed(context, ref);
+                          },
+                          style: IconButton.styleFrom(
+                            splashFactory: NoSplash.splashFactory,
+                            highlightColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             ),
-          ),
-          Expanded(
-            child: screen,
-          ),
-        ],
+            Expanded(
+              child: Container(
+                child: screen,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
