@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:stream_droid_app/src/providers/media_event.dart';
+import 'package:stream_droid_app/src/controllers/media_event_controller.dart';
 
-class MediaEventScreen extends ConsumerStatefulWidget {
+class MediaEventScreen extends ConsumerWidget {
   const MediaEventScreen({super.key});
 
   @override
-  ConsumerState<MediaEventScreen> createState() => _MediaEventScreen();
-}
-
-class _MediaEventScreen extends ConsumerState<MediaEventScreen> {
-  @override
-  Widget build(BuildContext context) {
-    ref.watch(mediaEventProvider);
-    final controller = ref.read(mediaEventProvider.notifier).videoController;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mediaEventController = ref.watch(mediaEventControllerProvider);
 
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
@@ -26,15 +20,9 @@ class _MediaEventScreen extends ConsumerState<MediaEventScreen> {
         ),
       ),
       child: Video(
-        controller: controller,
+        controller: mediaEventController.controller,
         controls: NoVideoControls,
       ),
     );
-  }
-
-  @override
-  void deactivate() {
-    ref.invalidate(mediaEventProvider);
-    super.deactivate();
   }
 }
