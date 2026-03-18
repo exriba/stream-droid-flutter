@@ -4,7 +4,7 @@ import 'package:stream_droid_app/src/providers/auth_interceptor.dart';
 import 'package:stream_droid_app/src/providers/client_channel.dart';
 import 'package:stream_droid_app/src/services/redeem_service.dart';
 
-part 'reward_redeems.g.dart';
+part 'redeems.g.dart';
 
 @riverpod
 RedeemService redeemService(RedeemServiceRef ref) {

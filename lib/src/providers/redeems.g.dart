@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'reward_redeems.dart';
+part of 'redeems.dart';
 
 // **************************************************************************
 // RiverpodGenerator
