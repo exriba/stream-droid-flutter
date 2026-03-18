@@ -1,13 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
+import 'package:stream_droid_app/src/providers/rewards.dart';
 
-class RewardCard extends ConsumerWidget {
+class RewardCard extends ConsumerStatefulWidget {
   const RewardCard({super.key, required this.reward});
   final Reward reward;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _RewardCard();
+}
+
+class _RewardCard extends ConsumerState<RewardCard> {
+  bool enabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    enabled = widget.reward.speech.enabled;
+  }
+
+  Future<void> _handleSpeechChange(bool value) async {
+    final controller = ref.read(rewardControllerProvider);
+    final response = await controller.updateSpeech(widget.reward.id, value);
+
+    setState(() {
+      enabled = response;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
@@ -18,7 +41,7 @@ class RewardCard extends ConsumerWidget {
               Flexible(
                 flex: 1,
                 child: Text(
-                  reward.title,
+                  widget.reward.title,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -27,7 +50,7 @@ class RewardCard extends ConsumerWidget {
               ),
               Flexible(
                 flex: 1,
-                child: Image.network(reward.imageUrl),
+                child: Image.network(widget.reward.imageUrl),
               ),
               Flexible(
                 flex: 2,
@@ -41,7 +64,7 @@ class RewardCard extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    reward.prompt,
+                    widget.reward.prompt,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -81,11 +104,9 @@ class RewardCard extends ConsumerWidget {
                   Expanded(
                     flex: 1,
                     child: Switch(
-                      value: reward.speech.enabled,
+                      value: enabled,
                       activeThumbColor: Colors.black,
-                      onChanged: (value) {
-                        // TODO: Implement this
-                      },
+                      onChanged: _handleSpeechChange,
                     ),
                   ),
                 ],
