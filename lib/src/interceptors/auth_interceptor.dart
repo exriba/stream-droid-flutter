@@ -1,21 +1,22 @@
 import 'dart:async';
 import 'package:grpc/grpc.dart';
 import 'package:mutex/mutex.dart';
-import 'package:stream_droid_app/core/utils/secure_storage.dart';
+import 'package:stream_droid_app/src/services/secure_storage.dart';
 
 class AuthInterceptor implements ClientInterceptor {
   AuthInterceptor(this._secureStorage) {
     _tokenUpdateMutex = Mutex();
   }
-  final ISecureStorage _secureStorage;
+  final SecureStorage _secureStorage;
   late Mutex _tokenUpdateMutex;
 
   @override
   ResponseStream<R> interceptStreaming<Q, R>(
-      ClientMethod<Q, R> method,
-      Stream<Q> requests,
-      CallOptions options,
-      ClientStreamingInvoker<Q, R> invoker) {
+    ClientMethod<Q, R> method,
+    Stream<Q> requests,
+    CallOptions options,
+    ClientStreamingInvoker<Q, R> invoker,
+  ) {
     final newOptions = options.mergedWith(
       CallOptions(providers: [_injectTokenProvider]),
     );
@@ -26,8 +27,12 @@ class AuthInterceptor implements ClientInterceptor {
   }
 
   @override
-  ResponseFuture<R> interceptUnary<Q, R>(ClientMethod<Q, R> method, Q request,
-      CallOptions options, ClientUnaryInvoker<Q, R> invoker) {
+  ResponseFuture<R> interceptUnary<Q, R>(
+    ClientMethod<Q, R> method,
+    Q request,
+    CallOptions options,
+    ClientUnaryInvoker<Q, R> invoker,
+  ) {
     final newOptions = options.mergedWith(
       CallOptions(providers: [_injectTokenProvider]),
     );
@@ -38,7 +43,9 @@ class AuthInterceptor implements ClientInterceptor {
   }
 
   FutureOr<void> _injectTokenProvider(
-      Map<String, String> metadata, String uri) async {
+    Map<String, String> metadata,
+    String uri,
+  ) async {
     final token = await _secureStorage.getToken();
     if (token != null) {
       metadata['authorization'] = 'Bearer $token';
