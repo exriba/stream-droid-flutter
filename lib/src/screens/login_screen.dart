@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/models/app_feature.dart';
-import 'package:stream_droid_app/src/widgets/app_feature_indicator.dart';
+import 'package:stream_droid_app/src/widgets/feature_item.dart';
 import 'package:stream_droid_app/src/widgets/login_button.dart';
 
 const String _appIconPath = 'assets/icons/app-icon.png';
 const String _twitchLogoPath = 'assets/icons/twitch-logo.svg';
-const List<AppFeature> _featureIndicators = [
+const List<AppFeature> _topFeatures = [
   AppFeature(
     text: "Dashboard",
     icon: Icons.dashboard_outlined,
@@ -17,6 +17,8 @@ const List<AppFeature> _featureIndicators = [
     icon: Icons.live_tv_outlined,
     description: "Receive live events from engaged viewers.",
   ),
+];
+const List<AppFeature> _bottomFeatures = [
   AppFeature(
     text: "Statistics",
     icon: Icons.show_chart_outlined,
@@ -41,10 +43,10 @@ class LoginScreen extends ConsumerWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _featureIndicators
+            children: _topFeatures
                 .map(
                   (indicator) => Expanded(
-                    child: AppFeatureIndicator(
+                    child: FeatureItem(
                       text: indicator.text,
                       icon: indicator.icon,
                       description: indicator.description,
@@ -58,6 +60,20 @@ class LoginScreen extends ConsumerWidget {
             height: 128,
             width: 128,
             color: Colors.black,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: _bottomFeatures
+                .map(
+                  (indicator) => Expanded(
+                    child: FeatureItem(
+                      text: indicator.text,
+                      icon: indicator.icon,
+                      description: indicator.description,
+                    ),
+                  ),
+                )
+                .toList(),
           ),
           const SizedBox(
             height: 50,

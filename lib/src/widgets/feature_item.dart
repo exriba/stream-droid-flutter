@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AppFeatureIndicator extends ConsumerWidget {
-  const AppFeatureIndicator({
+class FeatureItem extends ConsumerWidget {
+  const FeatureItem({
     super.key,
     required this.text,
     required this.icon,
