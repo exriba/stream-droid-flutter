@@ -20,7 +20,7 @@ final userServiceProvider = AutoDisposeProvider<UserService>.internal(
 );
 
 typedef UserServiceRef = AutoDisposeProviderRef<UserService>;
-String _$userControllerHash() => r'9b64a781345e8a89f77eea854ebef12e45d60821';
+String _$userControllerHash() => r'8b6893b0971ad71259af723033b6ef4ebd236440';
 
 /// See also [userController].
 @ProviderFor(userController)
