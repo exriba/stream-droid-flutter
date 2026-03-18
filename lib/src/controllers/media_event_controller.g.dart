@@ -7,7 +7,7 @@ part of 'media_event_controller.dart';
 // **************************************************************************
 
 String _$mediaEventControllerHash() =>
-    r'b7707e53e6377afd32a7a407ececf392a0bc15f9';
+    r'62d2430b3149cf8b263b0924a9254149f246d02a';
 
 /// See also [MediaEventController].
 @ProviderFor(MediaEventController)

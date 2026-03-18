@@ -6,11 +6,11 @@ part of 'users.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userServiceHash() => r'276875d1fab141a668bc3310614c305c445ef6b7';
+String _$userServiceHash() => r'6dcf6dc260dcca0faecf822f9d2ef33ded2d013a';
 
 /// See also [userService].
 @ProviderFor(userService)
-final userServiceProvider = AutoDisposeProvider<UserService>.internal(
+final userServiceProvider = Provider<UserService>.internal(
   userService,
   name: r'userServiceProvider',
   debugGetCreateSourceHash:
@@ -19,7 +19,7 @@ final userServiceProvider = AutoDisposeProvider<UserService>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef UserServiceRef = AutoDisposeProviderRef<UserService>;
+typedef UserServiceRef = ProviderRef<UserService>;
 String _$userControllerHash() => r'8b6893b0971ad71259af723033b6ef4ebd236440';
 
 /// See also [userController].

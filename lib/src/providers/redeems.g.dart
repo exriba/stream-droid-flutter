@@ -6,11 +6,11 @@ part of 'redeems.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$redeemServiceHash() => r'3123e303aad2add8f9727b9d3889fe1cc0d694e5';
+String _$redeemServiceHash() => r'8a55592d115bd4c61c5662835b6b81af3b7c9f20';
 
 /// See also [redeemService].
 @ProviderFor(redeemService)
-final redeemServiceProvider = AutoDisposeProvider<RedeemService>.internal(
+final redeemServiceProvider = Provider<RedeemService>.internal(
   redeemService,
   name: r'redeemServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,7 +20,7 @@ final redeemServiceProvider = AutoDisposeProvider<RedeemService>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef RedeemServiceRef = AutoDisposeProviderRef<RedeemService>;
+typedef RedeemServiceRef = ProviderRef<RedeemService>;
 String _$rewardRedeemsHash() => r'194c1c3da5e94ebab29db52ab20759cd6e8bbba5';
 
 /// See also [RewardRedeems].

@@ -6,11 +6,11 @@ part of 'secure_storage.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$secureStorageHash() => r'0cdcc118e60a69245275d8ac3cc53c60491a482b';
+String _$secureStorageHash() => r'ffe47b85a2edbbfbf92c839728e09e1426d38cfd';
 
 /// See also [secureStorage].
 @ProviderFor(secureStorage)
-final secureStorageProvider = AutoDisposeProvider<SecureStorage>.internal(
+final secureStorageProvider = Provider<SecureStorage>.internal(
   secureStorage,
   name: r'secureStorageProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,6 +20,6 @@ final secureStorageProvider = AutoDisposeProvider<SecureStorage>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef SecureStorageRef = AutoDisposeProviderRef<SecureStorage>;
+typedef SecureStorageRef = ProviderRef<SecureStorage>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
