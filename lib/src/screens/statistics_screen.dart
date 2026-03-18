@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stream_droid_app/src/providers/reward_redeems.dart';
+import 'package:stream_droid_app/src/providers/redeems.dart';
 import 'package:stream_droid_app/src/utils/hex_color.dart';
 import 'package:stream_droid_app/src/widgets/loading_spinner.dart';
 
