@@ -1,8 +1,14 @@
 # streamdroid-ui-flutter
 
-StreamDroid UI Windows Application built with Flutter.
+StreamDroid UI Application built with Flutter.
 
 WIP: This application is under development.
+
+Experimental branches
+
+* network/gRPC-jwt (latest)
+* network/rest-jwt
+* network/rest-cookie
 
 Login using Twitch, manage your custom rewards, review statistics and receive alert notifications in real-time. 
 
