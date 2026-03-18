@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:stream_droid_app/domain/generated/common/reward.pb.dart';
-import 'package:stream_droid_app/domain/services/reward_service.dart';
-import 'package:stream_droid_app/presentation/widgets/volume_setting.dart';
-import 'package:stream_droid_app/core/utils/dependency_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
+import 'package:stream_droid_app/src/widgets/volume_setting.dart';
 
-class RewardCardAsset extends StatelessWidget {
-  const RewardCardAsset(
-      {super.key,
-      required this.rewardId,
-      required this.asset,
-      required this.handleRemove});
+class RewardCardAsset extends ConsumerWidget {
+  const RewardCardAsset({
+    super.key,
+    required this.rewardId,
+    required this.asset,
+    required this.handleRemove,
+  });
   final Asset asset;
   final String rewardId;
   final Future<void> Function(String fileName) handleRemove;
 
-  Future<void> _updateAssetVolume(double volume) async {
-    final rewardService = DependencyManager.getIt.get<RewardService>();
-    await rewardService.updateRewardAssets(
-        rewardId, asset.fileName, volume.toInt());
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
@@ -29,7 +23,7 @@ class RewardCardAsset extends StatelessWidget {
       ),
       margin: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
-        color: Colors.grey[800],
+        color: Colors.purple[300],
         borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       child: Row(
@@ -46,13 +40,13 @@ class RewardCardAsset extends StatelessWidget {
           Expanded(
             child: Text(
               asset.name,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           VolumeSetting(
             volume: asset.volume.toDouble(),
-            handleVolumeChange: (value) async {
-              await _updateAssetVolume(value);
+            handleVolumeChange: (value) {
+              // TODO: Implement this
             },
           ),
           Container(

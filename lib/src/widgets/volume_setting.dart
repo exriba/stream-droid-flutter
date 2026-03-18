@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class VolumeSetting extends StatefulWidget {
-  const VolumeSetting(
-      {super.key,
-      this.text,
-      this.volume = 0,
-      this.alignment = MainAxisAlignment.end,
-      required this.handleVolumeChange});
+class VolumeSetting extends ConsumerStatefulWidget {
+  const VolumeSetting({
+    super.key,
+    this.text,
+    this.volume = 0,
+    this.alignment = MainAxisAlignment.end,
+    required this.handleVolumeChange,
+  });
   final Text? text;
   final double volume;
   final MainAxisAlignment alignment;
   final void Function(double value) handleVolumeChange;
 
   @override
-  State<StatefulWidget> createState() => _VolumeSetting();
+  ConsumerState<VolumeSetting> createState() => _VolumeSetting();
 }
 
-class _VolumeSetting extends State<VolumeSetting> {
+class _VolumeSetting extends ConsumerState<VolumeSetting> {
   double volume = 0;
   IconData iconData = Icons.volume_mute_rounded;
 
@@ -54,7 +56,7 @@ class _VolumeSetting extends State<VolumeSetting> {
         ),
         Icon(
           iconData,
-          color: const Color.fromRGBO(225, 225, 225, 1),
+          color: Colors.white,
         ),
       ],
     );
