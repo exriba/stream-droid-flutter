@@ -25,10 +25,10 @@ class _VolumeSetting extends ConsumerState<VolumeSlider> {
   @override
   void initState() {
     super.initState();
-    handleChange(widget.volume);
+    _handleChange(widget.volume);
   }
 
-  void handleChange(double value) {
+  void _handleChange(double value) {
     setState(() {
       volume = value;
       iconData = value == 0
@@ -51,7 +51,7 @@ class _VolumeSetting extends ConsumerState<VolumeSlider> {
           value: volume,
           label: volume.round().toString(),
           activeColor: Colors.grey,
-          onChanged: handleChange,
+          onChanged: _handleChange,
           onChangeEnd: widget.handleVolumeChange,
         ),
         Icon(
