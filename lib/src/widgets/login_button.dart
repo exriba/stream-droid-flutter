@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_droid_app/src/utils/types.dart';
-import 'package:stream_droid_app/src/providers/users.dart';
+import 'package:stream_droid_app/src/providers/user.dart';
 
 class LoginButton extends ConsumerWidget {
   const LoginButton({super.key, required this.assetPath});

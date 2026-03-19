@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_droid_app/src/models/app_bar_action.dart';
-import 'package:stream_droid_app/src/providers/users.dart';
+import 'package:stream_droid_app/src/providers/user.dart';
 import 'package:stream_droid_app/src/utils/types.dart';
 
 final List<AppBarAction> _appBarActions = [

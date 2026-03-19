@@ -5,18 +5,14 @@ import 'package:stream_droid_app/src/providers/client_channel.dart';
 import 'package:stream_droid_app/src/providers/secure_storage.dart';
 import 'package:stream_droid_app/src/services/user_service.dart';
 
-part 'users.g.dart';
-
-@Riverpod(keepAlive: true)
-UserService userService(UserServiceRef ref) {
+final userServiceProvider = Provider<UserService>((ref) {
   final clientChannel = ref.read(clientChannelProvider);
   final authInterceptor = ref.read(authInterceptorProvider);
   return UserService(clientChannel, authInterceptor);
-}
+});
 
-@riverpod
-UserController userController(UserControllerRef ref) {
+final userControllerProvider = Provider<UserController>((ref) {
   final secureStorage = ref.read(secureStorageProvider);
   final userService = ref.read(userServiceProvider);
   return UserController(userService, secureStorage);
-}
+});
