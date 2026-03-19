@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:stream_droid_app/src/providers/rewards.dart';
+import 'package:stream_droid_app/src/providers/reward.dart';
 import 'package:stream_droid_app/src/utils/hex_color.dart';
 import 'package:stream_droid_app/src/utils/types.dart';
 import 'package:stream_droid_app/src/widgets/loading_spinner.dart';
@@ -12,7 +12,7 @@ class DashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rewardState = ref.watch(rewardsProvider);
+    final rewardState = ref.watch(rewardNotificationProvider);
 
     return rewardState.when(
       data: (rewards) {
@@ -49,9 +49,7 @@ class DashboardScreen extends ConsumerWidget {
                       ),
                     ),
                     onTap: () {
-                      final rewardRoute = ViewRoute.rewards.route
-                          .replaceFirst(':id', reward.id);
-                      context.go(rewardRoute);
+                      context.go(ViewRoute.rewards.route, extra: reward);
                     },
                   ),
                 ),

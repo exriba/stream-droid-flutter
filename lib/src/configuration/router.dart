@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/providers/user.dart';
 import 'package:stream_droid_app/src/screens/dashboard_screen.dart';
 import 'package:stream_droid_app/src/screens/login_screen.dart';
@@ -69,10 +70,10 @@ class AppRouter {
               GoRoute(
                 path: ViewRoute.rewards.route,
                 pageBuilder: (context, state) {
-                  final rewardId = state.pathParameters['id'];
+                  final reward = state.extra as Reward;
                   return NoTransitionPage(
                     key: state.pageKey,
-                    child: RewardScreen(rewardId: rewardId!),
+                    child: RewardScreen(reward: reward),
                   );
                 },
               ),

@@ -5,7 +5,7 @@ typedef ContextCallback = void Function(BuildContext context, WidgetRef ref);
 
 enum ViewRoute {
   dashboard('/'),
-  rewards('/rewards/:id'),
+  rewards('/rewards'),
   media('/media'),
   statistics('/statistics'),
   settings('/settings'),
