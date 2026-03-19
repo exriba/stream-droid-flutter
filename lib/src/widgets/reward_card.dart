@@ -40,6 +40,10 @@ class _RewardCard extends ConsumerState<RewardCard> {
             children: [
               Flexible(
                 flex: 1,
+                child: Image.network(widget.reward.imageUrl),
+              ),
+              Flexible(
+                flex: 1,
                 child: Text(
                   widget.reward.title,
                   overflow: TextOverflow.ellipsis,
@@ -47,10 +51,6 @@ class _RewardCard extends ConsumerState<RewardCard> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Image.network(widget.reward.imageUrl),
               ),
               Flexible(
                 flex: 2,
