@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/widgets/volume_slider.dart';
 
-class RewardCardAsset extends ConsumerWidget {
-  const RewardCardAsset({
+class RewardAsset extends ConsumerWidget {
+  const RewardAsset({
     super.key,
     required this.rewardId,
     required this.asset,

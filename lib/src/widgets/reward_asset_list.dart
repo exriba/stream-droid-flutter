@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
-import 'package:stream_droid_app/src/widgets/reward_card_asset.dart';
+import 'package:stream_droid_app/src/widgets/reward_asset.dart';
 
-class RewardCardAssetList extends ConsumerWidget {
-  const RewardCardAssetList({
+class RewardAssetList extends ConsumerWidget {
+  const RewardAssetList({
     super.key,
     required this.rewardId,
     required this.rewardAssets,
@@ -20,7 +20,7 @@ class RewardCardAssetList extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         itemCount: rewardAssets.length,
         prototypeItem: rewardAssets.isNotEmpty
-            ? RewardCardAsset(
+            ? RewardAsset(
                 key: Key(rewardAssets.first.id),
                 asset: rewardAssets.first,
                 rewardId: rewardId,
@@ -28,7 +28,7 @@ class RewardCardAssetList extends ConsumerWidget {
               )
             : null,
         itemBuilder: (context, index) {
-          return RewardCardAsset(
+          return RewardAsset(
             key: Key(rewardAssets[index].id),
             asset: rewardAssets[index],
             rewardId: rewardId,
