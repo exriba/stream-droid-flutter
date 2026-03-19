@@ -2,10 +2,7 @@ import 'package:grpc/grpc.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:stream_droid_app/src/constants/constants.dart' as constants;
 
-part 'client_channel.g.dart';
-
-@Riverpod(keepAlive: true)
-ClientChannel clientChannel(ClientChannelRef ref) {
+final clientChannelProvider = Provider<ClientChannel>((ref) {
   final channel = ClientChannel(
     constants.serverName,
     port: constants.serverPort,
@@ -15,4 +12,4 @@ ClientChannel clientChannel(ClientChannelRef ref) {
     ),
   );
   return channel;
-}
+});
