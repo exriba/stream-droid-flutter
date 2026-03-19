@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:file_picker/file_picker.dart';
 import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/generated/google/protobuf/empty.pb.dart';
@@ -25,10 +26,48 @@ class RewardService {
     return response.reward.speech.enabled;
   }
 
-  Future<RewardResponse> addRewardAssets(
-    Stream<AddRewardAssetRequest> stream,
-  ) {
-    return _client.addRewardAssets(stream);
+  Future<List<Asset>> addRewardAssets(String rewardId, int volume) async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['mp3', 'mp4'],
+      allowMultiple: true,
+      withData: true,
+    );
+
+    if (result == null) {
+      return [];
+    }
+
+    const int maxTotalSizeBytes = 25 * 1024 * 1024;
+    final fileSize = result.files.fold(0, (sum, file) => sum + file.size);
+
+    if (fileSize > maxTotalSizeBytes) {
+      throw Exception('Total file size exceeds the maximum limit of 25 MB.');
+    }
+
+    final requestController = StreamController<AddRewardAssetRequest>();
+
+    try {
+      final future = _client.addRewardAssets(requestController.stream);
+
+      for (final file in result.files) {
+        final request = AddRewardAssetRequest(
+          rewardId: rewardId,
+          fileName: file.name,
+          volume: volume,
+          file: file.bytes,
+        );
+        requestController.add(request);
+      }
+
+      await requestController.close();
+      final response = await future;
+      return response.reward.assets;
+    } finally {
+      if (!requestController.isClosed) {
+        await requestController.close();
+      }
+    }
   }
 
   Future<void> updateRewardAsset(
