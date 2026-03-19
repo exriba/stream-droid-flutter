@@ -105,7 +105,9 @@ class _RewardCard extends ConsumerState<RewardCard> {
                     child: Switch(
                       value: enabled,
                       activeThumbColor: Colors.black,
-                      onChanged: _handleSpeechChange,
+                      onChanged: (value) async {
+                        await _handleSpeechChange(value);
+                      },
                     ),
                   ),
                 ],
