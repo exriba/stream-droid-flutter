@@ -16,12 +16,12 @@ final eventServiceProvider = Provider<EventService>((ref) {
   return EventService(clientChannel, authInterceptor);
 });
 
-final mediaEventNotifier =
-    AsyncNotifierProvider.autoDispose<MediaEventSubscriber, VideoController>(
-  MediaEventSubscriber.new,
+final eventNotificationProvider =
+    AsyncNotifierProvider.autoDispose<EventNotifier, VideoController>(
+  EventNotifier.new,
 );
 
-class MediaEventSubscriber extends AutoDisposeAsyncNotifier<VideoController> {
+class EventNotifier extends AutoDisposeAsyncNotifier<VideoController> {
   late final EventService _service;
   late final VideoController _videoController;
   final List<Player> _audioPlayers = [];
