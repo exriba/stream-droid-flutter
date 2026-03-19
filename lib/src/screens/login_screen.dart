@@ -78,7 +78,9 @@ class LoginScreen extends ConsumerWidget {
           const SizedBox(
             height: 50,
             width: 150,
-            child: LoginButton(assetPath: _twitchLogoPath),
+            child: LoginButton(
+              assetPath: _twitchLogoPath,
+            ),
           ),
         ],
       ),
