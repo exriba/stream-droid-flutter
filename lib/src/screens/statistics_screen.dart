@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stream_droid_app/src/providers/redeems.dart';
+import 'package:stream_droid_app/src/providers/redeem.dart';
 import 'package:stream_droid_app/src/utils/hex_color.dart';
 import 'package:stream_droid_app/src/widgets/loading_spinner.dart';
 
@@ -10,7 +10,7 @@ class StatisticsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rewardRedeemState = ref.watch(rewardRedeemsProvider);
+    final rewardRedeemState = ref.watch(redeemNotificationProvider);
 
     return Padding(
       padding: const EdgeInsets.all(20),
