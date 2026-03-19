@@ -1,30 +1,62 @@
 import 'package:grpc/grpc.dart';
+import 'package:stream_droid_app/src/generated/common/user.pbenum.dart';
+import 'package:stream_droid_app/src/services/secure_storage.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:stream_droid_app/src/generated/google/protobuf/empty.pb.dart';
 import 'package:stream_droid_app/src/generated/service/userservice.pbgrpc.dart';
 import 'package:stream_droid_app/src/interceptors/auth_interceptor.dart';
 
 class UserService {
-  UserService(ClientChannel channel, AuthInterceptor authInterceptor)
-      : _client = GrpcUserServiceClient(
+  UserService(
+    ClientChannel channel,
+    AuthInterceptor authInterceptor,
+    SecureStorage secureStorage,
+  )   : _client = GrpcUserServiceClient(
           channel,
           interceptors: [authInterceptor],
-        );
+        ),
+        _storage = secureStorage;
   final Uuid _uuid = const Uuid();
   final GrpcUserServiceClient _client;
+  final SecureStorage _storage;
 
-  Future<LoginUrlResponse> authorizationUrl() {
+  Future<bool> isAuthenticated() async {
+    final userResponse = await _client.findUser(Empty());
+    return userResponse.user.userType != User_UserType.UNSPECIFIED;
+  }
+
+  Future<bool> login() async {
+    bool authenticated = false;
     final sessionId = _uuid.v4();
     final request = SessionRequest(sessionId: sessionId);
-    return _client.generateLoginUrl(request);
+    final response = await _client.generateLoginUrl(request);
+    final authorizationUri = Uri.parse(response.authorizationUrl);
+    final canLaunchAuthorizationUri = await canLaunchUrl(authorizationUri);
+
+    if (!canLaunchAuthorizationUri) {
+      return authenticated;
+    }
+
+    await launchUrl(authorizationUri, mode: LaunchMode.externalApplication);
+    final stream = _client.monitorAuthenticationSessionStatus(request);
+
+    await for (final update in stream) {
+      if (update.status == SessionStatus_Status.ERROR) {
+        throw Exception('Authentication error: ${update.message}');
+      }
+
+      if (update.status == SessionStatus_Status.AUTHORIZED) {
+        await _storage.saveToken(token: update.accessToken);
+        authenticated = true;
+        break;
+      }
+    }
+
+    return authenticated;
   }
 
-  Stream<SessionStatus> monitorAuthentication(String sessionId) {
-    final sessionRequest = SessionRequest(sessionId: sessionId);
-    return _client.monitorAuthenticationSessionStatus(sessionRequest);
-  }
-
-  Future<UserResponse> authenticationStatus() {
-    return _client.findUser(Empty());
+  Future<void> logout() async {
+    await _storage.deleteToken();
   }
 }
