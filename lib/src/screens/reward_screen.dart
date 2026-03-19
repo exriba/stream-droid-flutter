@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/utils/types.dart';
 import 'package:stream_droid_app/src/widgets/reward_card.dart';
-import 'package:stream_droid_app/src/widgets/reward_card_asset_list.dart';
+import 'package:stream_droid_app/src/widgets/reward_asset_list.dart';
 
 class RewardScreen extends ConsumerWidget {
   const RewardScreen({super.key, required this.reward});
@@ -34,7 +34,7 @@ class RewardScreen extends ConsumerWidget {
               ),
               Expanded(
                 flex: 5,
-                child: RewardCardAssetList(
+                child: RewardAssetList(
                   rewardId: reward.id,
                   rewardAssets: reward.assets,
                 ),
