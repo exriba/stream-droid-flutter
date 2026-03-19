@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
-import 'package:stream_droid_app/src/providers/rewards.dart';
+import 'package:stream_droid_app/src/providers/reward.dart';
 
 class RewardCard extends ConsumerStatefulWidget {
   const RewardCard({super.key, required this.reward});
