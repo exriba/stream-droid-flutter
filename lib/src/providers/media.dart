@@ -6,23 +6,30 @@ import 'package:media_kit_video/media_kit_video.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:stream_droid_app/src/generated/common/event.pb.dart';
 import 'package:stream_droid_app/src/generated/service/eventservice.pb.dart';
-import 'package:stream_droid_app/src/providers/media_events.dart';
+import 'package:stream_droid_app/src/providers/auth_interceptor.dart';
+import 'package:stream_droid_app/src/providers/client_channel.dart';
 import 'package:stream_droid_app/src/services/event_service.dart';
 
-part 'media_event_subscriber.g.dart';
+final eventServiceProvider = Provider<EventService>((ref) {
+  final clientChannel = ref.read(clientChannelProvider);
+  final authInterceptor = ref.read(authInterceptorProvider);
+  return EventService(clientChannel, authInterceptor);
+});
 
-@riverpod
-class MediaEventSubscriber extends _$MediaEventSubscriber {
+final mediaEventNotifier =
+    AsyncNotifierProvider.autoDispose<MediaEventSubscriber, VideoController>(
+  MediaEventSubscriber.new,
+);
+
+class MediaEventSubscriber extends AutoDisposeAsyncNotifier<VideoController> {
   late final EventService _service;
   late final VideoController _videoController;
   final List<Player> _audioPlayers = [];
 
   StreamSubscription<EventResponse>? _subscription;
 
-  VideoController get controller => _videoController;
-
   @override
-  MediaEventSubscriber build() {
+  VideoController build() {
     _service = ref.read(eventServiceProvider);
     _videoController = VideoController(Player());
 
@@ -32,7 +39,7 @@ class MediaEventSubscriber extends _$MediaEventSubscriber {
       _dispose();
     });
 
-    return this;
+    return _videoController;
   }
 
   Future<void> _initialize() async {
