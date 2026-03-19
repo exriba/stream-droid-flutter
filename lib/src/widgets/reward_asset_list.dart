@@ -16,23 +16,20 @@ class RewardAssetList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: ListView.builder(
+      body: ListView.separated(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         itemCount: rewardAssets.length,
-        prototypeItem: rewardAssets.isNotEmpty
-            ? RewardAsset(
-                key: Key(rewardAssets.first.id),
-                asset: rewardAssets.first,
-                rewardId: rewardId,
-                handleRemove: (fileName) async => {},
-              )
-            : null,
         itemBuilder: (context, index) {
           return RewardAsset(
             key: Key(rewardAssets[index].id),
             asset: rewardAssets[index],
             rewardId: rewardId,
             handleRemove: (fileName) async => {},
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const SizedBox(
+            height: 10,
           );
         },
       ),
