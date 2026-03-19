@@ -11,7 +11,7 @@ class LoginButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final service = ref.read(userControllerProvider);
+    final service = ref.read(userServiceProvider);
 
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
