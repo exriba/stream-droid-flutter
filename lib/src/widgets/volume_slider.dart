@@ -12,7 +12,7 @@ class VolumeSlider extends ConsumerStatefulWidget {
   final Text? text;
   final double volume;
   final MainAxisAlignment alignment;
-  final void Function(double value) handleVolumeChange;
+  final Future<void> Function(double value) handleVolumeChange;
 
   @override
   ConsumerState<VolumeSlider> createState() => _VolumeSetting();
@@ -52,7 +52,9 @@ class _VolumeSetting extends ConsumerState<VolumeSlider> {
           label: volume.round().toString(),
           activeColor: Colors.grey,
           onChanged: _handleChange,
-          onChangeEnd: widget.handleVolumeChange,
+          onChangeEnd: (value) async {
+            await widget.handleVolumeChange(value);
+          },
         ),
         Icon(
           iconData,
