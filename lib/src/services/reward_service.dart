@@ -18,17 +18,11 @@ class RewardService {
     return _client.findUserRewards(Empty());
   }
 
-  Future<RewardResponse> fetchReward(String rewardId) {
-    final request = RewardRequest(rewardId: rewardId);
-    return _client.findReward(request);
-  }
-
-  Future<RewardResponse> updateRewardSpeech(
-    String rewardId,
-    Speech speech,
-  ) {
+  Future<bool> updateRewardSpeech(String rewardId, bool enabled) async {
+    final speech = Speech(enabled: enabled);
     final request = RewardSpeechRequest(rewardId: rewardId, speech: speech);
-    return _client.updateRewardSpeech(request);
+    final response = await _client.updateRewardSpeech(request);
+    return response.reward.speech.enabled;
   }
 
   Future<RewardResponse> addRewardAssets(
@@ -50,12 +44,14 @@ class RewardService {
     await _client.updateRewardAssets(request);
   }
 
-  ResponseFuture<RewardResponse> deleteRewardAsset(
+  ResponseFuture<void> deleteRewardAsset(
     String rewardId,
     String fileName,
   ) {
-    final request = RemoveRewardAssetRequest(rewardId: rewardId);
-    request.fileName.add(fileName);
+    final request = RemoveRewardAssetRequest(
+      rewardId: rewardId,
+      fileName: [fileName],
+    );
     return _client.removeRewardAssets(request);
   }
 }
