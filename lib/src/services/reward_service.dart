@@ -37,7 +37,7 @@ class RewardService {
     return _client.addRewardAssets(stream);
   }
 
-  Future<void> updateRewardAssets(
+  Future<void> updateRewardAsset(
     String rewardId,
     String fileName,
     int volume,
