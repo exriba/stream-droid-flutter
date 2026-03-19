@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:stream_droid_app/src/providers/users.dart';
 import 'package:stream_droid_app/src/screens/dashboard_screen.dart';
 import 'package:stream_droid_app/src/screens/login_screen.dart';
-import 'package:stream_droid_app/src/screens/media_event_screen.dart';
+import 'package:stream_droid_app/src/screens/media_screen.dart';
 import 'package:stream_droid_app/src/screens/reward_screen.dart';
 import 'package:stream_droid_app/src/screens/settings_screen.dart';
 import 'package:stream_droid_app/src/screens/statistics_screen.dart';
@@ -81,7 +81,7 @@ class AppRouter {
                 pageBuilder: (context, state) {
                   return NoTransitionPage(
                     key: state.pageKey,
-                    child: const MediaEventScreen(),
+                    child: const MediaScreen(),
                   );
                 },
               ),
