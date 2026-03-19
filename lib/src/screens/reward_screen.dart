@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stream_droid_app/src/providers/reward.dart';
+import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/utils/types.dart';
 import 'package:stream_droid_app/src/widgets/reward_card.dart';
-import 'package:stream_droid_app/src/widgets/loading_spinner.dart';
 import 'package:stream_droid_app/src/widgets/reward_card_asset_list.dart';
 
 class RewardScreen extends ConsumerWidget {
-  const RewardScreen({super.key, required this.rewardId});
-  final String rewardId;
+  const RewardScreen({super.key, required this.reward});
+  final Reward reward;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rewardState = ref.watch(rewardProvider(rewardId));
-
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
       decoration: BoxDecoration(
@@ -26,12 +23,8 @@ class RewardScreen extends ConsumerWidget {
             children: [
               Expanded(
                 flex: 2,
-                child: rewardState.when(
-                  data: (rewardResponse) => RewardCard(
-                    reward: rewardResponse.reward,
-                  ),
-                  error: (_, __) => const SizedBox.shrink(),
-                  loading: () => const LoadingSpinner(),
+                child: RewardCard(
+                  reward: reward,
                 ),
               ),
               const VerticalDivider(
@@ -41,13 +34,9 @@ class RewardScreen extends ConsumerWidget {
               ),
               Expanded(
                 flex: 5,
-                child: rewardState.when(
-                  data: (rewardResponse) => RewardCardAssetList(
-                    rewardId: rewardResponse.reward.id,
-                    rewardAssets: rewardResponse.reward.assets,
-                  ),
-                  error: (_, __) => const SizedBox.shrink(),
-                  loading: () => const LoadingSpinner(),
+                child: RewardCardAssetList(
+                  rewardId: reward.id,
+                  rewardAssets: reward.assets,
                 ),
               ),
             ],
