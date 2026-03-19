@@ -21,7 +21,6 @@ class RewardAsset extends ConsumerWidget {
         horizontal: 10,
         vertical: 20,
       ),
-      margin: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
         color: Colors.purple[300],
         borderRadius: const BorderRadius.all(Radius.circular(8)),
