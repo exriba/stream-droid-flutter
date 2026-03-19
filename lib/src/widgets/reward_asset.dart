@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
+import 'package:stream_droid_app/src/providers/reward.dart';
 import 'package:stream_droid_app/src/widgets/volume_slider.dart';
 
 class RewardAsset extends ConsumerWidget {
@@ -12,7 +13,7 @@ class RewardAsset extends ConsumerWidget {
   });
   final Asset asset;
   final String rewardId;
-  final Future<void> Function(String fileName) handleRemove;
+  final Future<void> Function(Asset asset) handleRemove;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,8 +45,10 @@ class RewardAsset extends ConsumerWidget {
           ),
           VolumeSlider(
             volume: asset.volume.toDouble(),
-            handleVolumeChange: (value) {
-              // TODO: Implement this
+            handleVolumeChange: (value) async {
+              final volume = value.toInt();
+              final service = ref.read(rewardServiceProvider);
+              await service.updateRewardAsset(rewardId, asset.fileName, volume);
             },
           ),
           Container(
@@ -54,7 +57,7 @@ class RewardAsset extends ConsumerWidget {
               color: Colors.red,
               icon: const Icon(Icons.delete),
               onPressed: () async {
-                await handleRemove(asset.fileName);
+                await handleRemove(asset);
               },
             ),
           ),
