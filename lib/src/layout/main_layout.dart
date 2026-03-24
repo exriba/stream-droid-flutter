@@ -52,7 +52,7 @@ class MainLayout extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
-        margin: const EdgeInsets.all(4),
+        margin: const EdgeInsets.all(8),
         child: Row(
           spacing: 2,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
