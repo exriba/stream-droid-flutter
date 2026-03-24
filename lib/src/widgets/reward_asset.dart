@@ -27,15 +27,13 @@ class RewardAsset extends ConsumerWidget {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       child: Row(
+        spacing: 10,
         children: [
-          Container(
-            margin: const EdgeInsets.only(right: 10),
-            child: Icon(
-              asset.mediaExtension == Asset_MediaExtension.MP3
-                  ? Icons.music_note_rounded
-                  : Icons.play_arrow_rounded,
-              color: Colors.white,
-            ),
+          Icon(
+            asset.mediaExtension == Asset_MediaExtension.MP3
+                ? Icons.music_note_rounded
+                : Icons.play_arrow_rounded,
+            color: Colors.white,
           ),
           Expanded(
             child: Text(
@@ -51,15 +49,12 @@ class RewardAsset extends ConsumerWidget {
               await service.updateRewardAsset(rewardId, asset.fileName, volume);
             },
           ),
-          Container(
-            margin: const EdgeInsets.only(left: 10),
-            child: IconButton(
-              color: Colors.red,
-              icon: const Icon(Icons.delete),
-              onPressed: () async {
-                await handleRemove(asset);
-              },
-            ),
+          IconButton(
+            color: Colors.red,
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
+              await handleRemove(asset);
+            },
           ),
         ],
       ),
