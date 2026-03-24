@@ -83,14 +83,15 @@ class RewardService {
     await _client.updateRewardAssets(request);
   }
 
-  ResponseFuture<void> deleteRewardAsset(
+  Future<List<Asset>> deleteRewardAsset(
     String rewardId,
     String fileName,
-  ) {
+  ) async {
     final request = RemoveRewardAssetRequest(
       rewardId: rewardId,
       fileName: [fileName],
     );
-    return _client.removeRewardAssets(request);
+    final response = await _client.removeRewardAssets(request);
+    return response.reward.assets;
   }
 }
