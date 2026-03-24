@@ -20,13 +20,13 @@ class RewardAssetList extends ConsumerStatefulWidget {
 }
 
 class _RewardAssetList extends ConsumerState<RewardAssetList> {
-  List<Asset> assets = [];
+  List<Asset> rewardAssets = [];
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      assets = widget.rewardAssets;
+      rewardAssets = widget.rewardAssets;
     });
   }
 
@@ -39,23 +39,21 @@ class _RewardAssetList extends ConsumerState<RewardAssetList> {
     );
 
     final volume = defaultVolume.toInt();
-    final rewardAssets = await service.addRewardAssets(widget.rewardId, volume);
-    if (rewardAssets.isNotEmpty) {
+    final assets = await service.addRewardAssets(widget.rewardId, volume);
+    if (assets.isNotEmpty) {
       setState(() {
-        assets = rewardAssets;
+        rewardAssets = assets;
       });
     }
   }
 
   Future<void> _handleRemove(Asset asset) async {
     final service = ref.read(rewardServiceProvider);
-    await service.deleteRewardAsset(widget.rewardId, asset.fileName);
-    final removed = assets.remove(asset);
-    if (removed) {
-      setState(() {
-        assets = [...assets];
-      });
-    }
+    final assets =
+        await service.deleteRewardAsset(widget.rewardId, asset.fileName);
+    setState(() {
+      rewardAssets = assets;
+    });
   }
 
   @override
@@ -64,9 +62,9 @@ class _RewardAssetList extends ConsumerState<RewardAssetList> {
       backgroundColor: Colors.transparent,
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-        itemCount: assets.length,
+        itemCount: rewardAssets.length,
         itemBuilder: (context, index) {
-          final asset = assets[index];
+          final asset = rewardAssets[index];
           return RewardAsset(
             key: Key(asset.id),
             asset: asset,
