@@ -4,14 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class VolumeSlider extends ConsumerStatefulWidget {
   const VolumeSlider({
     super.key,
-    this.text,
     this.volume = 0,
-    this.alignment = MainAxisAlignment.end,
     required this.handleVolumeChange,
   });
-  final Text? text;
   final double volume;
-  final MainAxisAlignment alignment;
   final Future<void> Function(double value) handleVolumeChange;
 
   @override
@@ -19,8 +15,8 @@ class VolumeSlider extends ConsumerStatefulWidget {
 }
 
 class _VolumeSetting extends ConsumerState<VolumeSlider> {
-  double volume = 0;
   IconData iconData = Icons.volume_mute_rounded;
+  double volume = 0;
 
   @override
   void initState() {
@@ -42,9 +38,7 @@ class _VolumeSetting extends ConsumerState<VolumeSlider> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: widget.alignment,
       children: [
-        widget.text ?? const SizedBox.shrink(),
         Slider(
           max: 100,
           divisions: 10,
