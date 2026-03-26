@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:mutex/mutex.dart';
 import 'package:stream_droid_app/src/services/secure_storage.dart';
 
-class AuthInterceptor implements ClientInterceptor {
+class AuthInterceptor extends ClientInterceptor {
   AuthInterceptor(SecureStorage storage)
       : _storage = storage,
         _mutex = Mutex();
@@ -22,9 +22,9 @@ class AuthInterceptor implements ClientInterceptor {
       CallOptions(providers: [_injectTokenProvider]),
     );
 
-    final call = invoker(method, requests, newOptions);
-    call.trailers.then(_handleTrailers);
-    return call;
+    final stream = invoker(method, requests, newOptions);
+    stream.trailers.then(_handleTrailers);
+    return stream;
   }
 
   @override
