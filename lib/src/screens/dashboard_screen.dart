@@ -20,8 +20,14 @@ class DashboardScreen extends ConsumerWidget {
       builder: (rewards) => GridView.count(
         mainAxisSpacing: 5,
         crossAxisSpacing: 5,
-        crossAxisCount:
-            responsiveValue(context, xs: 1, sm: 2, md: 3, lg: 4, xl: 5),
+        crossAxisCount: responsiveValue(
+          context,
+          xs: 1,
+          sm: 2,
+          md: 3,
+          lg: 4,
+          xl: 5,
+        ),
         childAspectRatio: 1.5,
         children: rewards
             .map(
