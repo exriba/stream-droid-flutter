@@ -2,12 +2,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:stream_droid_app/src/generated/common/redeem.pb.dart';
 import 'package:stream_droid_app/src/providers/auth_interceptor.dart';
 import 'package:stream_droid_app/src/providers/client_channel.dart';
+import 'package:stream_droid_app/src/providers/error_interceptor.dart';
 import 'package:stream_droid_app/src/services/redeem_service.dart';
 
 final redeemServiceProvider = Provider<RedeemService>((ref) {
   final clientChannel = ref.read(clientChannelProvider);
   final authInterceptor = ref.read(authInterceptorProvider);
-  return RedeemService(clientChannel, authInterceptor);
+  final errorInterceptor = ref.read(errorInterceptorProvider);
+  return RedeemService(clientChannel, authInterceptor, errorInterceptor);
 });
 
 final redeemNotificationProvider =

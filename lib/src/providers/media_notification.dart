@@ -8,12 +8,14 @@ import 'package:stream_droid_app/src/generated/common/event.pb.dart';
 import 'package:stream_droid_app/src/generated/service/eventservice.pb.dart';
 import 'package:stream_droid_app/src/providers/auth_interceptor.dart';
 import 'package:stream_droid_app/src/providers/client_channel.dart';
+import 'package:stream_droid_app/src/providers/error_interceptor.dart';
 import 'package:stream_droid_app/src/services/event_service.dart';
 
 final eventServiceProvider = Provider<EventService>((ref) {
   final clientChannel = ref.read(clientChannelProvider);
   final authInterceptor = ref.read(authInterceptorProvider);
-  return EventService(clientChannel, authInterceptor);
+  final errorInterceptor = ref.read(errorInterceptorProvider);
+  return EventService(clientChannel, authInterceptor, errorInterceptor);
 });
 
 final eventNotificationProvider =

@@ -1,30 +1,25 @@
 import 'package:grpc/grpc.dart';
-import 'package:stream_droid_app/src/generated/common/user.pbenum.dart';
-import 'package:stream_droid_app/src/services/secure_storage.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
-import 'package:stream_droid_app/src/generated/google/protobuf/empty.pb.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:stream_droid_app/src/interceptors/global_error_interceptor.dart';
+import 'package:stream_droid_app/src/services/secure_storage.dart';
 import 'package:stream_droid_app/src/generated/service/userservice.pbgrpc.dart';
 import 'package:stream_droid_app/src/interceptors/auth_interceptor.dart';
 
 class UserService {
   UserService(
+    SecureStorage secureStorage,
     ClientChannel channel,
     AuthInterceptor authInterceptor,
-    SecureStorage secureStorage,
-  )   : _client = GrpcUserServiceClient(
+    GlobalErrorInterceptor errorInterceptor,
+  )   : _storage = secureStorage,
+        _client = GrpcUserServiceClient(
           channel,
-          interceptors: [authInterceptor],
-        ),
-        _storage = secureStorage;
+          interceptors: [authInterceptor, errorInterceptor],
+        );
   final Uuid _uuid = const Uuid();
   final GrpcUserServiceClient _client;
   final SecureStorage _storage;
-
-  Future<bool> isAuthenticated() async {
-    final userResponse = await _client.findUser(Empty());
-    return userResponse.user.userType != User_UserType.UNSPECIFIED;
-  }
 
   Future<bool> login() async {
     bool authenticated = false;

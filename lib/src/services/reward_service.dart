@@ -5,12 +5,16 @@ import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/generated/google/protobuf/empty.pb.dart';
 import 'package:stream_droid_app/src/generated/service/rewardservice.pbgrpc.dart';
 import 'package:stream_droid_app/src/interceptors/auth_interceptor.dart';
+import 'package:stream_droid_app/src/interceptors/global_error_interceptor.dart';
 
 class RewardService {
-  RewardService(ClientChannel channel, AuthInterceptor authInterceptor)
-      : _client = GrpcRewardServiceClient(
+  RewardService(
+    ClientChannel channel,
+    AuthInterceptor authInterceptor,
+    GlobalErrorInterceptor errorInterceptor,
+  ) : _client = GrpcRewardServiceClient(
           channel,
-          interceptors: [authInterceptor],
+          interceptors: [authInterceptor, errorInterceptor],
         );
 
   final GrpcRewardServiceClient _client;

@@ -2,12 +2,16 @@ import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/src/generated/google/protobuf/empty.pb.dart';
 import 'package:stream_droid_app/src/generated/service/redeemservice.pbgrpc.dart';
 import 'package:stream_droid_app/src/interceptors/auth_interceptor.dart';
+import 'package:stream_droid_app/src/interceptors/global_error_interceptor.dart';
 
 class RedeemService {
-  RedeemService(ClientChannel channel, AuthInterceptor authInterceptor)
-      : _client = GrpcRedeemServiceClient(
+  RedeemService(
+    ClientChannel channel,
+    AuthInterceptor authInterceptor,
+    GlobalErrorInterceptor errorInterceptor,
+  ) : _client = GrpcRedeemServiceClient(
           channel,
-          interceptors: [authInterceptor],
+          interceptors: [authInterceptor, errorInterceptor],
         );
 
   final GrpcRedeemServiceClient _client;

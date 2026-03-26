@@ -2,12 +2,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/providers/auth_interceptor.dart';
 import 'package:stream_droid_app/src/providers/client_channel.dart';
+import 'package:stream_droid_app/src/providers/error_interceptor.dart';
 import 'package:stream_droid_app/src/services/reward_service.dart';
 
 final rewardServiceProvider = Provider<RewardService>((ref) {
   final clientChannel = ref.read(clientChannelProvider);
   final authInterceptor = ref.read(authInterceptorProvider);
-  return RewardService(clientChannel, authInterceptor);
+  final errorInterceptor = ref.read(errorInterceptorProvider);
+  return RewardService(clientChannel, authInterceptor, errorInterceptor);
 });
 
 final rewardNotificationProvider =
