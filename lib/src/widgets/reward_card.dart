@@ -23,7 +23,7 @@ class _RewardCard extends ConsumerState<RewardCard> {
   Future<void> _handleSpeechChange(bool value) async {
     final service = ref.read(rewardServiceProvider);
     final response = await service.updateRewardSpeech(widget.reward.id, value);
-    if (mounted) {
+    if (context.mounted) {
       setState(() {
         enabled = response;
       });
