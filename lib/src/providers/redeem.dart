@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:stream_droid_app/src/generated/service/redeemservice.pbgrpc.dart';
+import 'package:stream_droid_app/src/generated/common/redeem.pb.dart';
 import 'package:stream_droid_app/src/providers/auth_interceptor.dart';
 import 'package:stream_droid_app/src/providers/client_channel.dart';
 import 'package:stream_droid_app/src/services/redeem_service.dart';
@@ -11,14 +11,15 @@ final redeemServiceProvider = Provider<RedeemService>((ref) {
 });
 
 final redeemNotificationProvider =
-    AsyncNotifierProvider.autoDispose<RedeemNotifier, RewardRedeemResponse>(
+    AsyncNotifierProvider.autoDispose<RedeemNotifier, List<RewardRedeem>>(
   RedeemNotifier.new,
 );
 
-class RedeemNotifier extends AutoDisposeAsyncNotifier<RewardRedeemResponse> {
+class RedeemNotifier extends AutoDisposeAsyncNotifier<List<RewardRedeem>> {
   @override
-  Future<RewardRedeemResponse> build() {
+  Future<List<RewardRedeem>> build() async {
     final service = ref.read(redeemServiceProvider);
-    return service.fetchRewardRedeems();
+    final response = await service.fetchRewardRedeems();
+    return response.rewardRedeems;
   }
 }
