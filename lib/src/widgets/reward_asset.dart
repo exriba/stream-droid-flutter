@@ -15,6 +15,12 @@ class RewardAsset extends ConsumerWidget {
   final String rewardId;
   final Future<void> Function(Asset asset) handleRemove;
 
+  Future<void> _handleVolumeChange(WidgetRef ref, double value) async {
+    final volume = value.toInt();
+    final service = ref.read(rewardServiceProvider);
+    await service.updateRewardAsset(rewardId, asset.fileName, volume);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
@@ -44,9 +50,7 @@ class RewardAsset extends ConsumerWidget {
           VolumeSlider(
             volume: asset.volume.toDouble(),
             handleVolumeChange: (value) async {
-              final volume = value.toInt();
-              final service = ref.read(rewardServiceProvider);
-              await service.updateRewardAsset(rewardId, asset.fileName, volume);
+              await _handleVolumeChange(ref, value);
             },
           ),
           IconButton(
