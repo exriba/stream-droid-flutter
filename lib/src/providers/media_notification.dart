@@ -11,7 +11,6 @@ import 'package:stream_droid_app/src/providers/client_channel.dart';
 import 'package:stream_droid_app/src/providers/error_handler.dart';
 import 'package:stream_droid_app/src/providers/error_interceptor.dart';
 import 'package:stream_droid_app/src/services/event_service.dart';
-import 'package:stream_droid_app/src/utils/error_handler.dart';
 
 final eventServiceProvider = Provider<EventService>((ref) {
   final clientChannel = ref.read(clientChannelProvider);

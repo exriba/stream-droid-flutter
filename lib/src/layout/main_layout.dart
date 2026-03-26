@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:stream_droid_app/src/models/app_bar_action.dart';
 import 'package:stream_droid_app/src/providers/global_error.dart';
-import 'package:stream_droid_app/src/providers/user.dart';
-import 'package:stream_droid_app/src/utils/types.dart';
 
 class MainLayout extends ConsumerWidget {
   const MainLayout({super.key, required this.screen});

@@ -1,5 +1,4 @@
 import 'package:grpc/grpc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/utils/error_handler.dart';
 
 class ErrorInterceptor extends ClientInterceptor {
