@@ -1,7 +1,7 @@
 import 'package:grpc/grpc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:stream_droid_app/src/interceptors/global_error_interceptor.dart';
+import 'package:stream_droid_app/src/interceptors/error_interceptor.dart';
 import 'package:stream_droid_app/src/services/secure_storage.dart';
 import 'package:stream_droid_app/src/generated/service/userservice.pbgrpc.dart';
 import 'package:stream_droid_app/src/interceptors/auth_interceptor.dart';
@@ -11,7 +11,7 @@ class UserService {
     SecureStorage secureStorage,
     ClientChannel channel,
     AuthInterceptor authInterceptor,
-    GlobalErrorInterceptor errorInterceptor,
+    ErrorInterceptor errorInterceptor,
   )   : _storage = secureStorage,
         _client = GrpcUserServiceClient(
           channel,

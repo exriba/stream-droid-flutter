@@ -2,8 +2,8 @@ import 'package:grpc/grpc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/utils/grpc_error_handler.dart';
 
-class GlobalErrorInterceptor extends ClientInterceptor {
-  GlobalErrorInterceptor(ProviderContainer container) : _container = container;
+class ErrorInterceptor extends ClientInterceptor {
+  ErrorInterceptor(ProviderContainer container) : _container = container;
   final ProviderContainer _container;
 
   @override
