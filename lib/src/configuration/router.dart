@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
-import 'package:stream_droid_app/src/providers/user.dart';
+import 'package:stream_droid_app/src/providers/secure_storage.dart';
 import 'package:stream_droid_app/src/screens/dashboard_screen.dart';
 import 'package:stream_droid_app/src/screens/login_screen.dart';
 import 'package:stream_droid_app/src/screens/media_screen.dart';
@@ -112,17 +112,20 @@ class AppRouter {
 
     // Global redirect function
     redirect: (context, state) async {
+      final loggingIn = ViewRoute.login.route == state.matchedLocation;
       final container = ProviderScope.containerOf(context);
-      final service = container.read(userServiceProvider);
-      bool authenticated = false;
+      final secureStorage = container.read(secureStorageProvider);
+      final token = await secureStorage.getToken();
 
-      try {
-        authenticated = await service.isAuthenticated();
-      } catch (e) {
-        debugPrint('Error checking authentication: $e');
+      if (token == null) {
+        return loggingIn ? null : ViewRoute.login.route;
       }
 
-      return authenticated ? null : ViewRoute.login.route;
+      if (loggingIn) {
+        return ViewRoute.dashboard.route;
+      }
+
+      return null;
     },
 
     errorBuilder: (context, state) {
