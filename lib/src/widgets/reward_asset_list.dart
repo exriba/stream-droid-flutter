@@ -40,7 +40,7 @@ class _RewardAssetList extends ConsumerState<RewardAssetList> {
 
     final volume = defaultVolume.toInt();
     final assets = await service.addRewardAssets(widget.rewardId, volume);
-    if (assets.isNotEmpty) {
+    if (context.mounted && assets.isNotEmpty) {
       setState(() {
         rewardAssets = assets;
       });
@@ -49,11 +49,19 @@ class _RewardAssetList extends ConsumerState<RewardAssetList> {
 
   Future<void> _handleRemove(Asset asset) async {
     final service = ref.read(rewardServiceProvider);
-    final assets =
-        await service.deleteRewardAsset(widget.rewardId, asset.fileName);
-    setState(() {
-      rewardAssets = assets;
-    });
+    final rewardId = widget.rewardId;
+
+    try {
+      final assets = await service.deleteRewardAsset(rewardId, asset.fileName);
+      if (context.mounted) {
+        setState(() {
+          rewardAssets = assets;
+        });
+      }
+    } catch (error) {
+      debugPrint("Error deleting asset: $error");
+      return;
+    }
   }
 
   @override
