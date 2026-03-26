@@ -25,15 +25,22 @@ class UserService {
     bool authenticated = false;
     final sessionId = _uuid.v4();
     final request = SessionRequest(sessionId: sessionId);
-    final response = await _client.generateLoginUrl(request);
-    final authorizationUri = Uri.parse(response.authorizationUrl);
-    final canLaunchAuthorizationUri = await canLaunchUrl(authorizationUri);
 
-    if (!canLaunchAuthorizationUri) {
-      return authenticated;
+    try {
+      final response = await _client.generateLoginUrl(request);
+      final authorizationUri = Uri.parse(response.authorizationUrl);
+      final canLaunchAuthorizationUri = await canLaunchUrl(authorizationUri);
+
+      if (!canLaunchAuthorizationUri) {
+        return false;
+      }
+
+      await launchUrl(authorizationUri, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      return false;
     }
 
-    await launchUrl(authorizationUri, mode: LaunchMode.externalApplication);
+    // TODO: Review error handling here
     final stream = _client.monitorAuthenticationSessionStatus(request);
 
     await for (final update in stream) {
