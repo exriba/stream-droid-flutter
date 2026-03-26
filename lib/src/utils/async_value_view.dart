@@ -16,11 +16,15 @@ class AsyncValueView<T> extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return value.when(
       data: builder,
-      error: (error, stackTrace) => ErrorView(
-        error: error,
-        stackTrace: stackTrace,
-      ),
-      loading: () => const LoadingSpinner(),
+      error: (error, stackTrace) {
+        return ErrorView(
+          error: error,
+          stackTrace: stackTrace,
+        );
+      },
+      loading: () {
+        return const LoadingSpinner();
+      },
     );
   }
 }
