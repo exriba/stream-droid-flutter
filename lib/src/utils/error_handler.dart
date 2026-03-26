@@ -3,15 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/src/providers/global_error.dart';
 
-class GrpcErrorHandler {
-  static void handleError(ProviderContainer container, dynamic error) {
+class ErrorHandler {
+  ErrorHandler(ProviderContainer container) : _container = container;
+  final ProviderContainer _container;
+
+  void handle(dynamic error) {
     String message = "Unexpected error";
 
     if (error is GrpcError) {
       message = _mapGrpcError(error);
     }
 
-    final errorProvider = container.read(globalErrorProvider.notifier);
+    final errorProvider = _container.read(globalErrorProvider.notifier);
     errorProvider.state = message;
 
     // TODO: Log this
