@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
+import 'package:stream_droid_app/src/layout/navigation_layout.dart';
 import 'package:stream_droid_app/src/providers/secure_storage.dart';
 import 'package:stream_droid_app/src/screens/dashboard_screen.dart';
 import 'package:stream_droid_app/src/screens/login_screen.dart';
@@ -19,21 +20,9 @@ class AppRouter {
 
     routes: [
       ShellRoute(
-        builder: (context, state, outerChild) {
-          return Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.deepPurple,
-                  Colors.purpleAccent,
-                  Colors.deepPurple,
-                ],
-                stops: [0.0, 0.5, 1.0],
-              ),
-            ),
-            child: outerChild,
+        builder: (context, state, widget) {
+          return MainLayout(
+            screen: widget,
           );
         },
         routes: [
@@ -49,11 +38,11 @@ class AppRouter {
           ),
           // Layout route with sidebar
           ShellRoute(
-            pageBuilder: (context, state, innerChild) {
+            pageBuilder: (context, state, innerWidget) {
               return NoTransitionPage(
                 key: state.pageKey,
-                child: MainLayout(
-                  screen: innerChild,
+                child: NavigationLayout(
+                  screen: innerWidget,
                 ),
               );
             },
