@@ -101,8 +101,10 @@ class MainLayout extends ConsumerWidget {
                     .toList(),
               ),
             ),
-            Expanded(
+            Flexible(
               child: Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
                 child: screen,
               ),
             ),
