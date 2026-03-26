@@ -1,10 +1,10 @@
 import 'package:grpc/grpc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stream_droid_app/src/utils/grpc_error_handler.dart';
+import 'package:stream_droid_app/src/utils/error_handler.dart';
 
 class ErrorInterceptor extends ClientInterceptor {
-  ErrorInterceptor(ProviderContainer container) : _container = container;
-  final ProviderContainer _container;
+  ErrorInterceptor(ErrorHandler errorHandler) : _errorHandler = errorHandler;
+  final ErrorHandler _errorHandler;
 
   @override
   ResponseStream<R> interceptStreaming<Q, R>(
@@ -15,7 +15,7 @@ class ErrorInterceptor extends ClientInterceptor {
   ) {
     final stream = invoker(method, requests, options);
     stream.handleError((error) {
-      GrpcErrorHandler.handleError(_container, error);
+      _errorHandler.handle(error);
       throw error;
     });
     return stream;
@@ -30,7 +30,7 @@ class ErrorInterceptor extends ClientInterceptor {
   ) {
     final call = invoker(method, request, options);
     call.catchError((error) {
-      GrpcErrorHandler.handleError(_container, error);
+      _errorHandler.handle(error);
       throw error;
     });
     return call;

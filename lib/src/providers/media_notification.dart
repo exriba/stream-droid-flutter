@@ -8,9 +8,10 @@ import 'package:stream_droid_app/src/generated/common/event.pb.dart';
 import 'package:stream_droid_app/src/generated/service/eventservice.pb.dart';
 import 'package:stream_droid_app/src/providers/auth_interceptor.dart';
 import 'package:stream_droid_app/src/providers/client_channel.dart';
+import 'package:stream_droid_app/src/providers/error_handler.dart';
 import 'package:stream_droid_app/src/providers/error_interceptor.dart';
 import 'package:stream_droid_app/src/services/event_service.dart';
-import 'package:stream_droid_app/src/utils/grpc_error_handler.dart';
+import 'package:stream_droid_app/src/utils/error_handler.dart';
 
 final eventServiceProvider = Provider<EventService>((ref) {
   final clientChannel = ref.read(clientChannelProvider);
@@ -64,7 +65,8 @@ class EventNotifier extends AutoDisposeAsyncNotifier<VideoController> {
       },
       onError: (error) {
         if (error is GrpcError && error.code == StatusCode.cancelled) return;
-        GrpcErrorHandler.handleError(ref.container, error);
+        final errorHandler = ref.read(errorHandlerProvider);
+        errorHandler.handle(error);
       },
       onDone: () {
         debugPrint('Event subscription closed');
