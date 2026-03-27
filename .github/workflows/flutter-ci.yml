@@ -17,7 +17,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.6'
+          flutter-version: '3.38.3'
           channel: 'stable'
 
       - name: Restore Dependencies
@@ -62,14 +62,22 @@ jobs:
           echo "- Passed: ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
           echo "- Failed: ❌ $FAILED" >> $GITHUB_STEP_SUMMARY
 
-      - name: Clean Build
-        run: flutter clean
+  windows:
+    runs-on: windows-latest
+    needs: linux
 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.3'
+
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      # Build release APK
       - name: Build Release APK
         run: flutter build apk --release
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: build/app/outputs/flutter-apk/app-release.apk
