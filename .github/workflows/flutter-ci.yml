@@ -65,7 +65,6 @@ jobs:
         if: always()
         with:
           report_paths: "**/test_results/*.xml"
-          detailed_summary: true
           include_passed: true
           fail_on_failure: true
           simplified_summary: true
