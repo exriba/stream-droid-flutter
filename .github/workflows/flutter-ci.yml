@@ -47,28 +47,21 @@ jobs:
             protoc --dart_out=grpc:lib/src/generated -Iprotos -I/usr/include "$f"
           done
 
-      - name: Install test_reporter
+      - name: Run Flutter Tests
         run: |
-          dart pub global activate test_reporter
-
-      - name: Run Tests and Generate JUnit Report
-        run: |
-          # Ensure dependencies are installed
           flutter pub get
-
-          # Create directory for test results
           mkdir -p test_results
+          flutter test --machine > test_results/test_results.json
 
-          # Run Flutter tests in machine-readable format
-          flutter test --machine > test_results/test-results.json
-
-          # Convert machine-readable JSON to JUnit XML
-          dart run test_reporter:report \
-            --input=test_results/test-results.json \
-            --output=test_results/test-results.xml \
-            --reporter=junit
+      - name: Convert JSON to JUnit
+        run: |
+          dart pub global activate junitreport
+          dart pub global run junitreport:tojunit \
+            -i test_results/test_results.json \
+            -o test_results/test_results.xml \
+            -r flutter
 
       - name: Upload JUnit Test Results
         uses: mikepenz/action-junit-report@v2
         with:
-          path: test_results/test-results.xml
+          path: test_results/test_results.xml
