@@ -23,11 +23,6 @@ jobs:
       - name: Restore Dependencies
         run: flutter pub get
 
-      - name: Install jq
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq
-
       - name: Install protoc
         run: |
           sudo apt-get update
@@ -52,17 +47,28 @@ jobs:
             protoc --dart_out=grpc:lib/src/generated -Iprotos -I/usr/include "$f"
           done
 
-      - name: Run Tests
-        run: flutter test --machine > test-results.json
-
-      - name: Aggregate Test Results
-        if: always()
+      - name: Install test_reporter
         run: |
-          TOTAL=$(jq '[.[] | select(.type=="testDone" and .hidden==false and .url!=null)] | length' test-results.json)
-          PASSED=$(jq '[.[] | select(.type=="testDone" and .result=="success" and .hidden==false and .url!=null)] | length' test-results.json)
-          FAILED=$(jq '[.[] | select(.type=="testDone" and .result=="failure" and .hidden==false and .url!=null)] | length' test-results.json)
+          dart pub global activate test_reporter
 
-          echo "## 🧪 Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "- Total: $TOTAL" >> $GITHUB_STEP_SUMMARY
-          echo "- Passed: ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
-          echo "- Failed: ❌ $FAILED" >> $GITHUB_STEP_SUMMARY
+      - name: Run Tests and Generate JUnit Report
+        run: |
+          # Ensure dependencies are installed
+          flutter pub get
+
+          # Create directory for test results
+          mkdir -p test_results
+
+          # Run Flutter tests in machine-readable format
+          flutter test --machine > test_results/test-results.json
+
+          # Convert machine-readable JSON to JUnit XML
+          dart pub global run test_reporter:report \
+            --input=test_results/test-results.json \
+            --output=test_results/test-results.xml \
+            --reporter=junit
+
+      - name: Upload JUnit Test Results
+        uses: mikepenz/action-junit-report@v2
+        with:
+          path: test_results/test-results.xml
