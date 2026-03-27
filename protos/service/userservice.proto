@@ -1,12 +1,12 @@
 syntax = "proto3";
 
 import "common/user.proto";
-import "google/protobuf/empty.proto";
+import "common/empty.proto";
 
 service GrpcUserService {
   rpc GenerateLoginUrl(SessionRequest) returns (LoginUrlResponse);
   rpc MonitorAuthenticationSessionStatus(SessionRequest) returns (stream SessionStatus);
-  rpc FindUser(google.protobuf.Empty) returns (UserResponse);
+  rpc FindUser(grpc.model.Empty) returns (UserResponse);
 }
 
 message SessionRequest {
