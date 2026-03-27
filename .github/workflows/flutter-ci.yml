@@ -1,0 +1,48 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ "network/gRPC-jwt" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.3'
+          channel: 'stable'
+
+      - name: Restore Dependencies
+        run: flutter pub get
+
+      - name: Run Tests
+        run: flutter test --machine > test-results.json
+
+      - name: Aggregate Test Results
+        if: always()
+        run: |
+          TOTAL=$(grep -o '"testCount":[0-9]*' test-results.json | grep -o '[0-9]*' | awk '{s+=$1} END {print s}')
+          PASSED=$(grep -o '"result":"success"' test-results.json | wc -l)
+          FAILED=$(grep -o '"result":"failure"' test-results.json | wc -l)
+
+          echo "## 🧪 Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Total: $TOTAL" >> $GITHUB_STEP_SUMMARY
+          echo "- Passed: ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "- Failed: ❌ $FAILED" >> $GITHUB_STEP_SUMMARY
+
+      - name: Build APK (Release)
+        run: flutter build apk --release
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: build/app/outputs/flutter-apk/app-release.apk
