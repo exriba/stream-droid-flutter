@@ -23,6 +23,11 @@ jobs:
       - name: Restore Dependencies
         run: flutter pub get
 
+      - name: Install jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
       - name: Install protoc
         run: |
           sudo apt-get update
@@ -53,17 +58,11 @@ jobs:
       - name: Aggregate Test Results
         if: always()
         run: |
-          TOTAL=$(grep -o '"testCount":[0-9]*' test-results.json | grep -o '[0-9]*' | awk '{s+=$1} END {print s}')
-          PASSED=$(grep -o '"result":"success"' test-results.json | wc -l)
-          FAILED=$(grep -o '"result":"failure"' test-results.json | wc -l)
+          TOTAL=$(jq '[.[] | select(.type=="testDone" and .hidden==false and .url!=null)] | length' test-results.json)
+          PASSED=$(jq '[.[] | select(.type=="testDone" and .result=="success" and .hidden==false and .url!=null)] | length' test-results.json)
+          FAILED=$(jq '[.[] | select(.type=="testDone" and .result=="failure" and .hidden==false and .url!=null)] | length' test-results.json)
 
           echo "## 🧪 Test Results" >> $GITHUB_STEP_SUMMARY
           echo "- Total: $TOTAL" >> $GITHUB_STEP_SUMMARY
           echo "- Passed: ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
           echo "- Failed: ❌ $FAILED" >> $GITHUB_STEP_SUMMARY
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: flutter-test-results
-          path: test-results.json
