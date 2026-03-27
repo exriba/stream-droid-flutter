@@ -64,7 +64,7 @@ jobs:
 
   windows:
     runs-on: windows-latest
-    needs: linux
+    needs: build-and-test
 
     steps:
       - name: Checkout Code
@@ -78,6 +78,5 @@ jobs:
       - name: Flutter Pub Get
         run: flutter pub get
 
-      # Build release APK
       - name: Build Release APK
         run: flutter build apk --release
