@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:grpc/grpc.dart';
+import 'package:stream_droid_app/src/generated/common/empty.pb.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
-import 'package:stream_droid_app/src/generated/google/protobuf/empty.pb.dart';
 import 'package:stream_droid_app/src/generated/service/rewardservice.pbgrpc.dart';
 import 'package:stream_droid_app/src/interceptors/auth_interceptor.dart';
 import 'package:stream_droid_app/src/interceptors/error_interceptor.dart';
