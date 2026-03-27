@@ -33,6 +33,12 @@ jobs:
           sudo unzip -o $PROTOC_ZIP -d /usr/local 'include/*'
           rm -f $PROTOC_ZIP
 
+      - name: Activate protoc_plugin
+        run: flutter pub global activate protoc_plugin
+
+      - name: Add protoc-gen-dart to PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
       - name: Generate gRPC Protos
         run: |
           mkdir -p lib/src/generated
