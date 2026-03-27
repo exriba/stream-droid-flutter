@@ -63,7 +63,7 @@ jobs:
           flutter test --machine > test_results/test-results.json
 
           # Convert machine-readable JSON to JUnit XML
-          dart pub global run test_reporter:report \
+          dart run test_reporter:report \
             --input=test_results/test-results.json \
             --output=test_results/test-results.xml \
             --reporter=junit
