@@ -58,8 +58,7 @@ jobs:
           dart pub global activate junitreport
           dart pub global run junitreport:tojunit \
             -i test_results/test_results.json \
-            -o test_results/test_results.xml \
-            -r flutter
+            -o test_results/test_results.xml
 
       - name: Upload JUnit Test Results
         uses: mikepenz/action-junit-report@v2
