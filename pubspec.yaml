@@ -55,6 +55,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  protoc_plugin: ^24.0.0
+  build_runner: ^2.4.0
   flutter_lints: ^6.0.0
   mocktail: ^1.0.0
   riverpod_test: ^0.1.0
