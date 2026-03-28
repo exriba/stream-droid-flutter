@@ -15,23 +15,26 @@ class VolumeSlider extends ConsumerStatefulWidget {
 }
 
 class _VolumeSetting extends ConsumerState<VolumeSlider> {
-  IconData iconData = Icons.volume_mute_rounded;
-  double volume = 0;
+  late double _volume;
+  late IconData _icon;
 
   @override
   void initState() {
     super.initState();
-    _handleChange(widget.volume);
+    _volume = widget.volume;
+    _icon = _getIcon(_volume);
+  }
+
+  IconData _getIcon(double value) {
+    if (value == 0) return Icons.volume_mute_rounded;
+    if (value < 50) return Icons.volume_down_rounded;
+    return Icons.volume_up_rounded;
   }
 
   void _handleChange(double value) {
     setState(() {
-      volume = value;
-      iconData = value == 0
-          ? Icons.volume_mute_rounded
-          : value < 50
-              ? Icons.volume_down_rounded
-              : Icons.volume_up_rounded;
+      _volume = value;
+      _icon = _getIcon(value);
     });
   }
 
@@ -42,16 +45,14 @@ class _VolumeSetting extends ConsumerState<VolumeSlider> {
         Slider(
           max: 100,
           divisions: 10,
-          value: volume,
-          label: volume.round().toString(),
+          value: _volume,
+          label: _volume.round().toString(),
           activeColor: Colors.grey,
           onChanged: _handleChange,
-          onChangeEnd: (value) async {
-            await widget.handleVolumeChange(value);
-          },
+          onChangeEnd: widget.handleVolumeChange,
         ),
         Icon(
-          iconData,
+          _icon,
           color: Colors.white,
         ),
       ],
