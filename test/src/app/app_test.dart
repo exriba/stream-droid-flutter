@@ -52,7 +52,6 @@ void main() {
     });
 
     testWidgets('redirects to dashboard if token exists', (tester) async {
-      // Arrange
       when(() => mockStorage.getToken()).thenAnswer((_) async => 'valid_token');
 
       final container = ProviderContainer(
