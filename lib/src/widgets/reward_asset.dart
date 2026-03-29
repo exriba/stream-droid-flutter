@@ -21,8 +21,17 @@ class RewardAsset extends ConsumerWidget {
     await service.updateRewardAsset(rewardId, asset.fileName, volume);
   }
 
+  IconData _getIcon() {
+    if (asset.mediaExtension == Asset_MediaExtension.MP3) {
+      return Icons.music_note_rounded;
+    }
+    return Icons.play_arrow_rounded;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final icon = _getIcon();
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
@@ -36,9 +45,7 @@ class RewardAsset extends ConsumerWidget {
         spacing: 10,
         children: [
           Icon(
-            asset.mediaExtension == Asset_MediaExtension.MP3
-                ? Icons.music_note_rounded
-                : Icons.play_arrow_rounded,
+            icon,
             color: Colors.white,
           ),
           Expanded(
