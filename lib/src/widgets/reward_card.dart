@@ -20,12 +20,16 @@ class _RewardCard extends ConsumerState<RewardCard> {
     enabled = widget.reward.speech.enabled;
   }
 
-  Future<void> _handleSpeechChange(bool value) async {
+  Future<bool> _updateRewardSpeech(String rewardId, bool value) async {
     final service = ref.read(rewardServiceProvider);
-    final response = await service.updateRewardSpeech(widget.reward.id, value);
+    return await service.updateRewardSpeech(rewardId, value);
+  }
+
+  Future<void> _handleChange(bool value) async {
+    final speechEnabled = await _updateRewardSpeech(widget.reward.id, value);
     if (context.mounted) {
       setState(() {
-        enabled = response;
+        enabled = speechEnabled;
       });
     }
   }
@@ -108,7 +112,7 @@ class _RewardCard extends ConsumerState<RewardCard> {
                       value: enabled,
                       activeThumbColor: Colors.black,
                       onChanged: (value) async {
-                        await _handleSpeechChange(value);
+                        await _handleChange(value);
                       },
                     ),
                   ),
