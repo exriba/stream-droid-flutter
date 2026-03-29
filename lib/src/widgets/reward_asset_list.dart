@@ -25,9 +25,7 @@ class _RewardAssetList extends ConsumerState<RewardAssetList> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      rewardAssets = widget.rewardAssets;
-    });
+    rewardAssets = widget.rewardAssets;
   }
 
   Future<void> _handleAdd() async {
