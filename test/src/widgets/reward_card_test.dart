@@ -6,7 +6,6 @@ import 'package:stream_droid_app/src/widgets/reward_card.dart';
 
 void main() {
   group('RewardCard', () {
-    const appIconPath = 'assets/icons/app-icon.png';
     const rewardId = "id";
     final asset = Asset(
       id: "id",
@@ -26,7 +25,6 @@ void main() {
           backgroundColor: "#6441A4",
           speech: Speech(enabled: true),
           assets: [asset],
-          imageUrl: appIconPath,
         );
 
         await tester.pumpWidget(
@@ -64,7 +62,6 @@ void main() {
           backgroundColor: "#6441A4",
           speech: Speech(enabled: false),
           assets: [asset],
-          imageUrl: appIconPath,
         );
 
         await tester.pumpWidget(
