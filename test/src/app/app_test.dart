@@ -68,9 +68,7 @@ void main() {
       await tester.pumpWidget(
         UncontrolledProviderScope(
           container: container,
-          child: const MaterialApp(
-            home: DashboardScreen(),
-          ),
+          child: const App(),
         ),
       );
 
