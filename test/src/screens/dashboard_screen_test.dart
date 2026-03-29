@@ -1,14 +1,10 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_image_mock/network_image_mock.dart';
-import 'package:stream_droid_app/src/generated/common/redeem.pb.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
-import 'package:stream_droid_app/src/providers/redeem.dart';
 import 'package:stream_droid_app/src/providers/reward.dart';
 import 'package:stream_droid_app/src/screens/dashboard_screen.dart';
-import 'package:stream_droid_app/src/screens/statistics_screen.dart';
 
 class FakeRewardNotifier extends RewardNotifier {
   @override
