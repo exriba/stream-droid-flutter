@@ -50,7 +50,7 @@ class RewardScreen extends ConsumerWidget {
               color: Colors.white,
             ),
             onPressed: () {
-              context.go(ViewRoute.dashboard.route);
+              context.go(ViewRoute.root.route);
             },
           ),
         ],
