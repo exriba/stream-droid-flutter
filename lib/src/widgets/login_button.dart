@@ -43,7 +43,7 @@ class LoginButton extends ConsumerWidget {
       onPressed: () async {
         final authenticated = await service.login();
         if (context.mounted && authenticated) {
-          context.go(ViewRoute.dashboard.route);
+          context.go(ViewRoute.root.route);
         }
       },
     );

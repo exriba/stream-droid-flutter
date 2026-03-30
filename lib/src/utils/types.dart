@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 typedef ContextCallback = void Function(BuildContext context, WidgetRef ref);
 
 enum ViewRoute {
-  dashboard('/'),
+  root('/'),
   rewards('/rewards'),
   media('/media'),
   statistics('/statistics'),

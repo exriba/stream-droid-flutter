@@ -5,7 +5,7 @@ void main() {
   group('ViewRoute', () {
     test('ensures all routes map to the right values', () {
       final cases = {
-        ViewRoute.dashboard: '/',
+        ViewRoute.root: '/',
         ViewRoute.rewards: '/rewards',
         ViewRoute.media: '/media',
         ViewRoute.settings: '/settings',
