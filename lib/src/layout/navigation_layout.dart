@@ -9,7 +9,7 @@ final List<AppBarAction> _appBarActions = [
   AppBarAction(
     icon: Icons.dashboard_outlined,
     onPressed: (context, ref) {
-      context.go(ViewRoute.dashboard.route);
+      context.go(ViewRoute.root.route);
     },
   ),
   AppBarAction(
