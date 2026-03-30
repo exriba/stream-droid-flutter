@@ -9,8 +9,10 @@ void main() {
     testWidgets('renders layout', (tester) async {
       await tester.pumpWidget(
         const ProviderScope(
-          child: MainLayout(
-            screen: SizedBox.shrink(),
+          child: MaterialApp(
+            home: MainLayout(
+              screen: SizedBox.shrink(),
+            ),
           ),
         ),
       );
@@ -27,10 +29,8 @@ void main() {
             globalErrorProvider.overrideWith((ref) => testError),
           ],
           child: const MaterialApp(
-            home: Scaffold(
-              body: MainLayout(
-                screen: SizedBox.shrink(),
-              ),
+            home: MainLayout(
+              screen: SizedBox.shrink(),
             ),
           ),
         ),

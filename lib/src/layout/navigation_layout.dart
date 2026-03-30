@@ -49,67 +49,64 @@ class NavigationLayout extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        margin: const EdgeInsets.all(8),
-        child: Row(
-          spacing: 2,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(4),
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.purple[300],
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1,
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 4,
-                    color: Colors.black,
-                    offset: Offset(-2, 2),
-                  ),
-                ],
+    return Container(
+      margin: const EdgeInsets.all(8),
+      child: Row(
+        spacing: 2,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Colors.purple[300],
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: Colors.black,
+                width: 1,
               ),
-              child: Column(
-                spacing: 10,
-                children: _appBarActions
-                    .map(
-                      (action) => Flexible(
-                        fit: FlexFit.tight,
-                        child: IconButton(
-                          iconSize: 32,
-                          icon: Icon(
-                            action.icon,
-                            color: Colors.black,
-                          ),
-                          onPressed: () {
-                            action.onPressed(context, ref);
-                          },
-                          style: IconButton.styleFrom(
-                            splashFactory: NoSplash.splashFactory,
-                            highlightColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                          ),
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 4,
+                  color: Colors.black,
+                  offset: Offset(-2, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              spacing: 10,
+              children: _appBarActions
+                  .map(
+                    (action) => Flexible(
+                      fit: FlexFit.tight,
+                      child: IconButton(
+                        iconSize: 32,
+                        icon: Icon(
+                          action.icon,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          action.onPressed(context, ref);
+                        },
+                        style: IconButton.styleFrom(
+                          splashFactory: NoSplash.splashFactory,
+                          highlightColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
                         ),
                       ),
-                    )
-                    .toList(),
-              ),
+                    ),
+                  )
+                  .toList(),
             ),
-            Flexible(
-              child: Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
-                child: screen,
-              ),
+          ),
+          Flexible(
+            child: Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
+              child: screen,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

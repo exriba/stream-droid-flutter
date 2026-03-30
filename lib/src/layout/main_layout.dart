@@ -52,20 +52,24 @@ class MainLayout extends ConsumerWidget {
       });
     }
 
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.deepPurple,
-            Colors.purpleAccent,
-            Colors.deepPurple,
-          ],
-          stops: [0.0, 0.5, 1.0],
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.deepPurple,
+              Colors.purpleAccent,
+              Colors.deepPurple,
+            ],
+            stops: [0.0, 0.5, 1.0],
+          ),
         ),
+        child: screen,
       ),
-      child: screen,
     );
   }
 }
