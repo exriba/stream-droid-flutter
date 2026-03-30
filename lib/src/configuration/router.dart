@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/layout/navigation_layout.dart';
+import 'package:stream_droid_app/src/providers/previous_route.dart';
 import 'package:stream_droid_app/src/providers/secure_storage.dart';
 import 'package:stream_droid_app/src/screens/dashboard_screen.dart';
 import 'package:stream_droid_app/src/screens/login_screen.dart';
@@ -16,7 +17,7 @@ import 'package:stream_droid_app/src/layout/main_layout.dart';
 class AppRouter {
   static final GoRouter routerConfiguration = GoRouter(
     navigatorKey: GlobalKey<NavigatorState>(),
-    initialLocation: ViewRoute.dashboard.route,
+    initialLocation: ViewRoute.root.route,
 
     routes: [
       ShellRoute(
@@ -36,6 +37,15 @@ class AppRouter {
               );
             },
           ),
+          GoRoute(
+            path: ViewRoute.settings.route,
+            pageBuilder: (context, state) {
+              return NoTransitionPage(
+                key: state.pageKey,
+                child: const SettingsScreen(),
+              );
+            },
+          ),
           // Layout route with sidebar
           ShellRoute(
             pageBuilder: (context, state, innerWidget) {
@@ -48,7 +58,7 @@ class AppRouter {
             },
             routes: [
               GoRoute(
-                path: ViewRoute.dashboard.route,
+                path: ViewRoute.root.route,
                 pageBuilder: (context, state) {
                   return NoTransitionPage(
                     key: state.pageKey,
@@ -84,15 +94,6 @@ class AppRouter {
                   );
                 },
               ),
-              GoRoute(
-                path: ViewRoute.settings.route,
-                pageBuilder: (context, state) {
-                  return NoTransitionPage(
-                    key: state.pageKey,
-                    child: const SettingsScreen(),
-                  );
-                },
-              ),
             ],
           ),
         ],
@@ -101,17 +102,24 @@ class AppRouter {
 
     // Global redirect function
     redirect: (context, state) async {
-      final loggingIn = ViewRoute.login.route == state.matchedLocation;
       final container = ProviderScope.containerOf(context);
+      final loggingIn = state.matchedLocation == ViewRoute.login.route;
+      final routeState = container.read(previousRouteProvider.notifier);
       final secureStorage = container.read(secureStorageProvider);
       final token = await secureStorage.getToken();
+
+      if (state.matchedLocation == ViewRoute.settings.route) {
+        return ViewRoute.settings.route;
+      }
+
+      routeState.state = state.matchedLocation;
 
       if (token == null) {
         return loggingIn ? null : ViewRoute.login.route;
       }
 
       if (loggingIn) {
-        return ViewRoute.dashboard.route;
+        return ViewRoute.root.route;
       }
 
       return null;
