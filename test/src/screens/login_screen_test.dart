@@ -21,7 +21,7 @@ void main() {
       expect(find.byIcon(Icons.dashboard_outlined), findsOneWidget);
       expect(find.byIcon(Icons.live_tv_outlined), findsOneWidget);
       expect(find.byIcon(Icons.show_chart_outlined), findsOneWidget);
-      expect(find.byIcon(Icons.settings_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.settings_outlined), findsExactly(2));
     });
   });
 }
