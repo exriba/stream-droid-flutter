@@ -26,18 +26,19 @@ The project follows Clean Architecture with Riverpod for dependency injection.
 ### Folder Structure:
 
 ```
-* lib/src/
-* app/                   # Root widget
-* configuration/         # App configuration
-* constants/             # Constants
-* interceptors/          # gRPC middleware
-* layout/                # Layout components
-* models/                # Data models
-* providers/             # Riverpod providers for DI
-* screens/               # UI screens (dashboard, rewards, etc)
-* services/              # Business logic and gRPC clients
-* utils/                 # Utility functions
-* widgets/               # Reusable UI components
+lib/
+├── src/
+    ├── app/                   # Root widget
+    ├──configuration/         # App configuration
+    ├──constants/             # Constants
+    ├──interceptors/          # gRPC middleware
+    ├──layout/                # Layout components
+    ├──models/                # Data models
+    ├──providers/             # Riverpod providers for DI
+    ├──screens/               # UI screens (dashboard, rewards, etc)
+    ├──services/              # Business logic and gRPC clients
+    ├──utils/                 # Utility functions
+    ├──widgets/               # Reusable UI components
 ```
 
 ### Data Flow:
@@ -58,7 +59,7 @@ Backend Server
 
 ### Prerequisites:
 * Flutter 3.3.0 or higher
-* Dart 3.3.0 or higher
+* Dart 3.10.0 or higher
 * Stream-Droid backend server running
 * Twitch application credentials
 
