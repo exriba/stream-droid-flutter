@@ -28,7 +28,7 @@ The project follows Clean Architecture with Riverpod for dependency injection.
 ```
 lib/
 ├── src/
-    ├── app/                   # Root widget
+    ├── app/                  # Root widget
     ├──configuration/         # App configuration
     ├──constants/             # Constants
     ├──interceptors/          # gRPC middleware
