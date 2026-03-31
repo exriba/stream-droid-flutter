@@ -1,4 +1,7 @@
 #include "flutter_window.h"
+#include <windows.h>
+#include <flutter/method_channel.h>
+#include <flutter/standard_method_codec.h>
 
 #include <optional>
 
@@ -26,6 +29,51 @@ bool FlutterWindow::OnCreate() {
   }
   RegisterPlugins(flutter_controller_->engine());
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
+
+  // --- METHOD CHANNEL FOR SERVICE CHECK ---
+  auto serviceChannel = std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
+    flutter_controller_->engine()->messenger(), "stream_droid.service_control", &flutter::StandardMethodCodec::GetInstance());
+
+  serviceChannel->SetMethodCallHandler(
+    [](const flutter::MethodCall<flutter::EncodableValue>& call,
+       std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+
+      std::string serviceName;
+
+      if (const auto* args = std::get_if<flutter::EncodableMap>(call.arguments())) {
+        auto it = args->find(flutter::EncodableValue("serviceName"));
+        if (it != args->end()) {
+          if (const std::string* name = std::get_if<std::string>(&it->second)) {
+            serviceName = *name;
+          }
+        }
+      }
+
+      if (serviceName.empty()) {
+        result->Error("invalid_argument", "serviceName cannot be empty");
+        return;
+      }
+
+      if (call.method_name() == "isServiceRunning") {
+        bool running = false;
+        SC_HANDLE scm = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT);
+        if (scm) {
+          SC_HANDLE service = OpenServiceA(scm, serviceName.c_str(), SERVICE_QUERY_STATUS);
+          if (service) {
+            SERVICE_STATUS status;
+            if (QueryServiceStatus(service, &status)) {
+              running = (status.dwCurrentState == SERVICE_RUNNING);
+            }
+            CloseServiceHandle(service);
+          }
+          CloseServiceHandle(scm);
+        }
+        result->Success(flutter::EncodableValue(running));
+
+      } else {
+        result->NotImplemented();
+      }
+    });
 
   flutter_controller_->engine()->SetNextFrameCallback([&]() {
     this->Show();
