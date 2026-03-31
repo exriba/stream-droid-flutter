@@ -3,19 +3,48 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_droid_app/src/providers/hive_storage.dart';
 import 'package:stream_droid_app/src/providers/previous_route.dart';
+import 'package:stream_droid_app/src/providers/service_control.dart';
 import 'package:stream_droid_app/src/widgets/setting_section.dart';
 import 'package:stream_droid_app/src/widgets/setting_section_item.dart';
 import 'package:stream_droid_app/src/widgets/volume_slider.dart';
 import 'package:stream_droid_app/src/constants/constants.dart' as constants;
 
 const String mediaLabel = "Media";
-const String defaultAssetVolumeLabel = "Default asset volume";
+const String serviceLabel = "Service";
 
-class SettingsScreen extends ConsumerWidget {
+const String defaultAssetVolumeLabel = "Default asset volume";
+const String serviceStatusLabel = "Status";
+
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  late bool status = false;
+  late Color color = Colors.red;
+
+  @override
+  void initState() {
+    super.initState();
+    status = false;
+    color = Colors.red;
+    _checkServiceStatus();
+  }
+
+  Future<void> _checkServiceStatus() async {
+    final service = ref.read(serviceControlProvider);
+    final isRunning = await service.isServiceRunning();
+    setState(() {
+      status = isRunning;
+      color = isRunning ? Colors.green : Colors.red;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final previous = ref.read(previousRouteProvider);
     final storage = ref.read(hiveStorageProvider);
     final volume = storage.get<double>(
@@ -41,6 +70,26 @@ class SettingsScreen extends ConsumerWidget {
                   },
                 ),
               ),
+              const SettingSection(
+                label: serviceLabel,
+              ),
+              Row(
+                spacing: 8,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const Text(
+                    serviceStatusLabel,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Icon(
+                    Icons.circle,
+                    color: color,
+                    size: 18,
+                  ),
+                ],
+              )
             ],
           ),
           Positioned(

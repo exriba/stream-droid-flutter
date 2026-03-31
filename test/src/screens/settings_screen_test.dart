@@ -42,9 +42,10 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      expect(find.byType(SettingSection), findsOneWidget);
+      expect(find.byType(SettingSection), findsNWidgets(2));
       expect(find.byType(SettingSectionItem), findsOneWidget);
       expect(find.byType(VolumeSlider), findsOneWidget);
+      expect(find.byIcon(Icons.circle), findsOneWidget);
       expect(find.byIcon(Icons.arrow_back_ios_outlined), findsOneWidget);
     });
   });
