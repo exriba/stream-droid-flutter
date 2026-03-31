@@ -24,21 +24,22 @@ A cross-platform UI for the Stream-Droid backend service. Provides streamers wit
 The project follows Clean Architecture with Riverpod for dependency injection.
 
 ### Folder Structure:
-lib/src/
-app/                    Root widget
-configuration/          App configuration
-constants/              Constants
-interceptors/           gRPC middleware
-layout/                 Layout components
-models/                 Data models
-providers/              Riverpod providers for DI
-screens/                UI screens (dashboard, rewards, etc)
-services/               Business logic and gRPC clients
-utils/                  Utility functions
-widgets/                Reusable UI components
+* lib/src/
+* app/                   # Root widget
+* configuration/         # App configuration
+* constants/             # Constants
+* interceptors/          # gRPC middleware
+* layout/                # Layout components
+* models/                # Data models
+* providers/             # Riverpod providers for DI
+* screens/               # UI screens (dashboard, rewards, etc)
+* services/              # Business logic and gRPC clients
+* utils/                 # Utility functions
+* widgets/               # Reusable UI components
 
 ### Data Flow:
 
+```
 UI Screen
 ↓
 Riverpod Provider (State)
@@ -48,6 +49,7 @@ Service (Business Logic)
 gRPC Client (with Interceptors)
 ↓
 Backend Server
+```
 
 ## Getting Started
 
@@ -60,30 +62,31 @@ Prerequisites:
 Installation:
 * Clone the repository
 * Install dependencies
-    `flutter pub get`
+    - `flutter pub get`
 * Generate gRPC code: This generates Protobuf Dart classes, gRPC service clients, and message serialization code.
-    protoc --dart_out=grpc:lib/src/generated \
-    -Iprotos \
-    -I"path/to/protoc" \
-    ./protos/common/empty.proto \
-    ./protos/common/event.proto \
-    ./protos/common/redeem.proto \
-    ./protos/common/reward.proto \
-    ./protos/common/user.proto \
-    ./protos/service/eventservice.proto \
-    ./protos/service/redeemservice.proto \
-    ./protos/service/rewardservice.proto \
-    ./protos/service/userservice.proto 
+    ```
+        protoc --dart_out=grpc:lib/src/generated -Iprotos \
+            -I"path/to/protoc" \
+                ./protos/common/empty.proto \
+                ./protos/common/event.proto \
+                ./protos/common/redeem.proto \
+                ./protos/common/reward.proto \
+                ./protos/common/user.proto \
+                ./protos/service/eventservice.proto \
+                ./protos/service/redeemservice.proto \
+                ./protos/service/rewardservice.proto \
+                ./protos/service/userservice.proto 
+    ```
 
 Configure and run the application:
 * Add .env/dev.json file with:
-    app_name
-    server_name
-    server_port
+    - app_name
+    - server_name
+    - server_port
 * Desktop:
-    `flutter run -d macos`
-    `flutter run -d linux`
-    `flutter run -d windows`
+    - `flutter run -d macos`
+    - `flutter run -d linux`
+    - `flutter run -d windows`
 
 ## Security
 * User logs in via Twitch OAuth
@@ -97,4 +100,4 @@ Configure and run the application:
 ## Testing
 
 Run all tests:
-`flutter test`
+* `flutter test`
