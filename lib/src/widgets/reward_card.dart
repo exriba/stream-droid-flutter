@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/providers/reward.dart';
-import 'package:stream_droid_app/src/services/reward_service.dart';
 import 'package:stream_droid_app/src/widgets/feature_switch.dart';
 
 class RewardCard extends ConsumerStatefulWidget {
