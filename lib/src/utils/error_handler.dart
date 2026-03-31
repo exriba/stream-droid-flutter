@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
 import 'package:stream_droid_app/src/providers/global_error.dart';
@@ -8,10 +9,14 @@ class ErrorHandler {
   final ProviderContainer _container;
 
   void handle(dynamic error) {
-    String message = "Unexpected error";
+    String message;
 
     if (error is GrpcError) {
       message = _mapGrpcError(error);
+    } else if (error is PlatformException) {
+      message = error.message ?? "Platform error occurred.";
+    } else {
+      message = "Unknown error occurred.";
     }
 
     final errorProvider = _container.read(globalErrorProvider.notifier);
