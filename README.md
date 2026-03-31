@@ -24,6 +24,8 @@ A cross-platform UI for the Stream-Droid backend service. Provides streamers wit
 The project follows Clean Architecture with Riverpod for dependency injection.
 
 ### Folder Structure:
+
+```
 * lib/src/
 * app/                   # Root widget
 * configuration/         # App configuration
@@ -36,6 +38,7 @@ The project follows Clean Architecture with Riverpod for dependency injection.
 * services/              # Business logic and gRPC clients
 * utils/                 # Utility functions
 * widgets/               # Reusable UI components
+```
 
 ### Data Flow:
 
@@ -53,13 +56,13 @@ Backend Server
 
 ## Getting Started
 
-Prerequisites:
+### Prerequisites:
 * Flutter 3.3.0 or higher
 * Dart 3.3.0 or higher
 * Stream-Droid backend server running
 * Twitch application credentials
 
-Installation:
+### Installation:
 * Clone the repository
 * Install dependencies
     - `flutter pub get`
@@ -78,7 +81,7 @@ Installation:
                 ./protos/service/userservice.proto 
     ```
 
-Configure and run the application:
+### Configure and run the application:
 * Add .env/dev.json file with:
     - app_name
     - server_name
@@ -100,4 +103,4 @@ Configure and run the application:
 ## Testing
 
 Run all tests:
-* `flutter test`
+- `flutter test`
