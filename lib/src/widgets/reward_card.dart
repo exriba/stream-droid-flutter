@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_droid_app/src/generated/common/reward.pb.dart';
 import 'package:stream_droid_app/src/providers/reward.dart';
+import 'package:stream_droid_app/src/services/reward_service.dart';
+import 'package:stream_droid_app/src/widgets/feature_switch.dart';
 
 class RewardCard extends ConsumerStatefulWidget {
   const RewardCard({super.key, required this.reward});
@@ -12,7 +14,7 @@ class RewardCard extends ConsumerStatefulWidget {
 }
 
 class _RewardCard extends ConsumerState<RewardCard> {
-  bool enabled = false;
+  late bool enabled;
 
   @override
   void initState() {
@@ -20,13 +22,10 @@ class _RewardCard extends ConsumerState<RewardCard> {
     enabled = widget.reward.speech.enabled;
   }
 
-  Future<bool> _updateRewardSpeech(String rewardId, bool value) async {
-    final service = ref.read(rewardServiceProvider);
-    return await service.updateRewardSpeech(rewardId, value);
-  }
-
   Future<void> _handleChange(bool value) async {
-    final speechEnabled = await _updateRewardSpeech(widget.reward.id, value);
+    final rewardId = widget.reward.id;
+    final service = ref.read(rewardServiceProvider);
+    final speechEnabled = await service.updateRewardSpeech(rewardId, value);
     if (context.mounted) {
       setState(() {
         enabled = speechEnabled;
@@ -108,9 +107,8 @@ class _RewardCard extends ConsumerState<RewardCard> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Switch(
-                      value: enabled,
-                      activeThumbColor: Colors.black,
+                    child: FeatureSwitch(
+                      enabled: enabled,
                       onChanged: (value) async {
                         await _handleChange(value);
                       },
