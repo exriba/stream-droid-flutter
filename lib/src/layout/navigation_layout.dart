@@ -27,7 +27,8 @@ final List<AppBarAction> _appBarActions = [
   AppBarAction(
     icon: Icons.settings_outlined,
     onPressed: (context, ref) {
-      context.go(ViewRoute.settings.route);
+      final router = GoRouter.of(context);
+      context.go(ViewRoute.settings.route, extra: router.state.extra);
     },
   ),
   AppBarAction(
