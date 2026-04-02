@@ -2,8 +2,17 @@
 
 StreamDroid UI Application built with Flutter.
 
-Experimental branches
+The most up-to-date version of this project is available on the `network/gRPC-jwt` branch:
 
-* network/gRPC-jwt (latest)
-* network/rest-jwt
-* network/rest-cookie
+👉 [See Latest] (https://github.com/exriba/stream-droid-flutter/tree/network/gRPC-jwt)
+
+This branch includes:
+
+Latest features
+Ongoing improvements
+Current architecture
+
+📝 Notes
+
+* The main branch contains an older version of the project.
+* This project is actively being improved. For evaluation and review, please refer to the `network/gRPC-jwt` branch.
